@@ -1,0 +1,7 @@
+secrets/
+.env
+tmp/
+tmp.ipynb
+__pycache__/
+.venv/
+uv.lock
