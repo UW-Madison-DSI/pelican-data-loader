@@ -1,0 +1,644 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "Bird Migration Data",
+  "description": "Bird migration data",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "0.0.1",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "name": "bird_migration_data_csv",
+      "description": "Bird migration data",
+      "contentUrl": "https://minio.services.dsi.wisc.edu/pelican-dev/bird_migration_data_csv",
+      "encodingFormat": "text/csv",
+      "sha256": "85da618b044d8220b5a8c3c7030ff3f35f791e875736ed43115415750a824fbf"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "csv",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Bird_ID",
+          "name": "Bird_ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Bird_ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Species",
+          "name": "Species",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Species"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Region",
+          "name": "Region",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Region"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Habitat",
+          "name": "Habitat",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Habitat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Weather_Condition",
+          "name": "Weather_Condition",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Weather_Condition"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migration_Reason",
+          "name": "Migration_Reason",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migration_Reason"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Start_Latitude",
+          "name": "Start_Latitude",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Start_Latitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Start_Longitude",
+          "name": "Start_Longitude",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Start_Longitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/End_Latitude",
+          "name": "End_Latitude",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "End_Latitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/End_Longitude",
+          "name": "End_Longitude",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "End_Longitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Flight_Distance_km",
+          "name": "Flight_Distance_km",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Flight_Distance_km"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Flight_Duration_hours",
+          "name": "Flight_Duration_hours",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Flight_Duration_hours"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Average_Speed_kmph",
+          "name": "Average_Speed_kmph",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Average_Speed_kmph"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Max_Altitude_m",
+          "name": "Max_Altitude_m",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Max_Altitude_m"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Min_Altitude_m",
+          "name": "Min_Altitude_m",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Min_Altitude_m"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Temperature_C",
+          "name": "Temperature_C",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Temperature_C"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Wind_Speed_kmph",
+          "name": "Wind_Speed_kmph",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Wind_Speed_kmph"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Humidity__",
+          "name": "Humidity__",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Humidity__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Pressure_hPa",
+          "name": "Pressure_hPa",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Pressure_hPa"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Visibility_km",
+          "name": "Visibility_km",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Visibility_km"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Nesting_Success",
+          "name": "Nesting_Success",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Nesting_Success"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Tag_Battery_Level__",
+          "name": "Tag_Battery_Level__",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Tag_Battery_Level__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Signal_Strength_dB",
+          "name": "Signal_Strength_dB",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Signal_Strength_dB"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migration_Start_Month",
+          "name": "Migration_Start_Month",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migration_Start_Month"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migration_End_Month",
+          "name": "Migration_End_Month",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migration_End_Month"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Rest_Stops",
+          "name": "Rest_Stops",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Rest_Stops"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Predator_Sightings",
+          "name": "Predator_Sightings",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Predator_Sightings"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Tag_Type",
+          "name": "Tag_Type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Tag_Type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migrated_in_Flock",
+          "name": "Migrated_in_Flock",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migrated_in_Flock"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Flock_Size",
+          "name": "Flock_Size",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Flock_Size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Food_Supply_Level",
+          "name": "Food_Supply_Level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Food_Supply_Level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Tracking_Quality",
+          "name": "Tracking_Quality",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Tracking_Quality"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migration_Interrupted",
+          "name": "Migration_Interrupted",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migration_Interrupted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Interrupted_Reason",
+          "name": "Interrupted_Reason",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Interrupted_Reason"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Tagged_By",
+          "name": "Tagged_By",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Tagged_By"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Tag_Weight_g",
+          "name": "Tag_Weight_g",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Tag_Weight_g"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Migration_Success",
+          "name": "Migration_Success",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Migration_Success"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Recovery_Location_Known",
+          "name": "Recovery_Location_Known",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Recovery_Location_Known"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Recovery_Time_days",
+          "name": "Recovery_Time_days",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Recovery_Time_days"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Observation_Counts",
+          "name": "Observation_Counts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Observation_Counts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "csv/Observation_Quality",
+          "name": "Observation_Quality",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "csv"
+            },
+            "extract": {
+              "column": "Observation_Quality"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
