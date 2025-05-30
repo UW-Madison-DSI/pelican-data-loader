@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "datasets>=3.6.0",
+    "httpx>=0.28.1",
     "minio>=7.2.15",
     "mlcroissant>=1.0.17",
     "pandas>=2.2.3",
@@ -15,5 +16,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "beautifulsoup4>=4.13.4",
     "ipykernel>=6.29.5",
 ]
