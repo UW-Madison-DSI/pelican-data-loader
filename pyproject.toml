@@ -5,6 +5,7 @@ description = "Pelican Platform backed data loader"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pelicanfs @ git+https://github.com/UW-Madison-DSI/pelicanfs.git",
     "datasets>=3.6.0",
     "httpx>=0.28.1",
     "minio>=7.2.15",
