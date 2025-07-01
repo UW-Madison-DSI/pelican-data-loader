@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any
 from urllib.parse import urlencode
 
-import requests
+import httpx
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
@@ -32,9 +32,13 @@ class Person(BaseModel):
 
 def get_oauth_token() -> str:
     """Obtain OAuth token from Wisc API."""
-    url = "https://api.wisc.edu/oauth/token"
-    response = requests.post(
-        url,
+
+    oauth_url = os.getenv("WISC_OAUTH_URL")
+    if not oauth_url:
+        raise ValueError("WISC_OAUTH_URL environment variable is not set.")
+
+    response = httpx.post(
+        url=oauth_url,
         data={
             "client_id": os.getenv("WISC_CLIENT_ID"),
             "client_secret": os.getenv("WISC_CLIENT_SECRET"),
@@ -52,7 +56,7 @@ def download_faculties() -> None:
     faculties = []
 
     while url:
-        response = requests.get(url, headers={"Authorization": f"Bearer {token}"})
+        response = httpx.get(url, headers={"Authorization": f"Bearer {token}"})
         response.raise_for_status()
         data = response.json()
         faculties.extend(data["data"])
@@ -257,13 +261,13 @@ def get_raw_person(first_name: str, last_name: str) -> dict:
     base_url = "https://api.wisc.edu/people/"
     params = {
         "include": "identifiers,jobs",
-        "fields[identifiers]": "source,current,institution,name,value",
+        "fields[identifiers]": "name,source,value,current,institution",
         "fields[jobs]": "source,primary,current,fullTimeEquivalent,employeeCategory,institution,departmentUnit,costCenterName,costCenterId,title,beginDate,endDate",
         "filter[firstName]": first_name,
         "filter[lastName]": last_name,
     }
     url = base_url + "?" + urlencode(params)
-    response = requests.get(url, headers={"Authorization": f"Bearer {token}"})
+    response = httpx.get(url, headers={"Authorization": f"Bearer {token}"})
     response.raise_for_status()
     logging.debug(response.json())
     return response.json()
@@ -291,7 +295,7 @@ def get_person_by_id(id: str) -> Person:
         "fields[jobs]": "source,primary,current,fullTimeEquivalent,employeeCategory,institution,departmentUnit,costCenterName,costCenterId,title,beginDate,endDate",
     }
     url = base_url + "?" + urlencode(params)
-    response = requests.get(url, headers={"Authorization": f"Bearer {token}"})
+    response = httpx.get(url, headers={"Authorization": f"Bearer {token}"})
     response.raise_for_status()
     logging.debug(response.json())
     if not response.json().get("data"):
