@@ -50,27 +50,27 @@
   "description": "Bird migration data",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "PLACE_HOLDER_CITE_AS",
+  "datePublished": "2025-07-01",
   "license": "https://choosealicense.com/licenses/mit/",
   "version": "0.0.1",
   "distribution": [
     {
       "@type": "cr:FileObject",
-      "@id": "dsi-dev-s3",
-      "name": "dsi-dev-s3",
+      "@id": "dsi_s3_bucket",
+      "name": "DSI Development S3 Bucket",
       "description": "DSI development S3 bucket",
-      "contentUrl": "https://minio.services.dsi.wisc.edu/pelican-dev",
+      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader",
       "encodingFormat": "https",
       "sha256": "main"
     },
     {
       "@type": "cr:FileObject",
       "@id": "csv",
-      "name": "csv",
-      "description": "Bird migration data",
+      "name": "Bird migration data",
       "containedIn": {
-        "@id": "dsi-dev-s3"
+        "@id": "dsi_s3_bucket"
       },
-      "contentUrl": "https://minio.services.dsi.wisc.edu/pelican-dev/bird_migration_data.csv",
+      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader/bird_migration_data.csv",
       "encodingFormat": "text/csv",
       "sha256": "85da618b044d8220b5a8c3c7030ff3f35f791e875736ed43115415750a824fbf"
     }
@@ -78,7 +78,7 @@
   "recordSet": [
     {
       "@type": "cr:RecordSet",
-      "@id": "bird_migration_data",
+      "@id": "bird_migration_data_record_set",
       "name": "Bird migration data",
       "field": [
         {
@@ -657,6 +657,5 @@
         }
       ]
     }
-  ],
-  "datePublished": "2025-05-13"
+  ]
 }

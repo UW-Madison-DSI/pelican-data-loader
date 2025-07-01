@@ -24,7 +24,7 @@ def sanitize_name(name: str) -> str:
     return sanitized_name
 
 
-def parse_col(col: pd.Series) -> mlc.Field:
+def parse_col(col: pd.Series, parent_id: str) -> mlc.Field:
     """Parse a column of the DataFrame into a Field object."""
 
     PD_DTYPE_TO_MLC_DTYPE = {
@@ -47,15 +47,14 @@ def parse_col(col: pd.Series) -> mlc.Field:
         "category": mlc.DataType.TEXT,
         "object": mlc.DataType.TEXT,  # TODO: May need better type for missing values
     }
-    extension = "csv"
     col_name = sanitize_name(str(col.name))
     return mlc.Field(
-        id=f"{extension}/{col_name}",
+        id=f"{parent_id}/{col_name}",
         name=col_name,
         description="",
         data_types=[PD_DTYPE_TO_MLC_DTYPE[str(col.dtype)]],
         source=mlc.Source(
-            file_set=extension,
+            file_set=parent_id,
             extract=mlc.Extract(column=col_name),
         ),
     )
