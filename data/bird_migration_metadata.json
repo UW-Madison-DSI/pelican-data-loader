@@ -50,7 +50,16 @@
   "description": "Bird migration data",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "PLACE_HOLDER_CITE_AS",
+  "creator": {
+    "@type": "sc:Person",
+    "name": "Jason Testing Lo",
+    "email": "jason.lo@wisc.edu"
+  },
   "datePublished": "2025-07-01",
+  "keywords": [
+    "bird",
+    "testing"
+  ],
   "license": "https://choosealicense.com/licenses/mit/",
   "version": "0.0.1",
   "distribution": [
