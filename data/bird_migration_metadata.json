@@ -53,7 +53,7 @@
   "creator": [
     {
       "@type": "sc:Person",
-      "name": "Jason Testing Lo",
+      "name": "Jason Lo",
       "email": "jason.lo@wisc.edu"
     },
     {
@@ -62,7 +62,7 @@
       "email": "test.user@example.com"
     }
   ],
-  "datePublished": "2025-07-01",
+  "datePublished": "2025-07-02",
   "keywords": [
     "bird",
     "testing"
@@ -86,7 +86,7 @@
       "containedIn": {
         "@id": "dsi_s3_bucket"
       },
-      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader/bird_migration_data.csv",
+      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader/data/bird_migration_data.csv",
       "encodingFormat": "text/csv",
       "sha256": "85da618b044d8220b5a8c3c7030ff3f35f791e875736ed43115415750a824fbf"
     }
