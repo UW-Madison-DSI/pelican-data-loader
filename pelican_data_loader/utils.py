@@ -51,10 +51,9 @@ def parse_col(col: pd.Series, parent_id: str) -> mlc.Field:
     return mlc.Field(
         id=f"{parent_id}/{col_name}",
         name=col_name,
-        description="",
         data_types=[PD_DTYPE_TO_MLC_DTYPE[str(col.dtype)]],
         source=mlc.Source(
-            file_set=parent_id,
+            file_object=parent_id,
             extract=mlc.Extract(column=col_name),
         ),
     )
