@@ -103,7 +103,7 @@
           "name": "Bird_ID",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -117,7 +117,7 @@
           "name": "Species",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -131,7 +131,7 @@
           "name": "Region",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -145,7 +145,7 @@
           "name": "Habitat",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -159,7 +159,7 @@
           "name": "Weather_Condition",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -173,7 +173,7 @@
           "name": "Migration_Reason",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -187,7 +187,7 @@
           "name": "Start_Latitude",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -201,7 +201,7 @@
           "name": "Start_Longitude",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -215,7 +215,7 @@
           "name": "End_Latitude",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -229,7 +229,7 @@
           "name": "End_Longitude",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -243,7 +243,7 @@
           "name": "Flight_Distance_km",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -257,7 +257,7 @@
           "name": "Flight_Duration_hours",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -271,7 +271,7 @@
           "name": "Average_Speed_kmph",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -285,7 +285,7 @@
           "name": "Max_Altitude_m",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -299,7 +299,7 @@
           "name": "Min_Altitude_m",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -313,7 +313,7 @@
           "name": "Temperature_C",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -327,7 +327,7 @@
           "name": "Wind_Speed_kmph",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -341,7 +341,7 @@
           "name": "Humidity__",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -355,7 +355,7 @@
           "name": "Pressure_hPa",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -369,7 +369,7 @@
           "name": "Visibility_km",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -383,7 +383,7 @@
           "name": "Nesting_Success",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -397,7 +397,7 @@
           "name": "Tag_Battery_Level__",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -411,7 +411,7 @@
           "name": "Signal_Strength_dB",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -425,7 +425,7 @@
           "name": "Migration_Start_Month",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -439,7 +439,7 @@
           "name": "Migration_End_Month",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -453,7 +453,7 @@
           "name": "Rest_Stops",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -467,7 +467,7 @@
           "name": "Predator_Sightings",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -481,7 +481,7 @@
           "name": "Tag_Type",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -495,7 +495,7 @@
           "name": "Migrated_in_Flock",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -509,7 +509,7 @@
           "name": "Flock_Size",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -523,7 +523,7 @@
           "name": "Food_Supply_Level",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -537,7 +537,7 @@
           "name": "Tracking_Quality",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -551,7 +551,7 @@
           "name": "Migration_Interrupted",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -565,7 +565,7 @@
           "name": "Interrupted_Reason",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -579,7 +579,7 @@
           "name": "Tagged_By",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -593,7 +593,7 @@
           "name": "Tag_Weight_g",
           "dataType": "cr:Float64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -607,7 +607,7 @@
           "name": "Migration_Success",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -621,7 +621,7 @@
           "name": "Recovery_Location_Known",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -635,7 +635,7 @@
           "name": "Recovery_Time_days",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -649,7 +649,7 @@
           "name": "Observation_Counts",
           "dataType": "cr:Int64",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
@@ -663,7 +663,7 @@
           "name": "Observation_Quality",
           "dataType": "sc:Text",
           "source": {
-            "fileSet": {
+            "fileObject": {
               "@id": "csv"
             },
             "extract": {
