@@ -110,3 +110,12 @@ def get_default_s3_client() -> minio.Minio:
         access_key=s3_access_key_id,
         secret_key=s3_secret_access_key,
     )
+
+
+def upload_to_s3(file_path: str | Path, bucket_name: str, object_name: Optional[str] = None) -> None:
+    """Upload a file to an S3 bucket."""
+    client = get_default_s3_client()
+    file_path = Path(file_path)
+    if not object_name:
+        object_name = file_path.name
+    client.fput_object(bucket_name, object_name, str(file_path))
