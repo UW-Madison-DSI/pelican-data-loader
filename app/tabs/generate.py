@@ -4,7 +4,6 @@ from datetime import datetime
 import mlcroissant as mlc
 import streamlit as st
 
-from pelican_data_loader.config import SystemConfig
 from pelican_data_loader.utils import parse_col
 
 
@@ -12,7 +11,6 @@ def render_generate_tab():
     """Render the Generate Metadata tab with configuration summary and metadata generation."""
     st.header("Generate Croissant Metadata")
 
-    config = SystemConfig()  # type: ignore
     if "dataframe" not in st.session_state:
         st.warning("Please upload a CSV file first in the File Upload tab.")
     elif "dataset_info" not in st.session_state:
@@ -26,7 +24,7 @@ def render_generate_tab():
         if st.button("🥐 Generate Croissant Metadata", type="primary"):
             try:
                 with st.spinner("Generating Croissant metadata..."):
-                    jsonld = session_state_to_mlc_metadata(st.session_state.to_dict(), config)
+                    jsonld = session_state_to_mlc_metadata(st.session_state.to_dict())
                     dataset = mlc.Dataset(jsonld=jsonld)
 
                     # Store in session state
@@ -77,7 +75,7 @@ def render_generate_tab():
                 st.error(f"Validation error: {str(e)}")
 
 
-def session_state_to_mlc_metadata(state: dict, config: SystemConfig) -> dict:
+def session_state_to_mlc_metadata(state: dict) -> dict:
     """Convert state dictionary to mlc metadata JSON-LD."""
 
     for key in ("dataframe", "uploaded_file_name", "dataset_info"):
@@ -105,9 +103,9 @@ def session_state_to_mlc_metadata(state: dict, config: SystemConfig) -> dict:
 
     # Create S3 bucket file object
     mlc_s3 = mlc.FileObject(
-        id=config.mlc_s3_bucket_name,
-        name=config.mlc_s3_bucket_name,
-        content_url=config.s3_url,
+        id=state["system_config"].mlc_s3_bucket_name,
+        name=state["system_config"].mlc_s3_bucket_name,
+        content_url=state["system_config"].s3_url,
         encoding_formats=["https"],
         sha256="main",
     )
