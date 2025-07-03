@@ -1,10 +1,15 @@
 import json
+import logging
 from pathlib import Path
 
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
 
+from pelican_data_loader.config import SystemConfig
 
-def initialize_database(path: Path, wipe: bool = False) -> None:
+SYSTEM_CONFIG = SystemConfig()  # type: ignore
+
+
+def initialize_database(path: Path = SYSTEM_CONFIG.metadata_db_path, wipe: bool = False) -> None:
     """Initialize the SQLite database and create the Dataset table."""
 
     if wipe and path.exists():
@@ -16,7 +21,7 @@ def initialize_database(path: Path, wipe: bool = False) -> None:
 def guess_primary_url(jsonld: dict, extension_priority: list[str] | None = None) -> dict[str, str]:
     """Guess the primary source URL and checksum from a JSON-LD document."""
 
-    def _sort_distributions(distributions: dict, extension_priority: list[str]) -> list[dict]:
+    def _sort_distributions(distributions: list[dict], extension_priority: list[str]) -> list[dict]:
         """Sort the distribution list in a JSON-LD document by file extension priority."""
         priority = {ext: rank for rank, ext in enumerate(extension_priority)}
 
@@ -46,29 +51,41 @@ def guess_primary_url(jsonld: dict, extension_priority: list[str] | None = None)
 
 def parse_creators(jsonld: dict, session: Session | None = None) -> list["Person"]:
     """Parse creators from a JSON-LD document into Person objects."""
+    should_close_session = False
+    if not session:
+        logging.warning("No session provided, creating a new one with system defaults.")
+        session = Session(create_engine(SYSTEM_CONFIG.metadata_db_engine_url, echo=True))
+        should_close_session = True
+
     creators_data = jsonld.get("creator", [])
     if isinstance(creators_data, dict):
         creators_data = [creators_data]
 
     persons = []
-    for creator_data in creators_data:
-        name = creator_data.get("name", "")
-        email = creator_data.get("email", "")
-        if not name or not email:
-            continue
-
-        if session:
-            statement = select(Person).where(Person.email == email)
-            result = session.exec(statement)
-            person = result.first()
-            if person:
-                persons.append(person)
+    try:
+        for creator_data in creators_data:
+            name = creator_data.get("name", "")
+            email = creator_data.get("email", "")
+            if not name or not email:
                 continue
 
-        parts = name.split()
-        first_name = parts[0] if parts else ""
-        last_name = " ".join(parts[1:]) if len(parts) > 1 else ""
-        persons.append(Person(first_name=first_name, last_name=last_name, email=email))
+            # Use the existing static method for consistency
+            existing_person = Person.find_person_by_email(email, session)
+
+            if existing_person:
+                # Reuse existing Person record
+                persons.append(existing_person)
+            else:
+                # Create new Person object
+                parts = name.split()
+                first_name = parts[0] if parts else ""
+                last_name = " ".join(parts[1:]) if len(parts) > 1 else ""
+                new_person = Person(first_name=first_name, last_name=last_name, email=email)
+                persons.append(new_person)
+    finally:
+        if should_close_session:
+            session.close()
+
     return persons
 
 
@@ -81,13 +98,13 @@ class PersonDatasetLink(SQLModel, table=True):
 
 class Dataset(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: str
+    name: str = Field(min_length=1)  # Ensure non-empty name
     description: str = ""
-    version: str
+    version: str = Field(min_length=1)  # Ensure non-empty version
     published_date: str  # ISO 8601 format, e.g., "2023-10-01"
     primary_source_url: str
     primary_source_sha256: str
-    license: str
+    license: str = Field(min_length=1)  # Ensure non-empty license
     keywords: str = ""  # comma-separated
     croissant_jsonld: str | None = None  # JSON-LD document as a string
     creators: list["Person"] = Relationship(back_populates="datasets", link_model=PersonDatasetLink)
@@ -119,7 +136,26 @@ class Dataset(SQLModel, table=True):
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    first_name: str
-    last_name: str
-    email: str = Field(index=True, unique=True)
+    first_name: str = Field(min_length=1)  # Ensure non-empty first name
+    last_name: str = Field(min_length=1)  # Ensure non-empty last name
+    email: str = Field(index=True, unique=True, min_length=1)  # Ensure non-empty email
     datasets: list["Dataset"] = Relationship(back_populates="creators", link_model=PersonDatasetLink)
+
+    @staticmethod
+    def find_person_by_email(email: str, session: Session) -> "Person | None":
+        """Find an existing Person in the database by email.
+
+        Args:
+            email: Email address to search for
+            session: Database session
+
+        Returns:
+            Person: Existing Person record if found, None otherwise
+        """
+        statement = select(Person).where(Person.email == email)
+        result = session.exec(statement)
+        return result.first()
+
+    def __str__(self) -> str:
+        """String representation of the Person."""
+        return f"Person(id={self.id}, name={self.first_name} {self.last_name}, email={self.email})"
