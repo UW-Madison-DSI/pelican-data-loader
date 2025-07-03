@@ -21,58 +21,54 @@ def render_generate_tab():
         st.write("Please review the dataset information below before generating metadata.")
         st.json(st.session_state.dataset_info, expanded=True)
 
-        if st.button("🥐 Generate Croissant Metadata", type="primary"):
-            try:
-                with st.spinner("Generating Croissant metadata..."):
-                    jsonld = session_state_to_mlc_metadata(st.session_state.to_dict())
-                    dataset = mlc.Dataset(jsonld=jsonld)
+        col1, col2 = st.columns(2)
+        with col1:
 
-                    # Store in session state
-                    st.session_state.generated_metadata = dataset.jsonld
+            if st.button("🥐 Generate Croissant Metadata", type="primary"):
+                try:
+                    with st.spinner("Generating Croissant metadata..."):
+                        jsonld = session_state_to_mlc_metadata(st.session_state.to_dict())
+                        dataset = mlc.Dataset(jsonld=jsonld)
 
-                st.success("✅ Croissant metadata generated successfully!")
+                        # Store in session state
+                        st.session_state.generated_metadata = dataset.jsonld
 
-                # Display the generated metadata
-                st.subheader("Generated Metadata (JSON-LD)")
+                    st.success("✅ Croissant metadata generated successfully!")
+                    # Validation
+                    try:
+                        validation_dataset = mlc.Dataset(jsonld=st.session_state.generated_metadata)
+                        issues = validation_dataset.metadata.issues
 
-                # Pretty print JSON
-                json_str = json.dumps(st.session_state.generated_metadata, indent=2)
-                st.code(json_str, language="json")
+                        if issues.errors:
+                            st.error(f"❌ Validation errors found: {len(issues.errors)}")
+                            for error in issues.errors:
+                                st.error(f"- {error}")
+                        else:
+                            st.success("✅ Metadata validation passed!")
 
-                # Download button
+                        if issues.warnings:
+                            st.warning(f"⚠️ Validation warnings: {len(issues.warnings)}")
+                            for warning in issues.warnings:
+                                st.warning(f"- {warning}")
+
+                    except Exception as e:
+                        st.error(f"Validation error: {str(e)}")
+
+                except Exception as e:
+                    st.error(f"Error generating metadata: {str(e)}")
+                    st.error(
+                        "Note: mlcroissant is still not production ready, many typing issues and missing date types... be extra cautious"
+                    )
+        with col2:
+            if "generated_metadata" in st.session_state:
                 st.download_button(
                     label="📥 Download Metadata (JSON-LD)",
-                    data=json_str,
+                    data=json.dumps(st.session_state.generated_metadata, indent=2),
                     file_name=f"{st.session_state.dataset_info['name'].lower().replace(' ', '_')}_metadata.json",
                     mime="application/json",
                 )
-            except Exception as e:
-                st.error(f"Error generating metadata: {str(e)}")
-                st.error(
-                    "Note: mlcroissant is still not production ready, many typing issues and missing date types... be extra cautious"
-                )
-
-        # Validation
-        if "generated_metadata" in st.session_state:
-            st.subheader("Validation")
-            try:
-                validation_dataset = mlc.Dataset(jsonld=st.session_state.generated_metadata)
-                issues = validation_dataset.metadata.issues
-
-                if issues.errors:
-                    st.error(f"❌ Validation errors found: {len(issues.errors)}")
-                    for error in issues.errors:
-                        st.error(f"- {error}")
-                else:
-                    st.success("✅ Metadata validation passed!")
-
-                if issues.warnings:
-                    st.warning(f"⚠️ Validation warnings: {len(issues.warnings)}")
-                    for warning in issues.warnings:
-                        st.warning(f"- {warning}")
-
-            except Exception as e:
-                st.error(f"Validation error: {str(e)}")
+        with st.expander("View JSON-LD Metadata", icon="🔍", expanded=False):
+            st.json(st.session_state.generated_metadata, expanded=True)
 
 
 def session_state_to_mlc_metadata(state: dict) -> dict:

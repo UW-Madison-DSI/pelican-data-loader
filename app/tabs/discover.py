@@ -100,8 +100,6 @@ def render_discover_tab():
                             except json.JSONDecodeError:
                                 st.error("Invalid JSON-LD data in database")
 
-                    st.markdown("---")
-
     except Exception as e:
         st.error(f"Error accessing database: {str(e)}")
         st.info("Make sure the database has been initialized and contains data.")

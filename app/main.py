@@ -7,10 +7,11 @@ from tabs.discover import render_discover_tab
 
 from pelican_data_loader.config import SystemConfig
 
-st.set_page_config(page_title="Croissant Metadata Generator", page_icon="🥐", layout="wide")
+st.set_page_config(page_title="Croissant Dataset Uploader", page_icon="🥐", layout="wide")
 
-st.title("🥐 Croissant Metadata Generator")
-st.markdown("Generate Croissant-compliant metadata for your datasets interactively")
+st.title("🥐 Croissant Dataset Uploader (MVP)")
+st.markdown("Upload your datasets to UW–Madison’s research dataset repository.")
+
 st.session_state.setdefault("system_config", SystemConfig())  # type: ignore
 
 # Main content area
