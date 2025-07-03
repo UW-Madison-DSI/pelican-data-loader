@@ -2,10 +2,15 @@ import os
 from pathlib import Path
 from typing import Optional
 
+import fsspec
 import httpx
 import minio
 import pandas as pd
 from dotenv import load_dotenv
+from sqlmodel import Session, create_engine, select
+
+from .config import SystemConfig
+from .db import Dataset
 
 try:
     from bs4 import BeautifulSoup, Tag
@@ -119,3 +124,31 @@ def upload_to_s3(file_path: str | Path, bucket_name: str, object_name: Optional[
     if not object_name:
         object_name = file_path.name
     client.fput_object(bucket_name, object_name, str(file_path))
+
+
+def get_s3_filesystem(config: SystemConfig) -> fsspec.AbstractFileSystem:
+    return fsspec.filesystem(
+        "s3",
+        key=config.s3_access_key_id,
+        secret=config.s3_secret_access_key,
+        client_kwargs={
+            "endpoint_url": config.s3_url,
+        },
+    )
+
+
+class DatasetEngine:
+    """A class to handle metadata operations using SQLModel."""
+
+    def __init__(self, config: SystemConfig):
+        self.engine = create_engine(config.metadata_db_engine_url)
+
+    def get_session(self) -> Session:
+        """Create a new SQLModel session."""
+        return Session(self.engine)
+
+    def list_datasets(self) -> list[Dataset]:
+        """List all datasets in the metadata database."""
+        with self.get_session() as session:
+            statement = select(Dataset)
+            return list(session.exec(statement).all())

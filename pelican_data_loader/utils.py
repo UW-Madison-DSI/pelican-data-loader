@@ -14,6 +14,11 @@ def get_sha256(path: Path) -> str:
     return sha256.hexdigest()
 
 
+def get_sha256_from_bytes(content: bytes) -> str:
+    """Calculate the SHA256 hash of bytes."""
+    return hashlib.sha256(content).hexdigest()
+
+
 def sanitize_name(name: str) -> str:
     """Sanitize a name to be a valid identifier."""
     # Remove invalid characters and replace spaces with underscores
