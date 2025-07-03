@@ -23,7 +23,6 @@ def render_generate_tab():
 
         col1, col2 = st.columns(2)
         with col1:
-
             if st.button("🥐 Generate Croissant Metadata", type="primary"):
                 try:
                     with st.spinner("Generating Croissant metadata..."):
@@ -67,8 +66,9 @@ def render_generate_tab():
                     file_name=f"{st.session_state.dataset_info['name'].lower().replace(' ', '_')}_metadata.json",
                     mime="application/json",
                 )
-        with st.expander("View JSON-LD Metadata", icon="🔍", expanded=False):
-            st.json(st.session_state.generated_metadata, expanded=True)
+        if "generated_metadata" in st.session_state:
+            with st.expander("View JSON-LD Metadata", icon="🔍", expanded=False):
+                st.json(st.session_state.generated_metadata, expanded=True)
 
 
 def session_state_to_mlc_metadata(state: dict) -> dict:
