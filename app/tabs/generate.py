@@ -1,9 +1,12 @@
 import json
 from datetime import datetime
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import mlcroissant as mlc
 import streamlit as st
 
+from pelican_data_loader.data import upload_to_s3
 from pelican_data_loader.utils import parse_col
 
 
@@ -21,7 +24,7 @@ def render_generate_tab():
         st.write("Please review the dataset information below before generating metadata.")
         st.json(st.session_state.dataset_info, expanded=True)
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             if st.button("🥐 Generate Croissant Metadata", type="primary"):
                 try:
@@ -65,7 +68,39 @@ def render_generate_tab():
                     data=json.dumps(st.session_state.generated_metadata, indent=2),
                     file_name=f"{st.session_state.dataset_info['name'].lower().replace(' ', '_')}_metadata.json",
                     mime="application/json",
+                    type="primary",
                 )
+
+        with col3:
+            if "generated_metadata" in st.session_state:
+                file_path = st.session_state.dataset_info.get("s3_file_name", "")
+                if not file_path:
+                    st.error("No file path found in dataset information. Please upload a file first.")
+
+                # Create metadata path by adding _metadata and replace extension with .json suffix
+                metadata_file_path = Path(file_path).with_name(Path(file_path).stem + ".json")
+                meta_data_s3_path = f"metadata/{metadata_file_path.name}"
+
+                if st.button("⬆️ Upload Metadata to S3", type="primary"):
+                    try:
+                        with (
+                            st.spinner("Uploading metadata to S3..."),
+                            NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f,
+                        ):
+                            json.dump(st.session_state.generated_metadata, f, indent=2)
+                            f.flush()  # Ensure the file is fully written before uploading
+                            upload_to_s3(
+                                file_path=f.name,
+                                bucket_name=st.session_state.system_config.s3_bucket_name,
+                                object_name=meta_data_s3_path,
+                            )
+                        st.session_state.dataset_info.update(
+                            {"s3_metadata_url": f"{st.session_state.system_config.s3_url}/{meta_data_s3_path}"}
+                        )
+                        st.success(f"Metadata uploaded to: {st.session_state.dataset_info['s3_metadata_url']}")
+                    except Exception as e:
+                        st.error(f"Error uploading metadata: {str(e)}")
+
         if "generated_metadata" in st.session_state:
             with st.expander("View JSON-LD Metadata", icon="🔍", expanded=False):
                 st.json(st.session_state.generated_metadata, expanded=True)

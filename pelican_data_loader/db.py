@@ -107,6 +107,7 @@ class Dataset(SQLModel, table=True):
     license: str = Field(min_length=1)  # Ensure non-empty license
     keywords: str = ""  # comma-separated
     croissant_jsonld: str | None = None  # JSON-LD document as a string
+    croissant_jsonld_url: str | None = None
     creators: list["Person"] = Relationship(back_populates="datasets", link_model=PersonDatasetLink)
 
     @classmethod
@@ -159,3 +160,20 @@ class Person(SQLModel, table=True):
     def __str__(self) -> str:
         """String representation of the Person."""
         return f"Person(id={self.id}, name={self.first_name} {self.last_name}, email={self.email})"
+
+
+class DataRepoEngine:
+    """A class to handle metadata operations using SQLModel."""
+
+    def __init__(self, config: SystemConfig):
+        self.engine = create_engine(config.metadata_db_engine_url)
+
+    def get_session(self) -> Session:
+        """Create a new SQLModel session."""
+        return Session(self.engine)
+
+    def list_datasets(self) -> list[Dataset]:
+        """List all datasets in the metadata database."""
+        with self.get_session() as session:
+            statement = select(Dataset)
+            return list(session.exec(statement).all())

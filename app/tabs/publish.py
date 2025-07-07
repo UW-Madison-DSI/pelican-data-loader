@@ -24,6 +24,10 @@ def render_publish_tab():
     metadata_db = create_engine(f"sqlite:///{METADATA_DB_PATH}")
     dataset = Dataset.from_jsonld(st.session_state.generated_metadata)
 
+    # Inject s3_metadata_url in DB record if available
+    if "s3_metadata_url" in st.session_state.dataset_info:
+        dataset.croissant_jsonld_url = st.session_state.dataset_info["s3_metadata_url"]
+
     st.subheader("Generated Metadata Summary")
     st.json(dataset.model_dump(exclude={"croissant_jsonld"}))
     with st.expander("View Raw Croissant JSON-LD Metadata"):

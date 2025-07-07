@@ -5,6 +5,16 @@ from sqlmodel import Session, create_engine, select
 
 from pelican_data_loader.db import Dataset
 
+CONSUME_CODE_TEMPLATE = """
+from mlcroissant import Dataset
+import itertools
+import pandas as pd
+dataset = Dataset(jsonld="{croissant_jsonld_url}")
+
+records = dataset.records("bird_migration_data_record_set")
+pd.DataFrame(list(itertools.islice(records, 100))).head(5)
+"""
+
 
 def render_discover_tab():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
@@ -34,7 +44,7 @@ def render_discover_tab():
             # Display datasets in a expandable format
             for dataset in datasets:
                 with st.expander(f"📊 {dataset.name} (v{dataset.version})"):
-                    # Basic information
+                    st.subheader("Dataset information")
                     col1, col2 = st.columns(2)
 
                     with col1:
@@ -72,23 +82,28 @@ def render_discover_tab():
                     # Croissant JSON-LD metadata
                     if dataset.croissant_jsonld:
                         st.markdown("**Croissant Metadata**")
+                        st.subheader("Consuming Croissant Metadata")
+                        # This assumes the app is running locally and serving the JSON-LD.
+                        # In a real deployment, this URL should be the public URL.
+                        st.code(
+                            CONSUME_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
+                        )
 
-                        # Create columns for viewing options
-                        view_col1, view_col2 = st.columns(2)
+                        st.subheader("Croissant Metadata Details")
+                        col1, col2 = st.columns(2)
 
-                        with view_col1:
-                            if st.button("View JSON-LD", key=f"view_jsonld_{dataset.id}"):
+                        with col1:
+                            if st.button("View JSON-LD", key=f"view_jsonld_{dataset.id}", type="primary"):
                                 st.session_state[f"show_jsonld_{dataset.id}"] = True
 
-                        with view_col2:
-                            if st.button("Download JSON-LD", key=f"download_jsonld_{dataset.id}"):
-                                st.download_button(
-                                    label="Download Croissant JSON-LD",
-                                    data=dataset.croissant_jsonld,
-                                    file_name=f"{dataset.name.replace(' ', '_')}_v{dataset.version}_croissant.json",
-                                    mime="application/json",
-                                    key=f"download_btn_{dataset.id}",
-                                )
+                        with col2:
+                            st.download_button(
+                                label="Download Croissant JSON-LD",
+                                data=dataset.croissant_jsonld,
+                                file_name=f"{dataset.name.replace(' ', '_')}_v{dataset.version}_croissant.json",
+                                mime="application/json",
+                                key=f"download_btn_{dataset.id}",
+                            )
 
                         # Show JSON-LD if requested
                         if st.session_state.get(f"show_jsonld_{dataset.id}", False):
@@ -97,6 +112,7 @@ def render_discover_tab():
                                 st.json(jsonld_data)
                                 if st.button("Hide JSON-LD", key=f"hide_jsonld_{dataset.id}"):
                                     st.session_state[f"show_jsonld_{dataset.id}"] = False
+                                    st.rerun()
                             except json.JSONDecodeError:
                                 st.error("Invalid JSON-LD data in database")
 
