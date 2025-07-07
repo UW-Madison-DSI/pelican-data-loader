@@ -97,18 +97,8 @@ def session_state_to_mlc_metadata(state: dict) -> dict:
     dataset_info = state["dataset_info"]
     authors = state["dataset_info"].get("authors", [])
 
-    # Create S3 bucket file object
-    mlc_s3 = mlc.FileObject(
-        id=state["system_config"].mlc_s3_bucket_name,
-        name=state["system_config"].mlc_s3_bucket_name,
-        content_url=state["system_config"].s3_url,
-        encoding_formats=["https"],
-        sha256="main",
-    )
-
     # Create CSV file object
     mlc_file_object = mlc.FileObject(
-        contained_in=[mlc_s3.id],
         id=dataset_info["s3_file_id"],
         name=dataset_info["s3_file_name"],
         sha256=dataset_info["s3_file_sha256"],
@@ -116,7 +106,7 @@ def session_state_to_mlc_metadata(state: dict) -> dict:
         encoding_formats=[mlc.EncodingFormat.CSV],
     )
 
-    mlc_distribution = [mlc_s3, mlc_file_object]
+    mlc_distribution = [mlc_file_object]
 
     # Create record set
     record_set = mlc.RecordSet(

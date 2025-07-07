@@ -6,7 +6,7 @@ import streamlit as st
 
 from pelican_data_loader.config import SystemConfig
 from pelican_data_loader.data import upload_to_s3
-from pelican_data_loader.utils import get_sha256
+from pelican_data_loader.utils import get_sha256, sanitize_name
 
 
 def render_upload_tab():
@@ -19,6 +19,7 @@ def render_upload_tab():
     if uploaded_file is not None:
         try:
             df = pd.read_csv(uploaded_file)
+            df.columns = [sanitize_name(col) for col in df.columns]
             st.session_state.dataframe = df
             st.session_state.uploaded_file_name = uploaded_file.name
             st.success(f"Successfully loaded {uploaded_file.name}")

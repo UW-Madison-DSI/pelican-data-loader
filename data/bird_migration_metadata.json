@@ -46,65 +46,46 @@
     "@base": "cr_base_iri/"
   },
   "@type": "sc:Dataset",
-  "name": "Bird Migration Data",
-  "description": "Bird migration data",
+  "name": "Bird Migration Test Case",
+  "description": "Bird Migration Test Case for Development Purpose",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "citeAs": "PLACE_HOLDER_CITE_AS",
-  "creator": [
-    {
-      "@type": "sc:Person",
-      "name": "Jason Lo",
-      "email": "jason.lo@wisc.edu"
-    },
-    {
-      "@type": "sc:Person",
-      "name": "Test User",
-      "email": "test.user@example.com"
-    }
-  ],
-  "datePublished": "2025-07-02",
+  "citeAs": "CITE_ME_PLEASE",
+  "creator": {
+    "@type": "sc:Person",
+    "name": "Jason Lo",
+    "email": "jason.lo@wisc.edu"
+  },
+  "datePublished": "2025-07-07",
   "keywords": [
     "bird",
-    "testing"
+    "test"
   ],
   "license": "https://choosealicense.com/licenses/mit/",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "distribution": [
     {
       "@type": "cr:FileObject",
-      "@id": "dsi_s3_bucket",
-      "name": "DSI Development S3 Bucket",
-      "description": "DSI development S3 bucket",
-      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader",
-      "encodingFormat": "https",
-      "sha256": "main"
-    },
-    {
-      "@type": "cr:FileObject",
-      "@id": "csv",
-      "name": "Bird migration data",
-      "containedIn": {
-        "@id": "dsi_s3_bucket"
-      },
-      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader/data/bird_migration_data.csv",
+      "@id": "bird_migration_data",
+      "name": "bird_migration_data.csv",
+      "contentUrl": "https://web.s3.wisc.edu/pelican-data-loader/bird_migration_data.csv",
       "encodingFormat": "text/csv",
-      "sha256": "85da618b044d8220b5a8c3c7030ff3f35f791e875736ed43115415750a824fbf"
+      "sha256": "07fe9dfd39caad721133014c1ddd4e23614c8f3d7e2418dcdca22774da28a6cf"
     }
   ],
   "recordSet": [
     {
       "@type": "cr:RecordSet",
       "@id": "bird_migration_data_record_set",
-      "name": "Bird migration data",
+      "name": "Bird Migration Test Case",
       "field": [
         {
           "@type": "cr:Field",
-          "@id": "csv/Bird_ID",
+          "@id": "bird_migration_data/Bird_ID",
           "name": "Bird_ID",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Bird_ID"
@@ -113,12 +94,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Species",
+          "@id": "bird_migration_data/Species",
           "name": "Species",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Species"
@@ -127,12 +108,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Region",
+          "@id": "bird_migration_data/Region",
           "name": "Region",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Region"
@@ -141,12 +122,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Habitat",
+          "@id": "bird_migration_data/Habitat",
           "name": "Habitat",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Habitat"
@@ -155,12 +136,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Weather_Condition",
+          "@id": "bird_migration_data/Weather_Condition",
           "name": "Weather_Condition",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Weather_Condition"
@@ -169,12 +150,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migration_Reason",
+          "@id": "bird_migration_data/Migration_Reason",
           "name": "Migration_Reason",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migration_Reason"
@@ -183,12 +164,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Start_Latitude",
+          "@id": "bird_migration_data/Start_Latitude",
           "name": "Start_Latitude",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Start_Latitude"
@@ -197,12 +178,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Start_Longitude",
+          "@id": "bird_migration_data/Start_Longitude",
           "name": "Start_Longitude",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Start_Longitude"
@@ -211,12 +192,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/End_Latitude",
+          "@id": "bird_migration_data/End_Latitude",
           "name": "End_Latitude",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "End_Latitude"
@@ -225,12 +206,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/End_Longitude",
+          "@id": "bird_migration_data/End_Longitude",
           "name": "End_Longitude",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "End_Longitude"
@@ -239,12 +220,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Flight_Distance_km",
+          "@id": "bird_migration_data/Flight_Distance_km",
           "name": "Flight_Distance_km",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Flight_Distance_km"
@@ -253,12 +234,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Flight_Duration_hours",
+          "@id": "bird_migration_data/Flight_Duration_hours",
           "name": "Flight_Duration_hours",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Flight_Duration_hours"
@@ -267,12 +248,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Average_Speed_kmph",
+          "@id": "bird_migration_data/Average_Speed_kmph",
           "name": "Average_Speed_kmph",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Average_Speed_kmph"
@@ -281,12 +262,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Max_Altitude_m",
+          "@id": "bird_migration_data/Max_Altitude_m",
           "name": "Max_Altitude_m",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Max_Altitude_m"
@@ -295,12 +276,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Min_Altitude_m",
+          "@id": "bird_migration_data/Min_Altitude_m",
           "name": "Min_Altitude_m",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Min_Altitude_m"
@@ -309,12 +290,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Temperature_C",
+          "@id": "bird_migration_data/Temperature_C",
           "name": "Temperature_C",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Temperature_C"
@@ -323,12 +304,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Wind_Speed_kmph",
+          "@id": "bird_migration_data/Wind_Speed_kmph",
           "name": "Wind_Speed_kmph",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Wind_Speed_kmph"
@@ -337,26 +318,26 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Humidity__",
-          "name": "Humidity__",
+          "@id": "bird_migration_data/Humidity_pc",
+          "name": "Humidity_pc",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
-              "column": "Humidity__"
+              "column": "Humidity_pc"
             }
           }
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Pressure_hPa",
+          "@id": "bird_migration_data/Pressure_hPa",
           "name": "Pressure_hPa",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Pressure_hPa"
@@ -365,12 +346,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Visibility_km",
+          "@id": "bird_migration_data/Visibility_km",
           "name": "Visibility_km",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Visibility_km"
@@ -379,12 +360,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Nesting_Success",
+          "@id": "bird_migration_data/Nesting_Success",
           "name": "Nesting_Success",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Nesting_Success"
@@ -393,26 +374,26 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Tag_Battery_Level__",
-          "name": "Tag_Battery_Level__",
+          "@id": "bird_migration_data/Tag_Battery_Level_pc",
+          "name": "Tag_Battery_Level_pc",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
-              "column": "Tag_Battery_Level__"
+              "column": "Tag_Battery_Level_pc"
             }
           }
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Signal_Strength_dB",
+          "@id": "bird_migration_data/Signal_Strength_dB",
           "name": "Signal_Strength_dB",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Signal_Strength_dB"
@@ -421,12 +402,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migration_Start_Month",
+          "@id": "bird_migration_data/Migration_Start_Month",
           "name": "Migration_Start_Month",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migration_Start_Month"
@@ -435,12 +416,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migration_End_Month",
+          "@id": "bird_migration_data/Migration_End_Month",
           "name": "Migration_End_Month",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migration_End_Month"
@@ -449,12 +430,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Rest_Stops",
+          "@id": "bird_migration_data/Rest_Stops",
           "name": "Rest_Stops",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Rest_Stops"
@@ -463,12 +444,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Predator_Sightings",
+          "@id": "bird_migration_data/Predator_Sightings",
           "name": "Predator_Sightings",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Predator_Sightings"
@@ -477,12 +458,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Tag_Type",
+          "@id": "bird_migration_data/Tag_Type",
           "name": "Tag_Type",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Tag_Type"
@@ -491,12 +472,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migrated_in_Flock",
+          "@id": "bird_migration_data/Migrated_in_Flock",
           "name": "Migrated_in_Flock",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migrated_in_Flock"
@@ -505,12 +486,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Flock_Size",
+          "@id": "bird_migration_data/Flock_Size",
           "name": "Flock_Size",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Flock_Size"
@@ -519,12 +500,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Food_Supply_Level",
+          "@id": "bird_migration_data/Food_Supply_Level",
           "name": "Food_Supply_Level",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Food_Supply_Level"
@@ -533,12 +514,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Tracking_Quality",
+          "@id": "bird_migration_data/Tracking_Quality",
           "name": "Tracking_Quality",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Tracking_Quality"
@@ -547,12 +528,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migration_Interrupted",
+          "@id": "bird_migration_data/Migration_Interrupted",
           "name": "Migration_Interrupted",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migration_Interrupted"
@@ -561,12 +542,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Interrupted_Reason",
+          "@id": "bird_migration_data/Interrupted_Reason",
           "name": "Interrupted_Reason",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Interrupted_Reason"
@@ -575,12 +556,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Tagged_By",
+          "@id": "bird_migration_data/Tagged_By",
           "name": "Tagged_By",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Tagged_By"
@@ -589,12 +570,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Tag_Weight_g",
+          "@id": "bird_migration_data/Tag_Weight_g",
           "name": "Tag_Weight_g",
           "dataType": "cr:Float64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Tag_Weight_g"
@@ -603,12 +584,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Migration_Success",
+          "@id": "bird_migration_data/Migration_Success",
           "name": "Migration_Success",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Migration_Success"
@@ -617,12 +598,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Recovery_Location_Known",
+          "@id": "bird_migration_data/Recovery_Location_Known",
           "name": "Recovery_Location_Known",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Recovery_Location_Known"
@@ -631,12 +612,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Recovery_Time_days",
+          "@id": "bird_migration_data/Recovery_Time_days",
           "name": "Recovery_Time_days",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Recovery_Time_days"
@@ -645,12 +626,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Observation_Counts",
+          "@id": "bird_migration_data/Observation_Counts",
           "name": "Observation_Counts",
           "dataType": "cr:Int64",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Observation_Counts"
@@ -659,12 +640,12 @@
         },
         {
           "@type": "cr:Field",
-          "@id": "csv/Observation_Quality",
+          "@id": "bird_migration_data/Observation_Quality",
           "name": "Observation_Quality",
           "dataType": "sc:Text",
           "source": {
             "fileObject": {
-              "@id": "csv"
+              "@id": "bird_migration_data"
             },
             "extract": {
               "column": "Observation_Quality"
