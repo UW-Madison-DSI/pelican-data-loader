@@ -135,20 +135,3 @@ def get_s3_filesystem(config: SystemConfig) -> fsspec.AbstractFileSystem:
             "endpoint_url": config.s3_url,
         },
     )
-
-
-class DatasetEngine:
-    """A class to handle metadata operations using SQLModel."""
-
-    def __init__(self, config: SystemConfig):
-        self.engine = create_engine(config.metadata_db_engine_url)
-
-    def get_session(self) -> Session:
-        """Create a new SQLModel session."""
-        return Session(self.engine)
-
-    def list_datasets(self) -> list[Dataset]:
-        """List all datasets in the metadata database."""
-        with self.get_session() as session:
-            statement = select(Dataset)
-            return list(session.exec(statement).all())
