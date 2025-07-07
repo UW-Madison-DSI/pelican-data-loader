@@ -165,7 +165,9 @@ class Person(SQLModel, table=True):
 class DataRepoEngine:
     """A class to handle metadata operations using SQLModel."""
 
-    def __init__(self, config: SystemConfig):
+    def __init__(self, config: SystemConfig | None = None):
+        if config is None:
+            config = SystemConfig()  # type: ignore
         self.engine = create_engine(config.metadata_db_engine_url)
 
     def get_session(self) -> Session:
@@ -177,3 +179,39 @@ class DataRepoEngine:
         with self.get_session() as session:
             statement = select(Dataset)
             return list(session.exec(statement).all())
+
+    def search_datasets(self, query: str) -> list[Dataset]:
+        """Search datasets by name or description."""
+
+        if not query:
+            raise ValueError("Query string cannot be empty")
+
+        with self.get_session() as session:
+            statement = select(Dataset).where(
+                Dataset.name.ilike(f"%{query}%") | Dataset.description.ilike(f"%{query}%")  # type: ignore
+            )
+            results = session.exec(statement).all()
+            if not results:
+                raise ValueError(f"No datasets found matching query: {query}")
+            return list(results)
+
+    def get_dataset(self, name: str | None = None, id: int | None = None) -> Dataset | None:
+        """Get a dataset by name or ID."""
+
+        if not name and not id:
+            raise ValueError("Either name or id must be provided")
+
+        with self.get_session() as session:
+            statement = select(Dataset).where((Dataset.name == name) | (Dataset.id == id))
+            return session.exec(statement).first()
+
+    def delete_dataset(self, id: int) -> None:
+        """Delete a dataset from the metadata database."""
+        with self.get_session() as session:
+            statement = select(Dataset).where(Dataset.id == id)
+            dataset = session.exec(statement).first()
+            if dataset:
+                session.delete(dataset)
+                session.commit()
+            else:
+                raise ValueError(f"Dataset with id {id} not found")
