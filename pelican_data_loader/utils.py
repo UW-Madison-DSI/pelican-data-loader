@@ -32,9 +32,8 @@ def sanitize_name(name: str) -> str:
 
     # Remove invalid characters and replace spaces with underscores
     sanitized_name = "".join(c if c.isalnum() or c == "_" else "_" for c in name)
-    for before, after in zip(name, sanitized_name):
-        if before != after:
-            logging.warning(f"Sanitizing name: '{before}' -> '{after}'")
+    if name != sanitized_name:
+        logging.warning(f"Sanitizing name: '{name}' -> '{sanitized_name}'")
     # Ensure the name starts with a letter or underscore
     if not sanitized_name[0].isalpha() and sanitized_name[0] != "_":
         sanitized_name = "_" + sanitized_name
