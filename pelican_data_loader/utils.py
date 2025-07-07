@@ -1,4 +1,5 @@
 import hashlib
+import logging
 from pathlib import Path
 
 import mlcroissant as mlc
@@ -21,8 +22,19 @@ def get_sha256_from_bytes(content: bytes) -> str:
 
 def sanitize_name(name: str) -> str:
     """Sanitize a name to be a valid identifier."""
+
+    # Replace unsafe characters with safe alternatives
+    SAFE_MAPPING = {
+        "%": "pc",
+    }
+    for unsafe, safe in SAFE_MAPPING.items():
+        name = name.replace(unsafe, safe)
+
     # Remove invalid characters and replace spaces with underscores
     sanitized_name = "".join(c if c.isalnum() or c == "_" else "_" for c in name)
+    for before, after in zip(name, sanitized_name):
+        if before != after:
+            logging.warning(f"Sanitizing name: '{before}' -> '{after}'")
     # Ensure the name starts with a letter or underscore
     if not sanitized_name[0].isalpha() and sanitized_name[0] != "_":
         sanitized_name = "_" + sanitized_name

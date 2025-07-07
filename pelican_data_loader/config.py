@@ -9,7 +9,6 @@ class SystemConfig(BaseSettings):
     s3_bucket_name: str
     s3_access_key_id: str
     s3_secret_access_key: str
-    mlc_s3_bucket_name: str  # for mlc metadata
     metadata_db_engine_url: str
     wisc_oauth_url: str
     wisc_client_id: str
