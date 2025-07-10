@@ -109,7 +109,7 @@ def render_generate_tab():
 def session_state_to_mlc_metadata(state: dict) -> dict:
     """Convert state dictionary to mlc metadata JSON-LD."""
 
-    for key in ("dataframe", "uploaded_file_name", "dataset_info"):
+    for key in ("dataframe", "dataset_info"):
         if key not in state:
             raise KeyError(f"Missing required state key: {key}")
 

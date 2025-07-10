@@ -21,7 +21,6 @@ def render_upload_tab():
             df = pd.read_csv(uploaded_file)
             df.columns = [sanitize_name(col) for col in df.columns]
             st.session_state.dataframe = df
-            st.session_state.uploaded_file_name = uploaded_file.name
             st.success(f"Successfully loaded {uploaded_file.name}")
             st.write(f"**Shape:** {df.shape[0]} rows, {df.shape[1]} columns")
 
@@ -45,7 +44,7 @@ def render_upload_tab():
             st.write("Upload the CSV file to S3 so others can download it.")
             if st.button("Upload dataset to S3", icon="⬆️", type="primary"):
                 with st.spinner("Uploading to S3..."):
-                    s3_data = handle_s3_upload(st.session_state.system_config)
+                    s3_data = handle_s3_upload(st.session_state.system_config, file_name=uploaded_file.name)
                     st.session_state.dataset_info.update(s3_data)
                     st.success("File uploaded successfully!")
 
@@ -53,7 +52,7 @@ def render_upload_tab():
             st.error(f"Error reading CSV file: {str(e)}")
 
 
-def handle_s3_upload(config: SystemConfig) -> dict:
+def handle_s3_upload(config: SystemConfig, file_name: str) -> dict:
     """Handle the S3 upload of the CSV file."""
 
     if "dataframe" not in st.session_state:
@@ -65,12 +64,12 @@ def handle_s3_upload(config: SystemConfig) -> dict:
         upload_to_s3(
             file_path=tmp_file.name,
             bucket_name=config.s3_bucket_name,
-            object_name=st.session_state.uploaded_file_name,
+            object_name=file_name,
         )
 
     return {
-        "s3_file_id": Path(st.session_state.uploaded_file_name).stem,
-        "s3_file_name": st.session_state.uploaded_file_name,
-        "s3_file_url": f"{config.s3_url}/{st.session_state.uploaded_file_name}",
+        "s3_file_id": Path(file_name).stem,
+        "s3_file_name": file_name,
+        "s3_file_url": f"{config.s3_url}/{file_name}",
         "s3_file_sha256": get_sha256(Path(tmp_file.name)),
     }
