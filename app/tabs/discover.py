@@ -1,5 +1,3 @@
-import json
-
 import streamlit as st
 from sqlmodel import select
 
@@ -48,79 +46,39 @@ def render_discover():
 
         # Display datasets in a expandable format
         for dataset in datasets:
-            with st.expander(f"📊 {dataset.name} (v{dataset.version})"):
-                st.subheader("Dataset information")
-                col1, col2 = st.columns(2)
-
-                with col1:
-                    st.markdown("**Basic Information**")
-                    st.markdown(f"**Name:** {dataset.name}")
-                    st.markdown(f"**Version:** {dataset.version}")
-                    st.markdown(f"**Published Date:** {dataset.published_date}")
-                    st.markdown(f"**License:** {dataset.license}")
-
-                    if dataset.keywords:
-                        st.markdown(f"**Keywords:** {dataset.keywords}")
-
-                with col2:
-                    st.markdown("**Source Information**")
-                    if dataset.primary_source_url:
-                        st.markdown(
-                            f"**Primary Source URL:** [{dataset.primary_source_url}]({dataset.primary_source_url})"
-                        )
-                    if dataset.primary_source_sha256:
-                        st.markdown(f"**SHA256:** `{dataset.primary_source_sha256[:16]}...`")
-
-                # Description
-                if dataset.description:
-                    st.markdown("**Description**")
-                    st.markdown(dataset.description)
-
-                # Authors/Creators
-                if dataset.creators:
-                    st.markdown("**Authors/Creators**")
-                    creators_info = []
-                    for creator in dataset.creators:
-                        creators_info.append(f"{creator.first_name} {creator.last_name} ({creator.email})")
-                    st.markdown(", ".join(creators_info))
-
-                # Croissant JSON-LD metadata
-                if dataset.croissant_jsonld:
-                    st.markdown("**Croissant Metadata**")
-                    st.subheader("Consuming Croissant Metadata")
-                    # This assumes the app is running locally and serving the JSON-LD.
-                    # In a real deployment, this URL should be the public URL.
-                    st.code(
-                        USAGE_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
-                    )
-
-                    st.subheader("Croissant Metadata Details")
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-                        if st.button("View JSON-LD", key=f"view_jsonld_{dataset.id}", type="primary"):
-                            st.session_state[f"show_jsonld_{dataset.id}"] = True
-
-                    with col2:
-                        st.download_button(
-                            label="Download Croissant JSON-LD",
-                            data=dataset.croissant_jsonld,
-                            file_name=f"{dataset.name.replace(' ', '_')}_v{dataset.version}_croissant.json",
-                            mime="application/json",
-                            key=f"download_btn_{dataset.id}",
-                        )
-
-                    # Show JSON-LD if requested
-                    if st.session_state.get(f"show_jsonld_{dataset.id}", False):
-                        try:
-                            jsonld_data = json.loads(dataset.croissant_jsonld)
-                            st.json(jsonld_data)
-                            if st.button("Hide JSON-LD", key=f"hide_jsonld_{dataset.id}"):
-                                st.session_state[f"show_jsonld_{dataset.id}"] = False
-                                st.rerun()
-                        except json.JSONDecodeError:
-                            st.error("Invalid JSON-LD data in database")
+            render_dataset(dataset)
 
     except Exception as e:
         st.error(f"Error accessing database: {str(e)}")
         st.info("Make sure the database has been initialized and contains data.")
+
+
+def render_dataset(dataset: Dataset):
+    """Renders a single dataset in an expandable format."""
+    with st.expander(f"{dataset.name} (v{dataset.version})", icon="📄"):
+        st.subheader("Dataset information")
+
+        metadata_rows = {
+            "Name": dataset.name,
+            "Authors/Creators": ", ".join(
+                f"{creator.first_name} {creator.last_name} ({creator.email})" for creator in dataset.creators
+            )
+            if dataset.creators
+            else "Not provided",
+            "Description": dataset.description or "Not provided",
+            "Version": dataset.version,
+            "SHA256": f"`{dataset.primary_source_sha256[:16]}...`" if dataset.primary_source_sha256 else "Not provided",
+            "Published Date": dataset.published_date,
+            "License": dataset.license,
+            "Keywords": dataset.keywords or "Not provided",
+            "Primary Source URL": dataset.primary_source_url or "Not provided",
+            "Croissant Metadata URL": dataset.croissant_jsonld_url or "Not provided",
+        }
+        st.table(metadata_rows)
+
+        # Croissant JSON-LD metadata
+        if dataset.croissant_jsonld_url:
+            st.subheader("Consuming Croissant Metadata")
+            st.code(
+                USAGE_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
+            )

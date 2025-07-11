@@ -95,6 +95,7 @@ def render_generate():
                         s3_metadata_url = f"{typed_state.system_config.s3_url}/{meta_data_s3_path}"
                         typed_state.update_dataset_info(s3_metadata_url=s3_metadata_url)
                         st.success(f"Metadata uploaded to: {s3_metadata_url}")
+                        st.rerun()  # Refresh the page to update state
                     except Exception as e:
                         st.error(f"Error uploading metadata: {str(e)}")
 

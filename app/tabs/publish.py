@@ -31,21 +31,18 @@ def render_publish():
         dataset.croissant_jsonld_url = typed_state.dataset_info.s3_metadata_url
 
     st.subheader("Dataset record pending publication")
-    st.json(dataset.model_dump(exclude={"croissant_jsonld", "id"}))
+    st.json(dataset.model_dump(exclude={"id"}))
     with st.expander("View Raw Croissant JSON-LD Metadata"):
-        st.json(dataset.croissant_jsonld)
+        if typed_state.generated_metadata:
+            st.json(typed_state.generated_metadata)
+        else:
+            st.warning("No generated metadata available.")
 
     st.subheader("Publishing Options (mock, not functional)")
-
-    # Checkboxes for publishing preferences
-    col1, col2 = st.columns(2)
-    with col1:
-        st.checkbox("Make dataset publicly accessible", value=True)
-        st.checkbox("Notify creators", value=True)
-
-    with col2:
-        st.checkbox("Assign DOI", value=True)
-        st.checkbox("Include data provenance", value=True)
+    st.checkbox("Make dataset publicly accessible", value=True)
+    st.checkbox("Notify creators", value=True)
+    st.checkbox("Assign DOI", value=True)
+    st.checkbox("Agree to publishing agreement", value=False)
 
     if st.button("🚀 Publish Dataset", type="primary", use_container_width=True):
         with st.spinner("Publishing dataset to UW-Madison Data Repository..."):

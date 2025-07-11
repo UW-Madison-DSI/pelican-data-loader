@@ -13,18 +13,23 @@ typed_state = TypedSessionState.get_or_create()
 st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="🥐", layout="wide")
 
 st.title("🥐 UW–Madison Dataset Repository (MVP)")
-st.markdown("""
-This prototype demonstrates a potential design for the UW–Madison dataset repository.
-            
-- **Publishing dataset**: Use tabs 1-4 to upload files, provide dataset information, generate metadata, and publish to the repository.
-- **Exploring datasets**: Use the Discover Datasets tab to explore available datasets.
-""")
+with st.expander("About this prototype", expanded=False):
+    st.markdown("""
+    This prototype demonstrates a potential design for the UW–Madison dataset repository.
+
+    - **Publishing dataset**: Use tabs 1–4 to `Upload File`, `Input dataset info`, `Generate metadata`, and `Publish to UW-Madison Data Repository`. While this could be a single step in production, we've split it into multiple tabs to show the full workflow.
+    - **Exploring datasets**: Use the `Discover Datasets` tab to explore available datasets.
+                
+    """)
+    st.warning(
+        "Note. Currently, only CSV is supported in this MVP. Pelican integration with CHTC is still pending.", icon="⚠️"
+    )
 
 tab_labels = [
-    "📁 File Upload",
-    "📋 Dataset Info",
+    "📁 Upload File",
+    "📋 Input Dataset Info",
     "📄 Generate Metadata",
-    "📢 Publish to UW-Madison Data Repo",
+    "📢 Publish to UW-Madison Data Repository",
     "👁️ Discover Datasets",
 ]
 render_functions = [

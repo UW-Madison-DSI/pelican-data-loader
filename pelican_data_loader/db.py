@@ -1,4 +1,3 @@
-import json
 import logging
 from pathlib import Path
 
@@ -106,7 +105,6 @@ class Dataset(SQLModel, table=True):
     primary_source_sha256: str
     license: str = Field(min_length=1)  # Ensure non-empty license
     keywords: str = ""  # comma-separated
-    croissant_jsonld: str | None = None  # JSON-LD document as a string
     croissant_jsonld_url: str | None = None
     creators: list["Person"] = Relationship(back_populates="datasets", link_model=PersonDatasetLink)
 
@@ -124,7 +122,6 @@ class Dataset(SQLModel, table=True):
             published_date=jsonld.get("datePublished", ""),
             license=jsonld.get("license", ""),
             keywords=", ".join(jsonld.get("keywords", [])),
-            croissant_jsonld=json.dumps(jsonld),
             primary_source_url=source_info["content_url"],
             primary_source_sha256=source_info["sha256"],
             creators=creators,
