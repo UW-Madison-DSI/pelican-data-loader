@@ -7,11 +7,11 @@ from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, sele
 
 from pelican_data_loader.config import SystemConfig
 
-SYSTEM_CONFIG = SystemConfig()  # type: ignore
+CONFIG = SystemConfig()
 HFDataset = IterableDataset | HFBaseDataset | DatasetDict | IterableDatasetDict
 
 
-def initialize_database(path: Path = SYSTEM_CONFIG.metadata_db_path, wipe: bool = False) -> None:
+def initialize_database(path: Path = CONFIG.metadata_db_path, wipe: bool = False) -> None:
     """Initialize the SQLite database and create the Dataset table."""
 
     if wipe and path.exists():
@@ -56,7 +56,7 @@ def parse_creators(jsonld: dict, session: Session | None = None) -> list["Person
     should_close_session = False
     if not session:
         logging.warning("No session provided, creating a new one with system defaults.")
-        session = Session(create_engine(SYSTEM_CONFIG.metadata_db_engine_url, echo=True))
+        session = Session(create_engine(CONFIG.metadata_db_engine_url, echo=True))
         should_close_session = True
 
     creators_data = jsonld.get("creator", [])
@@ -139,13 +139,13 @@ class Dataset(SQLModel, table=True):
         if not self.primary_source_url:
             raise ValueError("Primary source URL is not set for this dataset.")
 
-        s3_url = self.primary_source_url.replace(SYSTEM_CONFIG.s3_endpoint_url, "s3://")
+        s3_url = self.primary_source_url.replace(CONFIG.s3_endpoint_url, "s3://")
 
         # Use the datasets library to load the dataset
         return load_dataset(
             "csv",
             data_files={"train": s3_url},
-            storage_options=SYSTEM_CONFIG.storage_options,
+            storage_options=CONFIG.storage_options,
         )
 
 
@@ -179,10 +179,10 @@ class Person(SQLModel, table=True):
 class DataRepoEngine:
     """A class to handle metadata operations using SQLModel."""
 
-    def __init__(self, config: SystemConfig | None = None):
-        if config is None:
-            config = SystemConfig()  # type: ignore
-        self.engine = create_engine(config.metadata_db_engine_url)
+    def __init__(self, metadata_db_engine_url: str | None = None):
+        if metadata_db_engine_url is None:
+            metadata_db_engine_url = SystemConfig().metadata_db_engine_url
+        self.engine = create_engine(metadata_db_engine_url)
 
     def get_session(self) -> Session:
         """Create a new SQLModel session."""

@@ -1,26 +1,17 @@
 import os
 from pathlib import Path
-from typing import Optional
 
 import fsspec
 import httpx
 import minio
 import pandas as pd
+from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
-from sqlmodel import Session, create_engine, select
 
 from .config import SystemConfig
-from .db import Dataset
-
-try:
-    from bs4 import BeautifulSoup, Tag
-except ImportError:
-    raise ImportError(
-        "beautifulsoup4 is required for license pulling functionality. Install it with: pip install beautifulsoup4"
-    )
 
 
-def pull_license(output_path: Optional[str | Path] = None) -> pd.DataFrame:
+def pull_license(output_path: str | Path | None = None) -> pd.DataFrame:
     """
     Pull license information from SPDX.org and return as DataFrame.
 
@@ -117,7 +108,7 @@ def get_default_s3_client() -> minio.Minio:
     )
 
 
-def upload_to_s3(file_path: str | Path, bucket_name: str, object_name: Optional[str] = None) -> None:
+def upload_to_s3(file_path: str | Path, bucket_name: str, object_name: str | None = None) -> None:
     """Upload a file to an S3 bucket."""
     client = get_default_s3_client()
     file_path = Path(file_path)
