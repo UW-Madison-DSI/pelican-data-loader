@@ -56,7 +56,7 @@ class TypedSessionState(BaseModel):
     """Represents the state of a session. This can be used with st.session_state to provide type safety and validation."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)  # Allow pandas DataFrame
-    system_config: SystemConfig = Field(default_factory=SystemConfig)  # type: ignore
+    system_config: SystemConfig = Field(default_factory=SystemConfig)
     dataframe: pd.DataFrame | None = None
     dataset_info: DatasetInfo = Field(default_factory=DatasetInfo)
     generated_metadata: dict | None = None  # Croissant metadata JSON-LD
