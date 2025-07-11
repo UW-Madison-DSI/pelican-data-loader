@@ -12,8 +12,9 @@ from pelican_data_loader.utils import get_sha256, sanitize_name
 
 def render_upload():
     st.header("Upload CSV File")
-    st.markdown(
-        "This tab allows you to upload a CSV file containing your dataset to [UW-Madison Research Object S3](https://web.s3.wisc.edu/pelican-data-loader)."
+    st.info(
+        "This tab allows you to upload a CSV file containing your dataset to [UW-Madison Research Object S3](https://web.s3.wisc.edu/pelican-data-loader).",
+        icon="ℹ️",
     )
 
     # Get SessionState

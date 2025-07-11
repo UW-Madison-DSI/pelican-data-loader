@@ -12,7 +12,7 @@ def render_publish():
     This tab allows users to publish their dataset to the UW-Madison Data Repository.
     """
     st.header("📢 Publish to UW-Madison Data Repo")
-    st.markdown("This tab allows you to publish your dataset to the UW-Madison Data Repository.")
+    st.info("Publish your dataset to the UW-Madison Data Repository.", icon="ℹ️")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
@@ -30,8 +30,8 @@ def render_publish():
     if typed_state.dataset_info.s3_metadata_url:
         dataset.croissant_jsonld_url = typed_state.dataset_info.s3_metadata_url
 
-    st.subheader("Generated Metadata Summary")
-    st.json(dataset.model_dump(exclude={"croissant_jsonld"}))
+    st.subheader("Dataset record pending publication")
+    st.json(dataset.model_dump(exclude={"croissant_jsonld", "id"}))
     with st.expander("View Raw Croissant JSON-LD Metadata"):
         st.json(dataset.croissant_jsonld)
 

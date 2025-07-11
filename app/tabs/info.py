@@ -7,6 +7,7 @@ from app.state import TypedSessionState
 def render_info():
     """Render the dataset information tab with basic info, S3 config, and authors."""
     st.header("Dataset Information")
+    st.info("Use this tab to enter basic information about your dataset for Croissant metadata.", icon="ℹ️")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
