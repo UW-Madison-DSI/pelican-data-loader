@@ -1,27 +1,21 @@
-# DSI service MINIO test s3 bucket
 services:
-  minio: 
-    image: minio/minio:latest
-    container_name: minio
-    command: server --console-address ":9001" /data
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+  demo:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    env_file:
+      - .env
     volumes:
-      - minio-data:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.minio-main.rule=Host(`minio.services.dsi.wisc.edu`)"
-      - "traefik.http.routers.minio-main.entrypoints=websecure"
-      - "traefik.http.routers.minio-main.tls=true"
-      - "traefik.http.routers.minio-main.tls.certresolver=myresolver"
-    ports:
-      - "9001:9001" # MinIO Console local access
+      - ./data:/app/data
     networks:
       - traefik_network
-
-volumes:
-  minio-data:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.datasets.rule=Host(`datasets.services.dsi.wisc.edu`)"
+      - "traefik.http.routers.datasets.entrypoints=websecure"
+      - "traefik.http.routers.datasets.tls=true"
+      - "traefik.http.routers.datasets.tls.certresolver=myresolver"
+    restart: unless-stopped
 
 networks:
   traefik_network:

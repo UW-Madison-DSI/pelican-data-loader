@@ -1,6 +1,6 @@
 # pelican-data-loader
 
-Pelican-backed data loader prototype.
+Pelican-backed data loader prototype: [demo](https://datasets.services.dsi.wisc.edu/)
 
 ## Components
 
