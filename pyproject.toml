@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-include = ["pelican_data_loader/**/*.py"]
+include = ["pelican_data_loader/**/*.py", "app/**/*.py"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["pelican_data_loader"]

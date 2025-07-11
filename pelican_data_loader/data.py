@@ -101,6 +101,8 @@ def get_default_s3_client() -> minio.Minio:
     if not (s3_secret_access_key := os.getenv("S3_SECRET_ACCESS_KEY")):
         raise ValueError("S3_SECRET_ACCESS_KEY environment variable is not set.")
 
+    s3_endpoint_url = s3_endpoint_url.replace("https://", "").replace("http://", "")
+
     return minio.Minio(
         endpoint=s3_endpoint_url,
         access_key=s3_access_key_id,

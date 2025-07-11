@@ -18,6 +18,15 @@ pd.DataFrame(list(itertools.islice(records, 100))).head(5)
 """
 
 
+USAGE_CODE_TEMPLATE_V2 = """
+from pelican_data_loader import load_uw_data
+dataset = load_uw_data({key})
+
+# Display the first record
+list(dataset["train"].take(1))
+"""
+
+
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
     st.header("Published Datasets")
@@ -79,6 +88,13 @@ def render_dataset(dataset: Dataset):
         # Croissant JSON-LD metadata
         if dataset.croissant_jsonld_url:
             st.subheader("Consuming Croissant Metadata")
+
+            st.markdown("This currently works, somewhat not recommended due to `mlcroissant` stability issue:")
             st.code(
                 USAGE_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
+            )
+            st.markdown("---")
+            st.markdown("This is a simpler mockup that will need data uploader identity and NetID integration later:")
+            st.code(
+                USAGE_CODE_TEMPLATE_V2.format(key='"netid/dataset_key"'),
             )
