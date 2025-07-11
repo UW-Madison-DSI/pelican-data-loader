@@ -3,12 +3,12 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import streamlit as st
-from state import TypedSessionState
 
+from app.state import TypedSessionState
 from pelican_data_loader.data import upload_to_s3
 
 
-def render_generate_tab():
+def render_generate():
     """Render the Generate Metadata tab with configuration summary and metadata generation."""
     st.header("Generate Croissant Metadata")
 
