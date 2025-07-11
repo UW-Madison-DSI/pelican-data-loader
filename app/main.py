@@ -1,18 +1,18 @@
 import streamlit as st
+from state import TypedSessionState
 from tabs.dataset_info import render_dataset_info_tab
+from tabs.discover import render_discover_tab
 from tabs.generate import render_generate_tab
 from tabs.publish import render_publish_tab
 from tabs.upload import render_upload_tab
-from tabs.discover import render_discover_tab
-
-from pelican_data_loader.config import SystemConfig
 
 st.set_page_config(page_title="Croissant Dataset Uploader", page_icon="🥐", layout="wide")
 
 st.title("🥐 Croissant Dataset Uploader (MVP)")
-st.markdown("Upload your datasets to UW–Madison’s research dataset repository.")
+st.markdown("Upload your datasets to UW–Madison's research dataset repository.")
 
-st.session_state.setdefault("system_config", SystemConfig())  # type: ignore
+# Initialize SessionState
+app_state = TypedSessionState.get_or_create()
 
 # Main content area
 tab_labels = [

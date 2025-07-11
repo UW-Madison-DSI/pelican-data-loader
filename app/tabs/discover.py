@@ -2,10 +2,11 @@ import json
 
 import streamlit as st
 from sqlmodel import Session, create_engine, select
+from state import TypedSessionState
 
 from pelican_data_loader.db import Dataset
 
-CONSUME_CODE_TEMPLATE = """
+USAGE_CODE_TEMPLATE = """
 from mlcroissant import Dataset
 import itertools
 import pandas as pd
@@ -20,15 +21,16 @@ def render_discover_tab():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
     st.header("Published Datasets")
 
-    # Get system config from session state
-    system_config = st.session_state.get("system_config")
-    if not system_config:
+    # Get SessionState
+    typed_state = TypedSessionState.get_or_create()
+
+    if not typed_state.system_config:
         st.error("System configuration not found. Please restart the application.")
         return
 
     try:
         # Create database engine and session
-        engine = create_engine(system_config.metadata_db_engine_url, echo=False)
+        engine = create_engine(typed_state.system_config.metadata_db_engine_url, echo=False)
 
         with Session(engine) as session:
             # Query all datasets from the database
@@ -86,7 +88,7 @@ def render_discover_tab():
                         # This assumes the app is running locally and serving the JSON-LD.
                         # In a real deployment, this URL should be the public URL.
                         st.code(
-                            CONSUME_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
+                            USAGE_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
                         )
 
                         st.subheader("Croissant Metadata Details")

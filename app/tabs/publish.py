@@ -2,6 +2,7 @@ from pathlib import Path
 
 import streamlit as st
 from sqlmodel import Session, create_engine, select
+from state import TypedSessionState
 
 from pelican_data_loader.db import Dataset
 
@@ -16,17 +17,20 @@ def render_publish_tab():
     st.header("📢 Publish to UW-Madison Data Repo")
     st.markdown("This tab allows you to publish your dataset to the UW-Madison Data Repository.")
 
+    # Get SessionState
+    typed_state = TypedSessionState.get_or_create()
+
     # Check if generated metadata exists
-    if "generated_metadata" not in st.session_state:
+    if typed_state.generated_metadata is None:
         st.warning("Please generate metadata first in the Generate tab.")
         return
 
     metadata_db = create_engine(f"sqlite:///{METADATA_DB_PATH}")
-    dataset = Dataset.from_jsonld(st.session_state.generated_metadata)
+    dataset = Dataset.from_jsonld(typed_state.generated_metadata)
 
     # Inject s3_metadata_url in DB record if available
-    if "s3_metadata_url" in st.session_state.dataset_info:
-        dataset.croissant_jsonld_url = st.session_state.dataset_info["s3_metadata_url"]
+    if typed_state.dataset_info.s3_metadata_url:
+        dataset.croissant_jsonld_url = typed_state.dataset_info.s3_metadata_url
 
     st.subheader("Generated Metadata Summary")
     st.json(dataset.model_dump(exclude={"croissant_jsonld"}))
