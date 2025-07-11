@@ -23,6 +23,7 @@ pd.DataFrame(list(itertools.islice(records, 100))).head(5)
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
     st.header("Published Datasets")
+    st.info("Explore datasets published to the UW-Madison Data Repository.", icon="ℹ️")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()

@@ -9,8 +9,8 @@ from tabs import (
 
 from app.state import TypedSessionState
 
-st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="🥐", layout="wide")
 typed_state = TypedSessionState.get_or_create()
+st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="🥐", layout="wide")
 
 st.title("🥐 UW–Madison Dataset Repository (MVP)")
 st.markdown("""

@@ -11,6 +11,7 @@ from pelican_data_loader.data import upload_to_s3
 def render_generate():
     """Render the Generate Metadata tab with configuration summary and metadata generation."""
     st.header("Generate Croissant Metadata")
+    st.info("Generate Croissant metadata (JSON-LD format), validate it, and upload it to S3.", icon="ℹ️")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
