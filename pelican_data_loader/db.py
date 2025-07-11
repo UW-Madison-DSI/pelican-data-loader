@@ -1,11 +1,14 @@
 import logging
 from pathlib import Path
 
+from datasets import Dataset as HFBaseDataset
+from datasets import DatasetDict, IterableDataset, IterableDatasetDict, load_dataset
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
 
 from pelican_data_loader.config import SystemConfig
 
 SYSTEM_CONFIG = SystemConfig()  # type: ignore
+HFDataset = IterableDataset | HFBaseDataset | DatasetDict | IterableDatasetDict
 
 
 def initialize_database(path: Path = SYSTEM_CONFIG.metadata_db_path, wipe: bool = False) -> None:
@@ -131,6 +134,20 @@ class Dataset(SQLModel, table=True):
         """String representation of the Dataset."""
         return f"Dataset(id={self.id}, name={self.name}, version={self.version}, published_date={self.published_date})"
 
+    def pull(self) -> HFDataset:
+        """Pull the dataset from the primary source URL."""
+        if not self.primary_source_url:
+            raise ValueError("Primary source URL is not set for this dataset.")
+
+        s3_url = self.primary_source_url.replace(SYSTEM_CONFIG.s3_endpoint_url, "s3://")
+
+        # Use the datasets library to load the dataset
+        return load_dataset(
+            "csv",
+            data_files={"train": s3_url},
+            storage_options=SYSTEM_CONFIG.storage_options,
+        )
+
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -192,14 +209,18 @@ class DataRepoEngine:
                 raise ValueError(f"No datasets found matching query: {query}")
             return list(results)
 
-    def get_dataset(self, name: str | None = None, id: int | None = None) -> Dataset | None:
+    def get_dataset(
+        self, name: str | None = None, id: int | None = None, croissant_jsonld_url: str | None = None
+    ) -> Dataset | None:
         """Get a dataset by name or ID."""
 
-        if not name and not id:
-            raise ValueError("Either name or id must be provided")
+        if not name and not id and not croissant_jsonld_url:
+            raise ValueError("Either name, id or croissant_jsonld_url must be provided")
 
         with self.get_session() as session:
-            statement = select(Dataset).where((Dataset.name == name) | (Dataset.id == id))
+            statement = select(Dataset).where(
+                (Dataset.name == name) | (Dataset.id == id) | (Dataset.croissant_jsonld_url == croissant_jsonld_url)
+            )
             return session.exec(statement).first()
 
     def delete_dataset(self, id: int) -> None:
