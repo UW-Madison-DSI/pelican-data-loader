@@ -3,14 +3,14 @@ from tempfile import NamedTemporaryFile
 
 import pandas as pd
 import streamlit as st
-from state import TypedSessionState
 
+from app.state import TypedSessionState
 from pelican_data_loader.config import SystemConfig
 from pelican_data_loader.data import upload_to_s3
 from pelican_data_loader.utils import get_sha256, sanitize_name
 
 
-def render_upload_tab():
+def render_upload():
     st.header("Upload CSV File")
     st.markdown(
         "This tab allows you to upload a CSV file containing your dataset to [UW-Madison Research Object S3](https://web.s3.wisc.edu/pelican-data-loader)."

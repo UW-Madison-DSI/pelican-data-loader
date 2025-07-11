@@ -1,9 +1,10 @@
 import streamlit as st
 from constant import LICENSES
-from state import TypedSessionState
+
+from app.state import TypedSessionState
 
 
-def render_dataset_info_tab():
+def render_info():
     """Render the dataset information tab with basic info, S3 config, and authors."""
     st.header("Dataset Information")
 

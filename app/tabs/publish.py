@@ -1,15 +1,12 @@
-from pathlib import Path
-
 import streamlit as st
-from sqlmodel import Session, create_engine, select
-from state import TypedSessionState
+from sqlmodel import select
 
+from app.db_connection import get_database_session
+from app.state import TypedSessionState
 from pelican_data_loader.db import Dataset
 
-METADATA_DB_PATH = Path("data/datasets.db")
 
-
-def render_publish_tab():
+def render_publish():
     """
     Render the Publish tab in the Streamlit app.
     This tab allows users to publish their dataset to the UW-Madison Data Repository.
@@ -25,7 +22,8 @@ def render_publish_tab():
         st.warning("Please generate metadata first in the Generate tab.")
         return
 
-    metadata_db = create_engine(f"sqlite:///{METADATA_DB_PATH}")
+    # Get cached database session
+    session = get_database_session()
     dataset = Dataset.from_jsonld(typed_state.generated_metadata)
 
     # Inject s3_metadata_url in DB record if available
@@ -51,13 +49,12 @@ def render_publish_tab():
 
     if st.button("🚀 Publish Dataset", type="primary", use_container_width=True):
         with st.spinner("Publishing dataset to UW-Madison Data Repository..."):
-            with Session(metadata_db) as session:
-                # Check if dataset already exists
-                existing_dataset = session.exec(select(Dataset).where(Dataset.id == dataset.id)).first()
+            # Check if dataset already exists
+            existing_dataset = session.exec(select(Dataset).where(Dataset.id == dataset.id)).first()
 
-                if existing_dataset:
-                    st.warning("Dataset with this ID already exists in the database.")
-                else:
-                    session.add(dataset)
-                    session.commit()
+            if existing_dataset:
+                st.warning("Dataset with this ID already exists in the database.")
+            else:
+                session.add(dataset)
+                session.commit()
             st.success("✅ Dataset published successfully!")

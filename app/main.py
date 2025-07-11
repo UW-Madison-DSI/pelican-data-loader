@@ -1,20 +1,25 @@
 import streamlit as st
-from state import TypedSessionState
-from tabs.dataset_info import render_dataset_info_tab
-from tabs.discover import render_discover_tab
-from tabs.generate import render_generate_tab
-from tabs.publish import render_publish_tab
-from tabs.upload import render_upload_tab
+from tabs import (
+    render_discover,
+    render_generate,
+    render_info,
+    render_publish,
+    render_upload,
+)
 
-st.set_page_config(page_title="Croissant Dataset Uploader", page_icon="🥐", layout="wide")
+from app.state import TypedSessionState
 
-st.title("🥐 Croissant Dataset Uploader (MVP)")
-st.markdown("Upload your datasets to UW–Madison's research dataset repository.")
+st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="🥐", layout="wide")
+typed_state = TypedSessionState.get_or_create()
 
-# Initialize SessionState
-app_state = TypedSessionState.get_or_create()
+st.title("🥐 UW–Madison Dataset Repository (MVP)")
+st.markdown("""
+This prototype demonstrates a potential design for the UW–Madison dataset repository.
+            
+- **Publishing dataset**: Use tabs 1-4 to upload files, provide dataset information, generate metadata, and publish to the repository.
+- **Exploring datasets**: Use the Discover Datasets tab to explore available datasets.
+""")
 
-# Main content area
 tab_labels = [
     "📁 File Upload",
     "📋 Dataset Info",
@@ -22,26 +27,18 @@ tab_labels = [
     "📢 Publish to UW-Madison Data Repo",
     "👁️ Discover Datasets",
 ]
+render_functions = [
+    render_upload,
+    render_info,
+    render_generate,
+    render_publish,
+    render_discover,
+]
 
-# Create the tabs in the UI
-upload_tab, dataset_info_tab, generate_tab, publish_tab, discover_tab = st.tabs(tab_labels)
+tabs = st.tabs(tab_labels)
+for tab, render_function in zip(tabs, render_functions):
+    with tab:
+        render_function()
 
-with upload_tab:
-    render_upload_tab()
-
-with dataset_info_tab:
-    render_dataset_info_tab()
-
-with generate_tab:
-    render_generate_tab()
-
-with publish_tab:
-    render_publish_tab()
-
-with discover_tab:
-    render_discover_tab()
-
-
-# Footer
 st.markdown("---")
-st.markdown("💡 **Note:** This prototype uses the `mlcroissant` package to generate Croissant v1.0 metadata.")
+st.markdown("© 2025 Data Science Institute, University of Wisconsin–Madison")
