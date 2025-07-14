@@ -30,3 +30,6 @@ class SystemConfig(BaseSettings):
             "anon": True,
             "client_kwargs": {"endpoint_url": self.s3_endpoint_url},
         }
+
+
+SYSTEM_CONFIG = SystemConfig()

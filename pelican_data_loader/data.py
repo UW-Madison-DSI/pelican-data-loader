@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import fsspec
@@ -6,9 +5,8 @@ import httpx
 import minio
 import pandas as pd
 from bs4 import BeautifulSoup, Tag
-from dotenv import load_dotenv
 
-from .config import SystemConfig
+from .config import SYSTEM_CONFIG
 
 
 def pull_license(output_path: str | Path | None = None) -> pd.DataFrame:
@@ -91,40 +89,30 @@ def pull_license(output_path: str | Path | None = None) -> pd.DataFrame:
 def get_default_s3_client() -> minio.Minio:
     """Get a MinIO client instance from environment variables."""
 
-    load_dotenv()
-
-    # Check if the environment variables are set
-    if not (s3_endpoint_url := os.getenv("S3_ENDPOINT_URL")):
-        raise ValueError("S3_ENDPOINT_URL environment variable is not set.")
-    if not (s3_access_key_id := os.getenv("S3_ACCESS_KEY_ID")):
-        raise ValueError("S3_ACCESS_KEY_ID environment variable is not set.")
-    if not (s3_secret_access_key := os.getenv("S3_SECRET_ACCESS_KEY")):
-        raise ValueError("S3_SECRET_ACCESS_KEY environment variable is not set.")
-
-    s3_endpoint_url = s3_endpoint_url.replace("https://", "").replace("http://", "")
-
     return minio.Minio(
-        endpoint=s3_endpoint_url,
-        access_key=s3_access_key_id,
-        secret_key=s3_secret_access_key,
+        endpoint=SYSTEM_CONFIG.s3_endpoint_url,
+        access_key=SYSTEM_CONFIG.s3_access_key_id,
+        secret_key=SYSTEM_CONFIG.s3_secret_access_key,
     )
 
 
-def upload_to_s3(file_path: str | Path, bucket_name: str, object_name: str | None = None) -> None:
+def upload_to_s3(file_path: str | Path, bucket_name: str | None = None, object_name: str | None = None) -> None:
     """Upload a file to an S3 bucket."""
     client = get_default_s3_client()
     file_path = Path(file_path)
     if not object_name:
         object_name = file_path.name
+
+    if not bucket_name:
+        bucket_name = SYSTEM_CONFIG.s3_bucket_name
+
     client.fput_object(bucket_name, object_name, str(file_path))
 
 
-def get_s3_filesystem(config: SystemConfig) -> fsspec.AbstractFileSystem:
+def get_s3_filesystem() -> fsspec.AbstractFileSystem:
     return fsspec.filesystem(
         "s3",
-        key=config.s3_access_key_id,
-        secret=config.s3_secret_access_key,
-        client_kwargs={
-            "endpoint_url": config.s3_url,
-        },
+        key=SYSTEM_CONFIG.s3_access_key_id,
+        secret=SYSTEM_CONFIG.s3_secret_access_key,
+        client_kwargs={"endpoint_url": SYSTEM_CONFIG.s3_url},
     )
