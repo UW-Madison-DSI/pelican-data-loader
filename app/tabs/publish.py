@@ -1,7 +1,7 @@
 import streamlit as st
 from sqlmodel import select
 
-from app.db_connection import get_database_session
+from app.db_connection import get_cached_db_session
 from app.state import TypedSessionState
 from pelican_data_loader.db import Dataset
 
@@ -23,7 +23,7 @@ def render_publish():
         return
 
     # Get cached database session
-    session = get_database_session()
+    session = get_cached_db_session()
     dataset = Dataset.from_jsonld(typed_state.generated_metadata)
 
     # Inject s3_metadata_url in DB record if available

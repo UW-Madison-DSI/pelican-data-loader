@@ -1,7 +1,7 @@
 import streamlit as st
 from sqlmodel import select
 
-from app.db_connection import get_database_session
+from app.db_connection import get_cached_db_session
 from app.state import TypedSessionState
 from pelican_data_loader.db import Dataset
 
@@ -41,7 +41,7 @@ def render_discover():
 
     try:
         # Get cached database session
-        session = get_database_session(typed_state.system_config.metadata_db_engine_url)
+        session = get_cached_db_session(typed_state.system_config.metadata_db_engine_url)
 
         # Query all datasets from the database
         statement = select(Dataset)

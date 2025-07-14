@@ -20,6 +20,12 @@ def initialize_database(path: Path = CONFIG.metadata_db_path, wipe: bool = False
     SQLModel.metadata.create_all(engine)
 
 
+def get_session(metadata_db_engine_url: str | Path = CONFIG.metadata_db_engine_url) -> Session:
+    """Create a new SQLModel session."""
+    engine = create_engine(str(metadata_db_engine_url), echo=False)
+    return Session(engine)
+
+
 def guess_primary_url(jsonld: dict, extension_priority: list[str] | None = None) -> dict[str, str]:
     """Guess the primary source URL and checksum from a JSON-LD document."""
 
