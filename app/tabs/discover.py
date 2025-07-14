@@ -13,8 +13,10 @@ import itertools
 import pandas as pd
 dataset = Dataset(jsonld="{croissant_jsonld_url}")
 
-records = dataset.records("bird_migration_data_record_set")
-pd.DataFrame(list(itertools.islice(records, 100))).head(5)
+records = dataset.records("record_set_name")
+for record in records:
+    print(record)
+    break
 """
 
 
