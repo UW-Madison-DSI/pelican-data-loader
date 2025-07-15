@@ -4,6 +4,7 @@
         "empl",
         "fsspec",
         "ilike",
+        "isready",
         "netid",
         "pelicanfs",
         "torchdata"

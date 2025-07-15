@@ -17,6 +17,38 @@ services:
       - "traefik.http.routers.datasets.tls.certresolver=myresolver"
     restart: unless-stopped
 
+  postgres:
+    image: postgres:17.5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.pelican_pg.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.pelican_pg.entrypoints=postgres"
+      - "traefik.tcp.services.pelican_pg.loadbalancer.server.port=5432"
+      - "traefik.docker.network=traefik_network"
+    networks:
+      - traefik_network
+    ports:
+      - "8787:5432"
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -h 127.0.0.1
+      interval: 5s
+    restart: always
+    shm_size: 4gb
+    command: >
+      postgres
+      -c shared_buffers=2GB
+      -c work_mem=256MB
+      -c effective_cache_size=4GB
+      -c wal_buffers=256MB
+      -c checkpoint_completion_target=0.9
+      -c random_page_cost=1.1
+      -c max_connections=50
 networks:
   traefik_network:
     external: true
