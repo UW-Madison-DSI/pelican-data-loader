@@ -89,8 +89,10 @@ def pull_license(output_path: str | Path | None = None) -> pd.DataFrame:
 def get_default_s3_client() -> minio.Minio:
     """Get a MinIO client instance from environment variables."""
 
+    endpoint = SYSTEM_CONFIG.s3_endpoint_url.split("://")[-1]
+
     return minio.Minio(
-        endpoint=SYSTEM_CONFIG.s3_endpoint_url,
+        endpoint=endpoint,
         access_key=SYSTEM_CONFIG.s3_access_key_id,
         secret_key=SYSTEM_CONFIG.s3_secret_access_key,
     )
