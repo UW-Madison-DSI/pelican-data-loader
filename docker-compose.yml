@@ -36,8 +36,8 @@ services:
     ports:
       - "8787:5432"
     healthcheck:
-      test: pg_isready -U ${POSTGRES_USER} -h 127.0.0.1
-      interval: 5s
+      test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
+      interval: 15s
     restart: always
     shm_size: 4gb
     command: >
