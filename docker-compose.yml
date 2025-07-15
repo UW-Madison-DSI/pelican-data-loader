@@ -34,7 +34,7 @@ services:
     networks:
       - traefik_network
     ports:
-      - "8787:5432"
+      - "$POSTGRES_PORT:5432"
     healthcheck:
       test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
       interval: 15s
