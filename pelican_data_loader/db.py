@@ -11,12 +11,10 @@ CONFIG = SystemConfig()
 HFDataset = IterableDataset | HFBaseDataset | DatasetDict | IterableDatasetDict
 
 
-def initialize_database(path: Path = CONFIG.metadata_db_path, wipe: bool = False) -> None:
+def initialize_database(path: str = CONFIG.metadata_db_engine_url, wipe: bool = False) -> None:
     """Initialize the SQLite database and create the Dataset table."""
 
-    if wipe and path.exists():
-        path.unlink()
-    engine = create_engine(f"sqlite:///{path}", echo=True)
+    engine = create_engine(path, echo=True)
     SQLModel.metadata.create_all(engine)
 
 
