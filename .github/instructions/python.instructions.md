@@ -1,7 +1,9 @@
 - Follow PEP 8 style guide for Python code.
 - Use python 3.12 or later syntax.
-- Try to write docstrings in one line except for very complicated functions.
-- Include type hints for function signatures.
+- Try to write docstrings in one line except for complicated functions that takes 5+ args.
+- Include static type hints.
 - Prefer f-strings for string formatting.
 - Use logging instead of print statements for debugging.
 - Optimize for readability and maintainability over cleverness.
+- Do not use nested list comprehensions with 2 or more levels.
+- Avoid using `import *` to prevent namespace pollution.
