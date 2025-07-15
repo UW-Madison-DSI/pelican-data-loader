@@ -14,6 +14,10 @@ class SystemConfig(BaseSettings):
     wisc_oauth_url: str = ""
     wisc_client_id: str = ""
     wisc_client_secret: str = ""
+    postgres_user: str = ""
+    postgres_password: str = ""
+    postgres_db: str = ""
+    postgres_url: str = ""
 
     @property
     def s3_url(self) -> str:
