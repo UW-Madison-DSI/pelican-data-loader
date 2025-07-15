@@ -27,10 +27,10 @@ services:
       - ./pg_data:/var/lib/postgresql/data
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_network"
       - "traefik.tcp.routers.pelican_pg.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.pelican_pg.entrypoints=postgres"
       - "traefik.tcp.services.pelican_pg.loadbalancer.server.port=5432"
-      - "traefik.docker.network=traefik_network"
     networks:
       - traefik_network
     ports:
