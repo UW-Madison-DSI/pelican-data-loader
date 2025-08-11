@@ -26,14 +26,11 @@ dependencies = [
     "pandas>=2.2.3",
     "pydantic>=2.11.4",
     "python-dotenv>=1.1.0",
-    "fsspec>=2025.3.0",
     "datacite>=1.2.0",
     "sqlmodel>=0.0.24",
-    "streamlit>=1.46.1",
     "pydantic-settings>=2.10.1",
-    "s3fs>=2025.3.0",
-    "beautifulsoup4>=4.13.4",
     "psycopg2-binary>=2.9.10",
+    "streamlit>=1.46.1",
 ]
 
 [project.optional-dependencies]
