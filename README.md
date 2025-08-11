@@ -2,6 +2,22 @@
 
 Pelican-backed data loader prototype: [demo](https://datasets.services.dsi.wisc.edu/)
 
+## Quickstart
+
+1. Install `pelican-data-loader` and `pytorch` from pypi
+
+    ```sh
+    pip install pelican-data-loader torch
+    ```
+
+1. Consume data with [`datasets`](https://huggingface.co/docs/datasets/en/index)
+
+    ```python
+    from datasets import load_dataset
+    dataset = load_dataset("csv", data_files="pelican://uwdf-director.chtc.wisc.edu/wisc.edu/dsi/pytorch/bird_migration_data.csv")
+    torch_dataset = dataset.with_format("torch")
+    ```
+
 ## Components
 
 - [Dev S3 bucket](web.s3.wisc.edu/pelican-data-loader)
