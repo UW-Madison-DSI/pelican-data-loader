@@ -15,6 +15,10 @@ def initialize_database(path: str = CONFIG.metadata_db_engine_url, wipe: bool = 
     """Initialize the SQLite database and create the Dataset table."""
 
     engine = create_engine(path, echo=True)
+
+    if wipe:
+        SQLModel.metadata.drop_all(engine)
+
     SQLModel.metadata.create_all(engine)
 
 
@@ -113,6 +117,8 @@ class Dataset(SQLModel, table=True):
     license: str = Field(min_length=1)  # Ensure non-empty license
     keywords: str = ""  # comma-separated
     croissant_jsonld_url: str | None = None
+    pelican_uri: str = ""
+    pelican_http_url: str = ""
     creators: list["Person"] = Relationship(back_populates="datasets", link_model=PersonDatasetLink)
 
     @classmethod
@@ -213,18 +219,14 @@ class DataRepoEngine:
                 raise ValueError(f"No datasets found matching query: {query}")
             return list(results)
 
-    def get_dataset(
-        self, name: str | None = None, id: int | None = None, croissant_jsonld_url: str | None = None
-    ) -> Dataset | None:
+    def get_dataset(self, name: str | None = None, id: int | None = None, croissant_jsonld_url: str | None = None) -> Dataset | None:
         """Get a dataset by name or ID."""
 
         if not name and not id and not croissant_jsonld_url:
             raise ValueError("Either name, id or croissant_jsonld_url must be provided")
 
         with self.get_session() as session:
-            statement = select(Dataset).where(
-                (Dataset.name == name) | (Dataset.id == id) | (Dataset.croissant_jsonld_url == croissant_jsonld_url)
-            )
+            statement = select(Dataset).where((Dataset.name == name) | (Dataset.id == id) | (Dataset.croissant_jsonld_url == croissant_jsonld_url))
             return session.exec(statement).first()
 
     def delete_dataset(self, id: int) -> None:

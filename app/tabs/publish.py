@@ -1,5 +1,4 @@
 import streamlit as st
-from sqlmodel import select
 
 from app.db_connection import get_cached_db_session
 from app.state import TypedSessionState
@@ -26,9 +25,10 @@ def render_publish():
     session = get_cached_db_session()
     dataset = Dataset.from_jsonld(typed_state.generated_metadata)
 
-    # Inject s3_metadata_url in DB record if available
-    if typed_state.dataset_info.s3_metadata_url:
-        dataset.croissant_jsonld_url = typed_state.dataset_info.s3_metadata_url
+    # Append Pelican and S3-related information (since it's not included in the JSON-LD)
+    dataset.pelican_uri = typed_state.dataset_info.pelican_uri
+    dataset.pelican_http_url = typed_state.dataset_info.pelican_http_url
+    dataset.croissant_jsonld_url = typed_state.dataset_info.s3_metadata_url
 
     st.subheader("Dataset record pending publication")
     st.json(dataset.model_dump(exclude={"id"}))
@@ -46,12 +46,6 @@ def render_publish():
 
     if st.button("🚀 Publish Dataset", type="primary", use_container_width=True):
         with st.spinner("Publishing dataset to UW-Madison Data Repository..."):
-            # Check if dataset already exists
-            existing_dataset = session.exec(select(Dataset).where(Dataset.id == dataset.id)).first()
-
-            if existing_dataset:
-                st.warning("Dataset with this ID already exists in the database.")
-            else:
-                session.add(dataset)
-                session.commit()
+            session.add(dataset)
+            session.commit()
             st.success("✅ Dataset published successfully!")

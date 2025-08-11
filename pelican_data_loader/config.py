@@ -14,6 +14,8 @@ class SystemConfig(BaseSettings):
     wisc_client_id: str = ""
     wisc_client_secret: str = ""
     metadata_db_engine_url: str = ""
+    pelican_uri_prefix: str = ""
+    pelican_http_url_prefix: str = ""
 
     @property
     def s3_url(self) -> str:

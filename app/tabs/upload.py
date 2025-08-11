@@ -20,9 +20,7 @@ def render_upload():
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
 
-    uploaded_file = st.file_uploader(
-        "Choose a CSV file", type="csv", help="Upload a CSV file to generate Croissant metadata"
-    )
+    uploaded_file = st.file_uploader("Choose a CSV file", type="csv", help="Upload a CSV file to generate Croissant metadata")
 
     if uploaded_file is not None:
         try:
@@ -82,3 +80,5 @@ def handle_s3_upload(config: SystemConfig, file_name: str, typed_state: TypedSes
     typed_state.dataset_info.s3_file_name = file_name
     typed_state.dataset_info.s3_file_url = f"{config.s3_url}/{file_name}"
     typed_state.dataset_info.s3_file_sha256 = get_sha256(Path(tmp_file.name))
+    typed_state.dataset_info.pelican_uri = f"{config.pelican_uri_prefix}/{file_name}"
+    typed_state.dataset_info.pelican_http_url = f"{config.pelican_http_url_prefix}/{file_name}"
