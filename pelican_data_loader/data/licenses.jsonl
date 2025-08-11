@@ -43,6 +43,8 @@
 {"identifier":"Artistic-1.0-cl8","full_name":"Artistic License 1.0 w\/clause 8","url":"https:\/\/spdx.org\/licenses\/Artistic-1.0-cl8.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"Artistic-1.0-Perl","full_name":"Artistic License 1.0 (Perl)","url":"https:\/\/spdx.org\/licenses\/Artistic-1.0-Perl.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"Artistic-2.0","full_name":"Artistic License 2.0","url":"https:\/\/spdx.org\/licenses\/Artistic-2.0.html","fsf_free_libre":true,"osi_approved":true}
+{"identifier":"Artistic-dist","full_name":"Artistic License 1.0 (dist)","url":"https:\/\/spdx.org\/licenses\/Artistic-dist.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"Aspell-RU","full_name":"Aspell Russian License","url":"https:\/\/spdx.org\/licenses\/Aspell-RU.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"ASWF-Digital-Assets-1.0","full_name":"ASWF Digital Assets License version 1.0","url":"https:\/\/spdx.org\/licenses\/ASWF-Digital-Assets-1.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"ASWF-Digital-Assets-1.1","full_name":"ASWF Digital Assets License 1.1","url":"https:\/\/spdx.org\/licenses\/ASWF-Digital-Assets-1.1.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Baekmuk","full_name":"Baekmuk License","url":"https:\/\/spdx.org\/licenses\/Baekmuk.html","fsf_free_libre":false,"osi_approved":false}
@@ -66,6 +68,7 @@
 {"identifier":"BSD-2-Clause-Darwin","full_name":"BSD 2-Clause - Ian Darwin variant","url":"https:\/\/spdx.org\/licenses\/BSD-2-Clause-Darwin.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"BSD-2-Clause-first-lines","full_name":"BSD 2-Clause - first lines requirement","url":"https:\/\/spdx.org\/licenses\/BSD-2-Clause-first-lines.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"BSD-2-Clause-Patent","full_name":"BSD-2-Clause Plus Patent License","url":"https:\/\/spdx.org\/licenses\/BSD-2-Clause-Patent.html","fsf_free_libre":false,"osi_approved":true}
+{"identifier":"BSD-2-Clause-pkgconf-disclaimer","full_name":"BSD 2-Clause pkgconf disclaimer variant","url":"https:\/\/spdx.org\/licenses\/BSD-2-Clause-pkgconf-disclaimer.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"BSD-2-Clause-Views","full_name":"BSD 2-Clause with views sentence","url":"https:\/\/spdx.org\/licenses\/BSD-2-Clause-Views.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"BSD-3-Clause","full_name":"BSD 3-Clause \"New\" or \"Revised\" License","url":"https:\/\/spdx.org\/licenses\/BSD-3-Clause.html","fsf_free_libre":true,"osi_approved":true}
 {"identifier":"BSD-3-Clause-acpica","full_name":"BSD 3-Clause acpica variant","url":"https:\/\/spdx.org\/licenses\/BSD-3-Clause-acpica.html","fsf_free_libre":false,"osi_approved":false}
@@ -197,6 +200,7 @@
 {"identifier":"CPOL-1.02","full_name":"Code Project Open License 1.02","url":"https:\/\/spdx.org\/licenses\/CPOL-1.02.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Cronyx","full_name":"Cronyx License","url":"https:\/\/spdx.org\/licenses\/Cronyx.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Crossword","full_name":"Crossword License","url":"https:\/\/spdx.org\/licenses\/Crossword.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"CryptoSwift","full_name":"CryptoSwift License","url":"https:\/\/spdx.org\/licenses\/CryptoSwift.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"CrystalStacker","full_name":"CrystalStacker License","url":"https:\/\/spdx.org\/licenses\/CrystalStacker.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"CUA-OPL-1.0","full_name":"CUA Office Public License v1.0","url":"https:\/\/spdx.org\/licenses\/CUA-OPL-1.0.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"Cube","full_name":"Cube License","url":"https:\/\/spdx.org\/licenses\/Cube.html","fsf_free_libre":false,"osi_approved":false}
@@ -208,6 +212,7 @@
 {"identifier":"DL-DE-BY-2.0","full_name":"Data licence Germany \u2013 attribution \u2013 version 2.0","url":"https:\/\/spdx.org\/licenses\/DL-DE-BY-2.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"DL-DE-ZERO-2.0","full_name":"Data licence Germany \u2013 zero \u2013 version 2.0","url":"https:\/\/spdx.org\/licenses\/DL-DE-ZERO-2.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"DOC","full_name":"DOC License","url":"https:\/\/spdx.org\/licenses\/DOC.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"DocBook-DTD","full_name":"DocBook DTD License","url":"https:\/\/spdx.org\/licenses\/DocBook-DTD.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"DocBook-Schema","full_name":"DocBook Schema License","url":"https:\/\/spdx.org\/licenses\/DocBook-Schema.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"DocBook-Stylesheet","full_name":"DocBook Stylesheet License","url":"https:\/\/spdx.org\/licenses\/DocBook-Stylesheet.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"DocBook-XML","full_name":"DocBook XML License","url":"https:\/\/spdx.org\/licenses\/DocBook-XML.html","fsf_free_libre":false,"osi_approved":false}
@@ -245,10 +250,14 @@
 {"identifier":"FSFAP-no-warranty-disclaimer","full_name":"FSF All Permissive License (without Warranty)","url":"https:\/\/spdx.org\/licenses\/FSFAP-no-warranty-disclaimer.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"FSFUL","full_name":"FSF Unlimited License","url":"https:\/\/spdx.org\/licenses\/FSFUL.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"FSFULLR","full_name":"FSF Unlimited License (with License Retention)","url":"https:\/\/spdx.org\/licenses\/FSFULLR.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"FSFULLRSD","full_name":"FSF Unlimited License (with License Retention and Short Disclaimer)","url":"https:\/\/spdx.org\/licenses\/FSFULLRSD.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"FSFULLRWD","full_name":"FSF Unlimited License (With License Retention and Warranty Disclaimer)","url":"https:\/\/spdx.org\/licenses\/FSFULLRWD.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"FSL-1.1-ALv2","full_name":"Functional Source License, Version 1.1, ALv2 Future License","url":"https:\/\/spdx.org\/licenses\/FSL-1.1-ALv2.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"FSL-1.1-MIT","full_name":"Functional Source License, Version 1.1, MIT Future License","url":"https:\/\/spdx.org\/licenses\/FSL-1.1-MIT.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"FTL","full_name":"Freetype Project License","url":"https:\/\/spdx.org\/licenses\/FTL.html","fsf_free_libre":true,"osi_approved":false}
 {"identifier":"Furuseth","full_name":"Furuseth License","url":"https:\/\/spdx.org\/licenses\/Furuseth.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"fwlw","full_name":"fwlw License","url":"https:\/\/spdx.org\/licenses\/fwlw.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"Game-Programming-Gems","full_name":"Game Programming Gems License","url":"https:\/\/spdx.org\/licenses\/Game-Programming-Gems.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"GCR-docs","full_name":"Gnome GCR Documentation License","url":"https:\/\/spdx.org\/licenses\/GCR-docs.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"GD","full_name":"GD License","url":"https:\/\/spdx.org\/licenses\/GD.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"generic-xts","full_name":"Generic XTS License","url":"https:\/\/spdx.org\/licenses\/generic-xts.html","fsf_free_libre":false,"osi_approved":false}
@@ -287,6 +296,7 @@
 {"identifier":"gtkbook","full_name":"gtkbook License","url":"https:\/\/spdx.org\/licenses\/gtkbook.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Gutmann","full_name":"Gutmann License","url":"https:\/\/spdx.org\/licenses\/Gutmann.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"HaskellReport","full_name":"Haskell Language Report License","url":"https:\/\/spdx.org\/licenses\/HaskellReport.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"HDF5","full_name":"HDF5 License","url":"https:\/\/spdx.org\/licenses\/HDF5.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"hdparm","full_name":"hdparm License","url":"https:\/\/spdx.org\/licenses\/hdparm.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"HIDAPI","full_name":"HIDAPI License","url":"https:\/\/spdx.org\/licenses\/HIDAPI.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Hippocratic-2.1","full_name":"Hippocratic License 2.1","url":"https:\/\/spdx.org\/licenses\/Hippocratic-2.1.html","fsf_free_libre":false,"osi_approved":false}
@@ -337,6 +347,7 @@
 {"identifier":"ISC-Veillard","full_name":"ISC Veillard variant","url":"https:\/\/spdx.org\/licenses\/ISC-Veillard.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Jam","full_name":"Jam License","url":"https:\/\/spdx.org\/licenses\/Jam.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"JasPer-2.0","full_name":"JasPer License","url":"https:\/\/spdx.org\/licenses\/JasPer-2.0.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"jove","full_name":"Jove License","url":"https:\/\/spdx.org\/licenses\/jove.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"JPL-image","full_name":"JPL Image Use Policy","url":"https:\/\/spdx.org\/licenses\/JPL-image.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"JPNIC","full_name":"Japan Network Information Center License","url":"https:\/\/spdx.org\/licenses\/JPNIC.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"JSON","full_name":"JSON License","url":"https:\/\/spdx.org\/licenses\/JSON.html","fsf_free_libre":false,"osi_approved":false}
@@ -356,6 +367,7 @@
 {"identifier":"LGPL-3.0-or-later","full_name":"GNU Lesser General Public License v3.0 or later","url":"https:\/\/spdx.org\/licenses\/LGPL-3.0-or-later.html","fsf_free_libre":true,"osi_approved":true}
 {"identifier":"LGPLLR","full_name":"Lesser General Public License For Linguistic Resources","url":"https:\/\/spdx.org\/licenses\/LGPLLR.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Libpng","full_name":"libpng License","url":"https:\/\/spdx.org\/licenses\/Libpng.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"libpng-1.6.35","full_name":"PNG Reference Library License v1 (for libpng 0.5 through 1.6.35)","url":"https:\/\/spdx.org\/licenses\/libpng-1.6.35.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"libpng-2.0","full_name":"PNG Reference Library version 2","url":"https:\/\/spdx.org\/licenses\/libpng-2.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"libselinux-1.0","full_name":"libselinux public domain notice","url":"https:\/\/spdx.org\/licenses\/libselinux-1.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"libtiff","full_name":"libtiff License","url":"https:\/\/spdx.org\/licenses\/libtiff.html","fsf_free_libre":false,"osi_approved":false}
@@ -386,6 +398,7 @@
 {"identifier":"magaz","full_name":"magaz License","url":"https:\/\/spdx.org\/licenses\/magaz.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"mailprio","full_name":"mailprio License","url":"https:\/\/spdx.org\/licenses\/mailprio.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"MakeIndex","full_name":"MakeIndex License","url":"https:\/\/spdx.org\/licenses\/MakeIndex.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"man2html","full_name":"man2html License","url":"https:\/\/spdx.org\/licenses\/man2html.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Martin-Birgmeier","full_name":"Martin Birgmeier License","url":"https:\/\/spdx.org\/licenses\/Martin-Birgmeier.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"McPhee-slideshow","full_name":"McPhee Slideshow License","url":"https:\/\/spdx.org\/licenses\/McPhee-slideshow.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"metamail","full_name":"metamail License","url":"https:\/\/spdx.org\/licenses\/metamail.html","fsf_free_libre":false,"osi_approved":false}
@@ -435,6 +448,7 @@
 {"identifier":"NetCDF","full_name":"NetCDF license","url":"https:\/\/spdx.org\/licenses\/NetCDF.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Newsletr","full_name":"Newsletr License","url":"https:\/\/spdx.org\/licenses\/Newsletr.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"NGPL","full_name":"Nethack General Public License","url":"https:\/\/spdx.org\/licenses\/NGPL.html","fsf_free_libre":false,"osi_approved":true}
+{"identifier":"ngrep","full_name":"ngrep License","url":"https:\/\/spdx.org\/licenses\/ngrep.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"NICTA-1.0","full_name":"NICTA Public Software License, Version 1.0","url":"https:\/\/spdx.org\/licenses\/NICTA-1.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"NIST-PD","full_name":"NIST Public Domain Notice","url":"https:\/\/spdx.org\/licenses\/NIST-PD.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"NIST-PD-fallback","full_name":"NIST Public Domain Notice with license fallback","url":"https:\/\/spdx.org\/licenses\/NIST-PD-fallback.html","fsf_free_libre":false,"osi_approved":false}
@@ -449,6 +463,7 @@
 {"identifier":"NPL-1.1","full_name":"Netscape Public License v1.1","url":"https:\/\/spdx.org\/licenses\/NPL-1.1.html","fsf_free_libre":true,"osi_approved":false}
 {"identifier":"NPOSL-3.0","full_name":"Non-Profit Open Software License 3.0","url":"https:\/\/spdx.org\/licenses\/NPOSL-3.0.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"NRL","full_name":"NRL License","url":"https:\/\/spdx.org\/licenses\/NRL.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"NTIA-PD","full_name":"NTIA Public Domain Notice","url":"https:\/\/spdx.org\/licenses\/NTIA-PD.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"NTP","full_name":"NTP License","url":"https:\/\/spdx.org\/licenses\/NTP.html","fsf_free_libre":false,"osi_approved":true}
 {"identifier":"NTP-0","full_name":"NTP No Attribution","url":"https:\/\/spdx.org\/licenses\/NTP-0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"O-UDA-1.0","full_name":"Open Use of Data Agreement v1.0","url":"https:\/\/spdx.org\/licenses\/O-UDA-1.0.html","fsf_free_libre":false,"osi_approved":false}
@@ -560,6 +575,7 @@
 {"identifier":"SMPPL","full_name":"Secure Messaging Protocol Public License","url":"https:\/\/spdx.org\/licenses\/SMPPL.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"SNIA","full_name":"SNIA Public License 1.1","url":"https:\/\/spdx.org\/licenses\/SNIA.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"snprintf","full_name":"snprintf License","url":"https:\/\/spdx.org\/licenses\/snprintf.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"SOFA","full_name":"SOFA Software License","url":"https:\/\/spdx.org\/licenses\/SOFA.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"softSurfer","full_name":"softSurfer License","url":"https:\/\/spdx.org\/licenses\/softSurfer.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Soundex","full_name":"Soundex License","url":"https:\/\/spdx.org\/licenses\/Soundex.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Spencer-86","full_name":"Spencer License 86","url":"https:\/\/spdx.org\/licenses\/Spencer-86.html","fsf_free_libre":false,"osi_approved":false}
@@ -572,6 +588,7 @@
 {"identifier":"SSLeay-standalone","full_name":"SSLeay License - standalone","url":"https:\/\/spdx.org\/licenses\/SSLeay-standalone.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"SSPL-1.0","full_name":"Server Side Public License, v 1","url":"https:\/\/spdx.org\/licenses\/SSPL-1.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"SugarCRM-1.1.3","full_name":"SugarCRM Public License v1.1.3","url":"https:\/\/spdx.org\/licenses\/SugarCRM-1.1.3.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"SUL-1.0","full_name":"Sustainable Use License v1.0","url":"https:\/\/spdx.org\/licenses\/SUL-1.0.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Sun-PPP","full_name":"Sun PPP License","url":"https:\/\/spdx.org\/licenses\/Sun-PPP.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Sun-PPP-2000","full_name":"Sun PPP License (2000)","url":"https:\/\/spdx.org\/licenses\/Sun-PPP-2000.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"SunPro","full_name":"SunPro License","url":"https:\/\/spdx.org\/licenses\/SunPro.html","fsf_free_libre":false,"osi_approved":false}
@@ -606,6 +623,8 @@
 {"identifier":"Unicode-TOU","full_name":"Unicode Terms of Use","url":"https:\/\/spdx.org\/licenses\/Unicode-TOU.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"UnixCrypt","full_name":"UnixCrypt License","url":"https:\/\/spdx.org\/licenses\/UnixCrypt.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Unlicense","full_name":"The Unlicense","url":"https:\/\/spdx.org\/licenses\/Unlicense.html","fsf_free_libre":true,"osi_approved":true}
+{"identifier":"Unlicense-libtelnet","full_name":"Unlicense - libtelnet variant","url":"https:\/\/spdx.org\/licenses\/Unlicense-libtelnet.html","fsf_free_libre":false,"osi_approved":false}
+{"identifier":"Unlicense-libwhirlpool","full_name":"Unlicense - libwhirlpool variant","url":"https:\/\/spdx.org\/licenses\/Unlicense-libwhirlpool.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"UPL-1.0","full_name":"Universal Permissive License v1.0","url":"https:\/\/spdx.org\/licenses\/UPL-1.0.html","fsf_free_libre":true,"osi_approved":true}
 {"identifier":"URT-RLE","full_name":"Utah Raster Toolkit Run Length Encoded License","url":"https:\/\/spdx.org\/licenses\/URT-RLE.html","fsf_free_libre":false,"osi_approved":false}
 {"identifier":"Vim","full_name":"Vim License","url":"https:\/\/spdx.org\/licenses\/Vim.html","fsf_free_libre":true,"osi_approved":false}
