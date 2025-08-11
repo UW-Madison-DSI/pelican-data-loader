@@ -7,3 +7,4 @@
 - Optimize for readability and maintainability over cleverness.
 - Do not use nested list comprehensions with 2 or more levels.
 - Avoid using `import *` to prevent namespace pollution.
+- Use `uv run` to run python code
