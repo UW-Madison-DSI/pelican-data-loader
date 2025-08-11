@@ -13,12 +13,12 @@ allow-direct-references = true
 
 [project]
 name = "pelican-data-loader"
-version = "0.1.0"
+version = "0.0.1"
 description = "Pelican Platform backed data loader"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pelicanfs @ git+https://github.com/UW-Madison-DSI/pelicanfs.git",
+    "pelicanfs>=1.2.1",
     "datasets>=3.6.0",
     "httpx>=0.28.1",
     "minio>=7.2.15",
