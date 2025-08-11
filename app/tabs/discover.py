@@ -8,15 +8,14 @@ from pelican_data_loader.db import Dataset
 # Add parent directory to path to import from main
 
 USAGE_CODE_TEMPLATE = """
-from mlcroissant import Dataset
-import itertools
-import pandas as pd
-dataset = Dataset(jsonld="{croissant_jsonld_url}")
+# Consume with Hugging Face's `datasets` package
+from datasets import load_dataset
 
-records = dataset.records("record_set_name")
-for record in records:
-    print(record)
-    break
+dataset = load_dataset("csv", data_files="{pelican_uri}")
+
+# Convert to format of your choice, see https://huggingface.co/docs/datasets/v4.0.0/en/use_with_pytorch
+torch_dataset = dataset.with_format("torch")
+torch_dataset
 """
 
 
@@ -71,9 +70,7 @@ def render_dataset(dataset: Dataset):
 
         metadata_rows = {
             "Name": dataset.name,
-            "Authors/Creators": ", ".join(
-                f"{creator.first_name} {creator.last_name} ({creator.email})" for creator in dataset.creators
-            )
+            "Authors/Creators": ", ".join(f"{creator.first_name} {creator.last_name} ({creator.email})" for creator in dataset.creators)
             if dataset.creators
             else "Not provided",
             "Description": dataset.description or "Not provided",
@@ -84,16 +81,18 @@ def render_dataset(dataset: Dataset):
             "Keywords": dataset.keywords or "Not provided",
             "Primary Source URL": dataset.primary_source_url or "Not provided",
             "Croissant Metadata URL": dataset.croissant_jsonld_url or "Not provided",
+            "Pelican URI": dataset.pelican_uri or "Not provided",
+            "Pelican HTTP URL": dataset.pelican_http_url or "Not provided",
         }
         st.table(metadata_rows)
 
         # Croissant JSON-LD metadata
-        if dataset.croissant_jsonld_url:
-            st.subheader("Consuming Croissant Metadata")
+        if dataset.pelican_uri:
+            st.subheader("Consuming Dataset")
 
-            st.markdown("This currently works, somewhat not recommended due to `mlcroissant` stability issue:")
+            st.markdown("Use Huggingface's dataset with pelican fs")
             st.code(
-                USAGE_CODE_TEMPLATE.format(croissant_jsonld_url=dataset.croissant_jsonld_url),
+                USAGE_CODE_TEMPLATE.format(pelican_uri=dataset.pelican_uri),
             )
             st.markdown("---")
             st.markdown("This is a simpler mockup that will need data uploader identity and NetID integration later:")

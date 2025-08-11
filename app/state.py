@@ -40,6 +40,10 @@ class DatasetInfo(BaseModel):
     s3_file_sha256: str = ""
     s3_metadata_url: str = ""  # URL of the uploaded metadata file
 
+    # Pelican file related
+    pelican_uri: str = ""
+    pelican_http_url: str = ""
+
     def to_mlc_file_object(self) -> mlc.FileObject:
         """Convert DatasetInfo to mlcroissant FileObject."""
 
