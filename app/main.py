@@ -11,7 +11,6 @@ if not typed_state.system_config:
 
 # Main content
 st.title("UW–Madison Dataset Repository (MVP)")
-st.markdown("This prototype demonstrates a MVP design for the UW–Madison dataset repository.")
 
 # Tabs
 tabs_content = {
