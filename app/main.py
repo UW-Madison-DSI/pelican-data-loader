@@ -1,49 +1,28 @@
 import streamlit as st
-from tabs import (
-    render_discover,
-    render_generate,
-    render_info,
-    render_publish,
-    render_upload,
-)
+from tabs import render_discover, render_ingest
 
 from app.state import TypedSessionState
 
+# Setup
+st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="⚙️", layout="wide")
 typed_state = TypedSessionState.get_or_create()
-st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="🥐", layout="wide")
+if not typed_state.system_config:
+    st.error("System configuration not found, check .env file")
 
-st.title("🥐 UW–Madison Dataset Repository (MVP)")
-with st.expander("About this prototype", expanded=False):
-    st.markdown("""
-    This prototype demonstrates a potential design for the UW–Madison dataset repository.
+# Main content
+st.title("UW–Madison Dataset Repository (MVP)")
+st.markdown("This prototype demonstrates a MVP design for the UW–Madison dataset repository.")
 
-    - **Publishing dataset**: Use tabs 1–4 to `Upload File`, `Input dataset info`, `Generate metadata`, and `Publish to UW-Madison Data Repository`. While this could be a single step in production, we've split it into multiple tabs to show the full workflow.
-    - **Exploring datasets**: Use the `Discover Datasets` tab to explore available datasets.
-                
-    """)
-    st.warning(
-        "Note. Currently, only CSV is supported in this MVP. Pelican integration with CHTC is still pending.", icon="⚠️"
-    )
-
-tab_labels = [
-    "📁 Upload File",
-    "📋 Input Dataset Info",
-    "📄 Generate Metadata",
-    "📢 Publish to UW-Madison Data Repository",
-    "👁️ Discover Datasets",
-]
-render_functions = [
-    render_upload,
-    render_info,
-    render_generate,
-    render_publish,
-    render_discover,
-]
-
-tabs = st.tabs(tab_labels)
-for tab, render_function in zip(tabs, render_functions):
+# Tabs
+tabs_content = {
+    "📢 Publish to UW-Madison Data Repository": render_ingest,
+    "👁️ Discover Datasets": render_discover,
+}
+tabs_layout = st.tabs(list(tabs_content.keys()))
+for tab, render_function in zip(tabs_layout, list(tabs_content.values())):
     with tab:
         render_function()
 
+# Footer
 st.markdown("---")
 st.markdown("© 2025 Data Science Institute, University of Wisconsin–Madison")

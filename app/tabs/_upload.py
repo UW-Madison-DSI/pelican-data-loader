@@ -10,23 +10,15 @@ from pelican_data_loader.data import upload_to_s3
 from pelican_data_loader.utils import get_sha256, sanitize_name
 
 
-def render_upload():
-    st.header("Upload CSV File")
-    st.info(
-        "This tab allows you to upload a CSV file containing your dataset to [UW-Madison Research Object S3](https://web.s3.wisc.edu/pelican-data-loader).",
-        icon="ℹ️",
-    )
-
-    # Get SessionState
-    typed_state = TypedSessionState.get_or_create()
-
+def render_upload(state: TypedSessionState):
+    """Render the File Upload block for uploading CSV files and generating metadata."""
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv", help="Upload a CSV file to generate Croissant metadata")
 
     if uploaded_file is not None:
         try:
             df = pd.read_csv(uploaded_file)
             df.columns = [sanitize_name(col) for col in df.columns]
-            typed_state.dataframe = df
+            state.dataframe = df
             st.success(f"Successfully loaded {uploaded_file.name}")
             st.write(f"**Shape:** {df.shape[0]} rows, {df.shape[1]} columns")
 
@@ -53,7 +45,7 @@ def render_upload():
                 icon="⬆️",
                 type="primary",
                 on_click=handle_s3_upload,
-                args=(typed_state.system_config, uploaded_file.name, typed_state),
+                args=(state.system_config, uploaded_file.name, state),
             ):
                 st.success("File uploaded successfully!")
 

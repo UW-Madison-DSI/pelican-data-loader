@@ -30,15 +30,10 @@ list(dataset["train"].take(1))
 
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
-    st.header("Published Datasets")
-    st.info("Explore datasets published to the UW-Madison Data Repository.", icon="ℹ️")
+    st.write("This tab is designed for ***end-users*** to explore datasets available in the UW-Madison Data Repository.")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
-
-    if not typed_state.system_config:
-        st.error("System configuration not found. Please restart the application.")
-        return
 
     try:
         # Get cached database session

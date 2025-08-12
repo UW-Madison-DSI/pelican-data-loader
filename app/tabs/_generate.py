@@ -9,35 +9,30 @@ from app.state import TypedSessionState
 from pelican_data_loader.data import upload_to_s3
 
 
-def render_generate():
+def render_generate(state: TypedSessionState):
     """Render the Generate Metadata tab with configuration summary and metadata generation."""
-    st.header("Generate Croissant Metadata")
-    st.info("Generate Croissant metadata (JSON-LD format), validate it, and upload it to S3.", icon="ℹ️")
 
-    # Get SessionState
-    typed_state = TypedSessionState.get_or_create()
-
-    if typed_state.dataframe is None:
-        st.warning("Please upload a CSV file first in the File Upload tab.")
-    elif not typed_state.dataset_info.name:  # Check if basic info is filled
-        st.warning("Please fill in dataset information in the Dataset Info tab.")
+    if state.dataframe is None:
+        st.warning("You must upload a dataset first.")
+    elif not state.dataset_info.name:
+        st.warning("You must fill in dataset information first.")
     else:
         # Display configuration summary
         st.subheader("Dataset Information")
         st.write("Please review the dataset information below before generating metadata.")
-        st.json(typed_state.dataset_info, expanded=True)
+        st.json(state.dataset_info, expanded=True)
 
         col1, col2, col3 = st.columns(3)
         with col1:
             if st.button("🥐 Generate Croissant Metadata", type="primary"):
                 try:
                     with st.spinner("Generating Croissant metadata..."):
-                        typed_state.generate_mlc_metadata()  # This will save a copy in .generated_metadata
+                        state.generate_mlc_metadata()  # This will save a copy in .generated_metadata
 
                     st.success("✅ Croissant metadata generated successfully!")
                     # Validation
                     try:
-                        issues = typed_state.validate_metadata()
+                        issues = state.validate_metadata()
 
                         if issues.errors:
                             st.error(f"❌ Validation errors found: {len(issues.errors)}")
@@ -56,22 +51,20 @@ def render_generate():
 
                 except Exception as e:
                     st.error(f"Error generating metadata: {str(e)}")
-                    st.error(
-                        "Note: mlcroissant is still not production ready, many typing issues and missing date types... be extra cautious"
-                    )
+                    st.error("Note: mlcroissant is still not production ready, many typing issues and missing date types... be extra cautious")
         with col2:
-            if typed_state.generated_metadata is not None:
+            if state.generated_metadata is not None:
                 st.download_button(
                     label="📥 Download Metadata (JSON-LD)",
-                    data=json.dumps(typed_state.generated_metadata, indent=2),
-                    file_name=f"{typed_state.dataset_info.name.lower().replace(' ', '_')}_metadata.json",
+                    data=json.dumps(state.generated_metadata, indent=2),
+                    file_name=f"{state.dataset_info.name.lower().replace(' ', '_')}_metadata.json",
                     mime="application/json",
                     type="primary",
                 )
 
         with col3:
-            if typed_state.generated_metadata is not None:
-                file_path = typed_state.dataset_info.s3_file_name
+            if state.generated_metadata is not None:
+                file_path = state.dataset_info.s3_file_name
                 if not file_path:
                     st.error("No file path found in dataset information. Please upload a file first.")
 
@@ -85,22 +78,22 @@ def render_generate():
                             st.spinner("Uploading metadata to S3..."),
                             NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f,
                         ):
-                            json.dump(typed_state.generated_metadata, f, indent=2)
+                            json.dump(state.generated_metadata, f, indent=2)
                             f.flush()  # Ensure the file is fully written before uploading
                             upload_to_s3(
                                 file_path=f.name,
-                                bucket_name=typed_state.system_config.s3_bucket_name,
+                                bucket_name=state.system_config.s3_bucket_name,
                                 object_name=meta_data_s3_path,
                             )
                         # Update dataset info with metadata URL
-                        s3_metadata_url = f"{typed_state.system_config.s3_url}/{meta_data_s3_path}"
-                        typed_state.update_dataset_info(s3_metadata_url=s3_metadata_url)
+                        s3_metadata_url = f"{state.system_config.s3_url}/{meta_data_s3_path}"
+                        state.update_dataset_info(s3_metadata_url=s3_metadata_url)
                         st.success(f"Metadata uploaded to: {s3_metadata_url}")
                         sleep(3)
                         st.rerun()  # Refresh the page to update state
                     except Exception as e:
                         st.error(f"Error uploading metadata: {str(e)}")
 
-        if typed_state.generated_metadata is not None:
+        if state.generated_metadata is not None:
             with st.expander("View JSON-LD Metadata", icon="🔍", expanded=False):
-                st.json(typed_state.generated_metadata, expanded=True)
+                st.json(state.generated_metadata, expanded=True)
