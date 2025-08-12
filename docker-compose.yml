@@ -9,6 +9,7 @@ services:
       - ./data:/app/data
     networks:
       - traefik_network
+      - internal_network
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_network"
@@ -28,7 +29,7 @@ services:
       - ./pg_data:/var/lib/postgresql/data
     networks:
       - internal_network
-    ports:
+    ports:  # For remote development (TODO: remove when stable)
       - "$POSTGRES_PORT:5432"
     healthcheck:
       test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
