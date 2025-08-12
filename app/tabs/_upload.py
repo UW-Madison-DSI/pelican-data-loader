@@ -12,45 +12,51 @@ from pelican_data_loader.utils import get_sha256, sanitize_name
 
 def render_upload(state: TypedSessionState):
     """Render the File Upload block for uploading CSV files and generating metadata."""
-    uploaded_file = st.file_uploader("Choose a CSV file", type="csv", help="Upload a CSV file to generate Croissant metadata")
 
-    if uploaded_file is not None:
-        try:
-            df = pd.read_csv(uploaded_file)
-            df.columns = [sanitize_name(col) for col in df.columns]
-            state.dataframe = df
-            st.success(f"Successfully loaded {uploaded_file.name}")
-            st.write(f"**Shape:** {df.shape[0]} rows, {df.shape[1]} columns")
+    st.subheader("Step 2. Upload Dataset")
+    st.markdown(
+        "This step will upload a CSV dataset to [UW-Madison Research Object S3](https://web.s3.wisc.edu/pelican-data-loader).",
+    )
+    with st.container(border=True):
+        uploaded_file = st.file_uploader("Choose a CSV file", type="csv", help="Upload a CSV file to generate Croissant metadata")
 
-            # Show data preview
-            st.subheader("Data Preview")
-            st.dataframe(df.head(10), use_container_width=True)
+        if uploaded_file is not None:
+            try:
+                df = pd.read_csv(uploaded_file)
+                df.columns = [sanitize_name(col) for col in df.columns]
+                state.dataframe = df
+                st.success(f"Successfully loaded {uploaded_file.name}")
+                st.write(f"**Shape:** {df.shape[0]} rows, {df.shape[1]} columns")
 
-            # Show column information
-            st.subheader("Column Information")
-            col_info = pd.DataFrame(
-                {
-                    "Column": df.columns,
-                    "Data Type": df.dtypes,
-                    "Non-Null Count": df.count(),
-                    "Null Count": df.isnull().sum(),
-                }
-            )
-            st.dataframe(col_info, use_container_width=True)
+                # Show data preview
+                st.subheader("Data Preview")
+                st.dataframe(df.head(10), use_container_width=True)
 
-            st.subheader("Upload to S3")
-            st.write("Upload the CSV file to S3 so others can download it.")
-            if st.button(
-                "Upload dataset to S3",
-                icon="⬆️",
-                type="primary",
-                on_click=handle_s3_upload,
-                args=(state.system_config, uploaded_file.name, state),
-            ):
-                st.success("File uploaded successfully!")
+                # Show column information
+                st.subheader("Column Information")
+                col_info = pd.DataFrame(
+                    {
+                        "Column": df.columns,
+                        "Data Type": df.dtypes,
+                        "Non-Null Count": df.count(),
+                        "Null Count": df.isnull().sum(),
+                    }
+                )
+                st.dataframe(col_info, use_container_width=True)
 
-        except Exception as e:
-            st.error(f"Error reading CSV file: {str(e)}")
+                st.subheader("Upload to S3")
+                st.write("Upload the CSV file to S3 so others can download it.")
+                if st.button(
+                    "Upload dataset to S3",
+                    icon="⬆️",
+                    type="primary",
+                    on_click=handle_s3_upload,
+                    args=(state.system_config, uploaded_file.name, state),
+                ):
+                    st.success("File uploaded successfully!")
+
+            except Exception as e:
+                st.error(f"Error reading CSV file: {str(e)}")
 
 
 def handle_s3_upload(config: SystemConfig, file_name: str, typed_state: TypedSessionState) -> None:

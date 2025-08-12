@@ -30,7 +30,7 @@ list(dataset["train"].take(1))
 
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
-    st.write("This tab is designed for ***end-users*** to explore datasets available in the UW-Madison Data Repository.")
+    st.write("Designed for ***end-users*** to explore datasets available in the UW-Madison Data Repository.")
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()

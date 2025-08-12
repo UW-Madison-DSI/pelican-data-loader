@@ -15,8 +15,8 @@ st.markdown("This prototype demonstrates a MVP design for the UW–Madison datas
 
 # Tabs
 tabs_content = {
-    "📢 Publish to UW-Madison Data Repository": render_ingest,
     "👁️ Discover Datasets": render_discover,
+    "📢 Publish to UW-Madison Data Repository": render_ingest,
 }
 tabs_layout = st.tabs(list(tabs_content.keys()))
 for tab, render_function in zip(tabs_layout, list(tabs_content.values())):
