@@ -61,11 +61,13 @@ def guess_primary_url(jsonld: dict, extension_priority: list[str] | None = None)
 
 def parse_creators(jsonld: dict, session: Session | None = None) -> list["Person"]:
     """Parse creators from a JSON-LD document into Person objects."""
-    should_close_session = False
     if not session:
         logging.warning("No session provided, creating a new one with system defaults.")
         session = Session(create_engine(CONFIG.metadata_db_engine_url, echo=True))
         should_close_session = True
+    else:
+        # leave provided session open
+        should_close_session = False
 
     creators_data = jsonld.get("creator", [])
     if isinstance(creators_data, dict):
