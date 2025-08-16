@@ -1,11 +1,3 @@
-[build-system]
-requires = ["uv_build>=0.8.7,<0.9.0"]
-build-backend = "uv_build"
-
-[tool.uv.build-backend]
-module-name = "pelican_data_loader"
-module-root = ""
-
 [project]
 name = "pelican-data-loader"
 version = "0.0.1"
@@ -30,9 +22,17 @@ dependencies = [
     "streamlit>=1.46.1",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "ipykernel>=6.29.5",
     "torch>=2.7.1",
     "torchdata>=0.11.0",
 ]
+
+[build-system]
+requires = ["uv_build>=0.8.7,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "pelican_data_loader"
+module-root = ""
