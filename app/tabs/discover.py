@@ -27,10 +27,20 @@ dataset = load_uw_data({key})
 list(dataset["train"].take(1))
 """
 
+README = """
+Designed for ***end-users*** to explore datasets in the UW–Madison Data Repository. Users can browse interactively and generate code snippets to integrate the datasets into their applications.
+
+Other design references:
+- [Hugging Face Datasets Hub](https://huggingface.co/datasets)
+- [Kaggle datasets](https://www.kaggle.com/datasets)
+- [Google datasets](https://datasetsearch.research.google.com/)
+- [Data.gov](https://data.gov/)
+
+"""
 
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
-    st.write("Designed for ***end-users*** to explore datasets available in the UW-Madison Data Repository.")
+    st.write(README)
 
     # Get SessionState
     typed_state = TypedSessionState.get_or_create()
