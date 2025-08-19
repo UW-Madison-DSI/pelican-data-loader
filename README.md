@@ -18,14 +18,33 @@ Pelican-backed data loader prototype: [demo](https://datasets.services.dsi.wisc.
     torch_dataset = dataset.with_format("torch")
     ```
 
-## Components
+## Features
 
-- [Dev S3 bucket](web.s3.wisc.edu/pelican-data-loader)
-- [pelicanfs](https://github.com/PelicanPlatform/pelicanfs): Caching and CN
-- [mlcroissant](https://github.com/mlcommons/croissant): Add meta-data to dataset, and possibly
-- [DataCite](https://datacite.org/): DOI minting
+- Uses `Croissant` to store / validate metadata
+- Uses `pelicanfs` to locate/cache dataset
+- Uses `datasets` to convert to different ML data format (e.g., pytorch, tensorflow, jax, polars, pyarrow...)
+- Provided dataset storage via UW-Madison's S3
 
-## Notes to self
+### Future features (Pending)
+
+- `doi` minting via [DataCite](https://datacite.org/)
+- better frontend for dataset discover and publishing
+- backup
+- data prefetching? (at pelican layer?)
+- private datasets
+- telemetry?
+
+## Backend
+
+- [WISC-S3](s3://web.s3.wisc.edu/pelican-data-loader), storing
+  - Actual datasets
+  - Croissant JSONLD
+- [Postgres](postgres://services.dsi.wisc.edu:8787), storing
+  - Various metadata
+  - Links to pelican data source
+  - Links to Croissant JSONLD
+
+## Dev notes
 
 - Licenses data: pull from [SPDX](https://spdx.org/licenses/) with `pelican_data_loader.data.pull_license`.
 - minimal csv file croissant generator: `pelican_data_loader.utils.parse_col`.
