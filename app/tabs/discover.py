@@ -30,6 +30,11 @@ list(dataset["train"].take(1))
 README = """
 Designed for ***end-users*** to explore datasets in the UW–Madison Data Repository. Users can browse interactively and generate code snippets to integrate the datasets into their applications.
 
+Future features might include:
+- Semantic search with BEAR
+- Dataset filtering
+- User-friendly data exploration tools
+
 Other design references:
 - [Hugging Face Datasets Hub](https://huggingface.co/datasets)
 - [Kaggle datasets](https://www.kaggle.com/datasets)
