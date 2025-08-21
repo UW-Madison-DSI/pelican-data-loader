@@ -13,7 +13,7 @@ COPY pyproject.toml uv.lock ./
 COPY README.md ./
 COPY pelican_data_loader ./pelican_data_loader
 COPY app ./app
-RUN uv sync --frozen
+RUN uv sync --frozen --no-dev
 
 EXPOSE 8501
 

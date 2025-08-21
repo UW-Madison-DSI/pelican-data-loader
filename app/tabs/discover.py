@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 from sqlmodel import select
 
@@ -11,7 +13,7 @@ USAGE_CODE_TEMPLATE = """
 # Consume with Hugging Face's `datasets` package
 from datasets import load_dataset
 
-dataset = load_dataset("csv", data_files="{pelican_uri}")
+dataset = load_dataset("{file_type}", data_files="{pelican_uri}")
 
 # Convert to format of your choice, see https://huggingface.co/docs/datasets/v4.0.0/en/use_with_pytorch
 torch_dataset = dataset.with_format("torch")
@@ -42,6 +44,7 @@ Other design references:
 - [Data.gov](https://data.gov/)
 
 """
+
 
 def render_discover():
     """Render the view published datasets tab with a list of all datasets in the metadata database."""
@@ -101,8 +104,10 @@ def render_dataset(dataset: Dataset):
             st.subheader("Consuming Dataset")
 
             st.markdown("Use Huggingface's dataset with pelican fs")
+
+            file_type = Path(dataset.pelican_uri).suffix.replace(".", "")
             st.code(
-                USAGE_CODE_TEMPLATE.format(pelican_uri=dataset.pelican_uri),
+                USAGE_CODE_TEMPLATE.format(pelican_uri=dataset.pelican_uri, file_type=file_type),
             )
             st.markdown("---")
             st.markdown("This is a simpler mockup that will need data uploader identity and NetID integration later:")
