@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Any
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -13,17 +12,22 @@ class SystemConfig(BaseSettings):
     wisc_oauth_url: str = ""
     wisc_client_id: str = ""
     wisc_client_secret: str = ""
-    metadata_db_engine_url: str = ""
     pelican_uri_prefix: str = ""
     pelican_http_url_prefix: str = ""
+    postgres_host: str = "postgres"
+    postgres_port: int = 5432
+    postgres_user: str = ""
+    postgres_password: str = ""
+    postgres_db: str = "default"
+
+    @property
+    def metadata_db_engine_url(self) -> str:
+        """Return the metadata database engine URL."""
+        return f"postgresql://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
     @property
     def s3_url(self) -> str:
         return f"{self.s3_endpoint_url}/{self.s3_bucket_name}"
-
-    @property
-    def metadata_db_path(self) -> Path:
-        return Path(self.metadata_db_engine_url.removeprefix("sqlite:///"))
 
     @property
     def storage_options(self) -> dict[str, Any]:
