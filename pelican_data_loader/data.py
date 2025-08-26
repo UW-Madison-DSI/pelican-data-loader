@@ -16,9 +16,10 @@ def get_default_s3_client() -> minio.Minio:
     )
 
 
-def upload_to_s3(file_path: str | Path, bucket_name: str | None = None, object_name: str | None = None) -> None:
+def upload_to_s3(file_path: str | Path, bucket_name: str | None = None, object_name: str | None = None, client: minio.Minio | None = None) -> None:
     """Upload a file to an S3 bucket."""
-    client = get_default_s3_client()
+    if client is None:
+        client = get_default_s3_client()
     file_path = Path(file_path)
     if not object_name:
         object_name = file_path.name

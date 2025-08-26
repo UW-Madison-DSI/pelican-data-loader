@@ -25,6 +25,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "dask>=2025.7.0",
+    "huggingface-hub>=0.34.4",
     "ipykernel>=6.29.5",
     "torch>=2.8.0",
 ]
