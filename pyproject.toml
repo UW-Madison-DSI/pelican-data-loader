@@ -1,5 +1,5 @@
 [project]
-name = "pelican-data-loader"
+name = "uwdf"
 version = "0.0.1"
 description = "Pelican Platform backed data loader"
 readme = "README.md"
