@@ -18,6 +18,8 @@ Pelican-backed data loader prototype: [demo](https://datasets.services.dsi.wisc.
     torch_dataset = dataset.with_format("torch")
     ```
 
+For more detailed example, see this [notebook](https://colab.research.google.com/drive/1vQKS5p-Ykc5hLnFSV4sZjiiuc_z8OkuF?usp=sharing)
+
 ## Features
 
 - Uses `Croissant` to store / validate metadata
