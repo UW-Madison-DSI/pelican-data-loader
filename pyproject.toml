@@ -20,6 +20,7 @@ dependencies = [
     "pydantic-settings>=2.10.1",
     "psycopg2-binary>=2.9.10",
     "streamlit>=1.46.1",
+    "s3fs>=2025.3.0",
 ]
 
 [dependency-groups]
