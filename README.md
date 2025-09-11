@@ -50,3 +50,4 @@ For more detailed example, see this [notebook](https://colab.research.google.com
 
 - Licenses data: pull from [SPDX](https://spdx.org/licenses/) with `pelican_data_loader.data.pull_license`.
 - minimal csv file croissant generator: `pelican_data_loader.utils.parse_col`.
+- For copying data to S3, use `rclone`, it is way faster than python client. Also it support rsync-like functions.
