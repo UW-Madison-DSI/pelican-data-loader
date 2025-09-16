@@ -45,6 +45,7 @@ For more detailed example, see this [notebook](https://colab.research.google.com
   - Various metadata
   - Links to pelican data source
   - Links to Croissant JSONLD
+- [Pelican](pelican://uwdf-director.chtc.wisc.edu/dsi/pytorch)
 
 ## Dev notes
 
