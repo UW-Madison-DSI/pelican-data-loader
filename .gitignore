@@ -4,4 +4,5 @@ tmp/
 tmp.ipynb
 __pycache__/
 .venv/
-uv.lock
+# uv.lock is tracked: app/Dockerfile copies it and runs `uv sync --frozen`,
+# so an untracked lock file makes the image unbuildable from a fresh clone.

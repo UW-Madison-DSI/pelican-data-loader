@@ -1,7 +1,7 @@
 import streamlit as st
-from tabs import render_discover, render_ingest
 
 from app.state import TypedSessionState
+from app.tabs import render_discover, render_ingest
 
 # Setup
 st.set_page_config(page_title="UW–Madison Dataset Repository", page_icon="⚙️", layout="wide")
