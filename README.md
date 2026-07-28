@@ -14,7 +14,7 @@ Pelican-backed data loader prototype: [demo](https://datasets.services.dsi.wisc.
 
     ```python
     from datasets import load_dataset
-    dataset = load_dataset("csv", data_files="pelican://uwdf-director.chtc.wisc.edu/wisc.edu/dsi/pytorch/bird_migration_data.csv")
+    dataset = load_dataset("csv", data_files="pelican://uwdf-director.chtc.wisc.edu/dsi/pytorch/bird_migration_data.csv")
     torch_dataset = dataset.with_format("torch")
     ```
 
