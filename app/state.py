@@ -64,6 +64,7 @@ class TypedSessionState(BaseModel):
     dataframe: pd.DataFrame | None = None
     dataset_info: DatasetInfo = Field(default_factory=DatasetInfo)
     generated_metadata: dict | None = None  # Croissant metadata JSON-LD
+    pending_delete_dataset_id: int | None = None  # Dataset awaiting delete confirmation in the Discover tab
 
     @classmethod
     def get_or_create(cls) -> "TypedSessionState":

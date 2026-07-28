@@ -1,10 +1,12 @@
 from pathlib import Path
+from time import sleep
 
 import streamlit as st
 from sqlmodel import select
 
 from app.db_connection import get_cached_db_session
 from app.state import TypedSessionState
+from pelican_data_loader.data import delete_from_s3, s3_object_name_from_url
 from pelican_data_loader.db import Dataset
 
 # Add parent directory to path to import from main
@@ -69,14 +71,14 @@ def render_discover():
 
         # Display datasets in a expandable format
         for dataset in datasets:
-            render_dataset(dataset)
+            render_dataset(dataset, typed_state)
 
     except Exception as e:
         st.error(f"Error accessing database: {str(e)}")
         st.info("Make sure the database has been initialized and contains data.")
 
 
-def render_dataset(dataset: Dataset):
+def render_dataset(dataset: Dataset, typed_state: TypedSessionState):
     """Renders a single dataset in an expandable format."""
     with st.expander(f"{dataset.name} (v{dataset.version})", icon="📄"):
         st.subheader("Dataset information")
@@ -114,3 +116,68 @@ def render_dataset(dataset: Dataset):
             st.code(
                 USAGE_CODE_TEMPLATE_V2.format(key='"netid/dataset_key"'),
             )
+
+        render_delete(dataset, typed_state)
+
+
+def render_delete(dataset: Dataset, typed_state: TypedSessionState):
+    """Render the delete control for a single dataset, behind a confirmation step."""
+    st.markdown("---")
+    st.subheader("⚠️ Danger zone")
+
+    if typed_state.pending_delete_dataset_id != dataset.id:
+        if st.button("🗑️ Delete dataset", key=f"delete_{dataset.id}"):
+            typed_state.pending_delete_dataset_id = dataset.id
+            st.rerun()
+        return
+
+    st.warning(
+        f"Permanently delete **{dataset.name}** (v{dataset.version})? This removes its record from the "
+        "repository database and deletes its data and metadata files from S3."
+    )
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Confirm delete", key=f"confirm_delete_{dataset.id}", type="primary"):
+            handle_delete(dataset, typed_state)
+    with col2:
+        if st.button("Cancel", key=f"cancel_delete_{dataset.id}"):
+            typed_state.pending_delete_dataset_id = None
+            st.rerun()
+
+
+def handle_delete(dataset: Dataset, typed_state: TypedSessionState):
+    """Delete a dataset's S3 objects, then its database record.
+
+    S3 objects go first: removing them is idempotent, so if the database delete
+    fails the whole operation can be retried without leaving anything behind.
+    """
+    name = dataset.name
+
+    with st.spinner(f"Deleting {name}..."):
+        for label, url in (("data file", dataset.primary_source_url), ("metadata file", dataset.croissant_jsonld_url or "")):
+            object_name = s3_object_name_from_url(url)
+            if object_name is None:
+                st.warning(f"Skipped the {label}: {url or 'no URL recorded'} is not in the configured S3 bucket.")
+                continue
+            try:
+                delete_from_s3(object_name, bucket_name=typed_state.system_config.s3_bucket_name)
+            except Exception as e:
+                st.warning(f"Could not delete the {label} ({object_name}) from S3: {str(e)}")
+
+        # The listing was queried from this cached session, so delete through it to
+        # avoid leaving a stale copy of the row behind.
+        session = get_cached_db_session(typed_state.system_config.metadata_db_engine_url)
+        try:
+            session.delete(dataset)
+            session.commit()
+        except Exception as e:
+            # The session is shared across the app, so an open failed transaction
+            # would break every later query.
+            session.rollback()
+            st.error(f"Error deleting dataset record: {str(e)}")
+            return
+
+    typed_state.pending_delete_dataset_id = None
+    st.success(f"🗑️ Deleted {name}.")
+    sleep(2)
+    st.rerun()
