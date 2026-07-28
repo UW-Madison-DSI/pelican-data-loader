@@ -1,8 +1,7 @@
-[tool.streamlit]
-
 [server]
 port = 8501
-enableCORS = false
+# enableCORS must stay true while enableXsrfProtection is true; Streamlit
+# overrides it otherwise and logs a warning on every start.
 enableXsrfProtection = true
 
 [browser]

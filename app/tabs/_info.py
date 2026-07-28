@@ -1,6 +1,6 @@
 import streamlit as st
-from constant import LICENSES
 
+from app.constant import LICENSES
 from app.state import TypedSessionState
 
 
