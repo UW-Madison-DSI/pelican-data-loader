@@ -1,0 +1,81 @@
+<section id="step4" {% if oob %}hx-swap-oob="true"{% endif %} class="card card-border bg-base-100">
+  <div class="card-body">
+    <header class="flex items-center gap-3">
+      <span class="badge {% if draft.has_metadata %}badge-primary{% else %}badge-ghost{% endif %} badge-lg">4</span>
+      <h2 class="card-title text-lg">Publish to the repository</h2>
+    </header>
+    <p class="text-sm text-base-content/70">
+      Records the dataset in the UW–Madison Data Repository, a secure
+      internal-access PostgreSQL database at services.dsi.wisc.edu.
+    </p>
+
+    {% if not draft.can_publish %}
+      <div role="alert" class="alert alert-warning alert-soft mt-4">
+        <span>
+          {% if draft.validation_errors %}Fix the validation errors in step 3 before publishing.
+          {% else %}Generate metadata in step 3 first.
+          {% endif %}
+        </span>
+      </div>
+    {% else %}
+      {% if not draft.s3_metadata_url %}
+        <div role="alert" class="alert alert-info alert-soft mt-4">
+          <span>
+            The metadata has not been uploaded to S3, so this dataset will be published
+            without a Croissant metadata URL. You can still upload it in step 3 first.
+          </span>
+        </div>
+      {% endif %}
+
+      {# The record is rebuilt on demand rather than cached, so it always reflects
+         the current draft even after going back and changing something. #}
+      <div class="mt-4">
+        <button class="btn btn-outline btn-sm"
+                hx-get="/publish/step4"
+                hx-target="#step4"
+                hx-swap="outerHTML">Refresh pending record</button>
+      </div>
+
+      {% if publish_error %}
+        <div role="alert" class="alert alert-error alert-soft mt-4"><span>{{ publish_error }}</span></div>
+      {% endif %}
+
+      {% if pending %}
+        <details class="collapse collapse-arrow border border-base-300 rounded-box mt-4">
+          <summary class="collapse-title text-sm font-medium">Record pending publication</summary>
+          <div class="collapse-content">
+            <pre class="overflow-x-auto rounded-box bg-neutral p-4 text-xs text-neutral-content"><code>{{ pending | pretty_json }}</code></pre>
+          </div>
+        </details>
+      {% endif %}
+
+      <div class="divider">Publishing options</div>
+      <p class="-mt-2 mb-2 text-xs text-base-content/50">
+        Not yet functional &mdash; shown as a preview of the intended workflow.
+      </p>
+      <div class="space-y-2">
+        {% for label, checked in [
+            ("Make dataset publicly accessible", true),
+            ("Notify creators", true),
+            ("Assign DOI", true),
+            ("Agree to publishing agreement", false),
+        ] %}
+          <label class="flex cursor-pointer items-center gap-2 text-sm">
+            <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" {% if checked %}checked{% endif %} disabled>
+            <span class="text-base-content/70">{{ label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <button class="btn btn-primary mt-6 w-full"
+              hx-post="/publish/publish"
+              hx-target="#step4"
+              hx-swap="outerHTML"
+              hx-disabled-elt="this"
+              hx-indicator="#publish-spinner">
+        Publish dataset
+        <span id="publish-spinner" class="htmx-indicator loading loading-spinner loading-sm"></span>
+      </button>
+    {% endif %}
+  </div>
+</section>

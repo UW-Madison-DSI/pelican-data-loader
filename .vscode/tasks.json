@@ -4,9 +4,24 @@
 		{
 			"label": "demo",
 			"type": "shell",
-			"command": "uv run streamlit run app/main.py",
+			"command": "uv run uvicorn app.main:app --reload --port 8000",
 			"group": "build",
 			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "demo: watch CSS",
+			"detail": "Rebuilds app/static/css/app.css as templates change.",
+			"type": "shell",
+			"command": "bun run watch:css",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "demo: smoke test",
+			"type": "shell",
+			"command": "uv run python app/smoke_test.py",
+			"group": "test",
 			"problemMatcher": []
 		}
 	]

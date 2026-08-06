@@ -1,0 +1,13 @@
+{# Renders either a `flash` dict from the session or a `level`/`message` pair.
+   Class names are literal per branch: Tailwind scans templates as text, so a
+   computed "alert-{{ level }}" would never make it into the stylesheet. #}
+{% set data = flash if flash is defined and flash else {'level': level|default('info'), 'message': message|default('')} %}
+{% if data.message %}
+<div role="alert" class="alert
+    {%- if data.level == 'success' %} alert-success
+    {%- elif data.level == 'warning' %} alert-warning
+    {%- elif data.level == 'error' %} alert-error
+    {%- else %} alert-info{% endif %} alert-soft">
+  <span class="whitespace-pre-line">{{ data.message }}</span>
+</div>
+{% endif %}

@@ -1,0 +1,8 @@
+{# Re-rendered out-of-band by every step response, so progress stays correct
+   without any single step needing to know about the others. #}
+<ul id="stepper" {% if oob %}hx-swap-oob="true"{% endif %} class="steps steps-horizontal w-full">
+  <li class="step {% if draft.metadata_complete %}step-primary{% endif %}">Describe</li>
+  <li class="step {% if draft.data_uploaded %}step-primary{% endif %}">Upload</li>
+  <li class="step {% if draft.has_metadata %}step-primary{% endif %}">Generate metadata</li>
+  <li class="step {% if draft.published_dataset_id %}step-primary{% endif %}">Publish</li>
+</ul>

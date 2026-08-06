@@ -1,0 +1,27 @@
+{# Step two of two. #}
+<div id="danger-zone">
+  <div role="alert" class="alert alert-warning alert-soft">
+    <span>
+      Permanently delete <strong>{{ dataset.name }}</strong> (v{{ dataset.version }})?
+      This removes its record from the repository database and deletes its data and
+      metadata files from S3.
+    </span>
+  </div>
+  <div class="mt-3 flex gap-2">
+    {# afterbegin, not innerHTML: a failure alert is prepended and the buttons
+       stay put so the delete can be retried. Success sends HX-Redirect instead. #}
+    <button class="btn btn-error btn-sm"
+            hx-delete="/datasets/{{ dataset.id }}"
+            hx-target="#danger-zone"
+            hx-swap="afterbegin"
+            hx-disabled-elt="this"
+            hx-indicator="#delete-spinner">
+      Confirm delete
+      <span id="delete-spinner" class="htmx-indicator loading loading-spinner loading-xs"></span>
+    </button>
+    <button class="btn btn-ghost btn-sm"
+            hx-get="/datasets/{{ dataset.id }}/delete-cancel"
+            hx-target="#danger-zone"
+            hx-swap="outerHTML">Cancel</button>
+  </div>
+</div>

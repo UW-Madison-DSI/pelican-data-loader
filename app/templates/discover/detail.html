@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}{{ dataset.name }} &middot; UW–Madison Dataset Repository{% endblock %}
+
+{% block content %}
+<nav class="breadcrumbs mb-4 text-sm">
+  <ul>
+    <li><a href="/" class="link link-hover">Discover</a></li>
+    <li class="text-base-content/60">{{ dataset.name }}</li>
+  </ul>
+</nav>
+
+<header class="mb-8">
+  <div class="flex flex-wrap items-start justify-between gap-4">
+    <div class="min-w-0">
+      <h1 class="text-3xl font-bold tracking-tight">{{ dataset.name }}</h1>
+      <p class="mt-2 max-w-3xl text-base-content/70">{{ dataset.description or "No description provided." }}</p>
+    </div>
+    <span class="badge badge-primary badge-lg">v{{ dataset.version }}</span>
+  </div>
+
+  {% if dataset.keywords %}
+    <div class="mt-4 flex flex-wrap gap-1">
+      {% for keyword in dataset.keywords %}
+        <a href="/datasets?keyword={{ keyword | urlencode }}" class="badge badge-ghost badge-sm hover:badge-primary">{{ keyword }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</header>
+
+<div class="grid gap-6 lg:grid-cols-3">
+
+  {# ------------------------------------------------------------------ #}
+  {# Consuming the dataset — the thing most visitors came for.           #}
+  {# ------------------------------------------------------------------ #}
+  <section class="lg:col-span-2 space-y-6">
+    {% if dataset.pelican_uri %}
+      <div class="card card-border bg-base-100">
+        <div class="card-body">
+          <h2 class="card-title text-lg">Use this dataset</h2>
+          <p class="text-sm text-base-content/70">
+            Load it over the Pelican Platform with Hugging Face
+            <code class="text-xs">datasets</code>.
+          </p>
+          {% set code %}
+# Consume with Hugging Face's `datasets` package
+from datasets import load_dataset
+
+dataset = load_dataset("{{ dataset.file_type }}", data_files="{{ dataset.pelican_uri }}")
+
+# Convert to the format of your choice, see
+# https://huggingface.co/docs/datasets/use_with_pytorch
+torch_dataset = dataset.with_format("torch")
+torch_dataset
+{% endset %}
+          {% with code=code.strip() %}{% include "partials/_code_block.html" %}{% endwith %}
+
+          <div class="divider my-2 text-xs">planned</div>
+          <p class="text-sm text-base-content/70">
+            A shorter form is planned once uploader identity and NetID integration land:
+          </p>
+          {% set code_v2 %}
+from pelican_data_loader import load_uw_data
+dataset = load_uw_data("netid/dataset_key")
+
+# Display the first record
+list(dataset["train"].take(1))
+{% endset %}
+          {% with code=code_v2.strip() %}{% include "partials/_code_block.html" %}{% endwith %}
+          <p class="text-xs text-base-content/50">
+            Not yet implemented &mdash; shown as a preview of the intended interface.
+          </p>
+        </div>
+      </div>
+    {% else %}
+      <div role="alert" class="alert alert-warning alert-soft">
+        <span>This dataset has no Pelican URI recorded, so there is no load snippet for it.</span>
+      </div>
+    {% endif %}
+
+    {# ---------------------------------------------------------------- #}
+    {# Danger zone                                                       #}
+    {# ---------------------------------------------------------------- #}
+    <div class="card card-border border-error/40 bg-base-100">
+      <div class="card-body">
+        <h2 class="card-title text-lg text-error">Danger zone</h2>
+        {% with dataset_id=dataset.id %}{% include "discover/_delete_button.html" %}{% endwith %}
+      </div>
+    </div>
+  </section>
+
+  {# ------------------------------------------------------------------ #}
+  {# Metadata                                                            #}
+  {# ------------------------------------------------------------------ #}
+  <aside class="space-y-6">
+    <div class="card card-border bg-base-100">
+      <div class="card-body">
+        <h2 class="card-title text-lg">Dataset information</h2>
+        <dl class="divide-y divide-base-300 text-sm">
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">Version</dt>
+            <dd class="col-span-2 break-words">{{ dataset.version }}</dd>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">Published</dt>
+            <dd class="col-span-2 break-words">{{ dataset.published_date }}</dd>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">License</dt>
+            <dd class="col-span-2 break-words">
+              {% if dataset.license %}
+                <a href="{{ dataset.license }}" class="link link-primary" target="_blank" rel="noopener">
+                  {{ license_label(dataset.license) }}
+                </a>
+              {% else %}Not provided{% endif %}
+            </dd>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">Authors</dt>
+            <dd class="col-span-2 break-words">
+              {% if dataset.creators %}
+                <ul class="space-y-1">
+                  {% for creator in dataset.creators %}
+                    <li>
+                      {{ creator.first_name }} {{ creator.last_name }}
+                      <a href="mailto:{{ creator.email }}" class="link link-hover text-base-content/60">({{ creator.email }})</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}Not provided{% endif %}
+            </dd>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">Keywords</dt>
+            <dd class="col-span-2 break-words">{{ dataset.keywords | join(', ') or "Not provided" }}</dd>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-2">
+            <dt class="text-base-content/60">SHA256</dt>
+            <dd class="col-span-2 break-all font-mono text-xs" title="{{ dataset.primary_source_sha256 }}">
+              {% if dataset.primary_source_sha256 %}{{ dataset.primary_source_sha256 | short_sha }}&hellip;{% else %}Not provided{% endif %}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card card-border bg-base-100">
+      <div class="card-body">
+        <h2 class="card-title text-lg">Locations</h2>
+        <dl class="divide-y divide-base-300 text-sm">
+          {% for label, value, linkable in [
+              ("Primary source", dataset.primary_source_url, true),
+              ("Croissant metadata", dataset.croissant_jsonld_url, true),
+              ("Pelican URI", dataset.pelican_uri, false),
+              ("Pelican HTTP URL", dataset.pelican_http_url, true),
+          ] %}
+            <div class="py-2">
+              <dt class="text-base-content/60">{{ label }}</dt>
+              <dd class="mt-0.5 break-all font-mono text-xs">
+                {% if not value %}
+                  <span class="font-sans text-base-content/50">Not provided</span>
+                {% elif linkable %}
+                  <a href="{{ value }}" class="link link-primary" target="_blank" rel="noopener">{{ value }}</a>
+                {% else %}
+                  {{ value }}
+                {% endif %}
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}

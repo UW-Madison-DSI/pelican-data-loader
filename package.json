@@ -1,0 +1,19 @@
+{
+  "name": "uwdf-app",
+  "private": true,
+  "description": "Front-end assets for the UW-Madison Dataset Repository demo",
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "daisyui": "5.7.16",
+    "htmx.org": "2.0.10"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i app/static/src/app.css -o app/static/css/app.css --minify",
+    "watch:css": "tailwindcss -i app/static/src/app.css -o app/static/css/app.css --watch",
+    "vendor:js": "mkdir -p app/static/js && cp node_modules/htmx.org/dist/htmx.min.js app/static/js/htmx.min.js",
+    "build": "bun run build:css && bun run vendor:js"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
+}

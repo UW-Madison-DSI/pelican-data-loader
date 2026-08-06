@@ -7,8 +7,13 @@ services:
       - .env
     environment:
       - POSTGRES_HOST=postgres
+      # Traefik terminates TLS, so the session cookie can be Secure.
+      - APP_HTTPS_ONLY=1
     volumes:
       - ./data:/app/data
+      # In-progress publish drafts hold the uploaded CSV. On a named volume they
+      # survive a redeploy, so an interrupted upload can actually be retried.
+      - draft_data:/app/var/drafts
     networks:
       - traefik_network
       - internal_network
@@ -19,8 +24,14 @@ services:
       - "traefik.http.routers.clo36-datasets-demo.entrypoints=websecure"
       - "traefik.http.routers.clo36-datasets-demo.tls=true"
       - "traefik.http.routers.clo36-datasets-demo.tls.certresolver=myresolver"
+      # Stated explicitly rather than inferred from EXPOSE: an inference mismatch
+      # after a port change shows up only as a silent 502.
+      - "traefik.http.services.clo36-datasets-demo.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      # /healthz deliberately does not touch Postgres, so a database blip cannot
+      # make Docker restart an app that is serving pages fine. Uses python rather
+      # than curl, which is not in the image.
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz', timeout=5).status == 200 else 1)"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -58,3 +69,6 @@ networks:
     external: true
   internal_network:
     driver: bridge
+
+volumes:
+  draft_data:

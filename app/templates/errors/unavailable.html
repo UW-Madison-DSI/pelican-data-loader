@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Repository unavailable &middot; UW–Madison Dataset Repository{% endblock %}
+{% block content %}
+{# Served at HTTP 200 on purpose: htmx does not swap error responses, and a 5xx
+   here would make the page look frozen rather than explain itself. #}
+<div class="mx-auto max-w-2xl py-16">
+  <div role="alert" class="alert alert-error alert-soft">
+    <div>
+      <p class="font-medium">The repository database is unreachable.</p>
+      <p class="mt-1 text-sm opacity-80">{{ db_error }}</p>
+    </div>
+  </div>
+  <div class="mt-6 rounded-box border border-base-300 bg-base-100 p-6 text-sm">
+    <p class="font-medium">Things to check</p>
+    <ul class="mt-2 list-inside list-disc space-y-1 text-base-content/70">
+      <li>Postgres is running and reachable from this container.</li>
+      <li><code>POSTGRES_HOST</code>, <code>POSTGRES_USER</code>, <code>POSTGRES_PASSWORD</code> and
+          <code>POSTGRES_DB</code> are set in <code>.env</code>.</li>
+      <li>The tables exist &mdash; run <code>initialize_database()</code> once against a fresh database.</li>
+      <li>For local development without Postgres, set
+          <code>APP_DATABASE_URL=sqlite:///./dev.db</code>.</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

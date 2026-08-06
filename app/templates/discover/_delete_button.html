@@ -1,0 +1,12 @@
+{# Step one of two. Deliberately not hx-confirm: the confirmation needs to spell
+   out that S3 files go too, which a browser dialog cannot do well. #}
+<div id="danger-zone">
+  <p class="text-sm text-base-content/70">
+    Deleting removes this dataset from the repository database and deletes its data
+    and metadata files from S3.
+  </p>
+  <button class="btn btn-error btn-outline btn-sm mt-3"
+          hx-get="/datasets/{{ dataset_id }}/delete-confirm"
+          hx-target="#danger-zone"
+          hx-swap="outerHTML">Delete dataset</button>
+</div>

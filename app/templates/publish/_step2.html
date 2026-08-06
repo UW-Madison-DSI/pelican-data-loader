@@ -1,0 +1,101 @@
+<section id="step2" {% if oob %}hx-swap-oob="true"{% endif %} class="card card-border bg-base-100">
+  <div class="card-body">
+    <header class="flex items-center gap-3">
+      <span class="badge {% if draft.metadata_complete %}badge-primary{% else %}badge-ghost{% endif %} badge-lg">2</span>
+      <h2 class="card-title text-lg">Upload the data file</h2>
+      {% if draft.data_uploaded %}
+        <span class="badge badge-success badge-soft badge-sm ml-auto">In S3</span>
+      {% endif %}
+    </header>
+    <p class="text-sm text-base-content/70">
+      Upload a CSV. Column names are sanitized to valid identifiers, because they
+      become Croissant field ids.
+    </p>
+
+    <form class="mt-4"
+          hx-post="/publish/upload"
+          hx-encoding="multipart/form-data"
+          hx-target="#step2"
+          hx-swap="outerHTML"
+          hx-indicator="#csv-spinner"
+          hx-disabled-elt="find button[type='submit']">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="flex flex-wrap items-center gap-3">
+        <input type="file" name="file" accept=".csv,text/csv" required
+               class="file-input file-input-bordered file-input-sm max-w-xs">
+        <button type="submit" class="btn btn-primary btn-sm">
+          Read file
+          <span id="csv-spinner" class="htmx-indicator loading loading-spinner loading-xs"></span>
+        </button>
+      </div>
+      <p class="mt-2 text-xs text-base-content/50">Maximum {{ settings.max_upload_mb }} MB.</p>
+    </form>
+
+    {% if upload_error %}
+      <div role="alert" class="alert alert-error alert-soft mt-4">
+        <span>{{ upload_error }}</span>
+      </div>
+    {% endif %}
+
+    {% if draft.has_csv %}
+      <div class="divider">{{ draft.source_file_name }}</div>
+
+      <div class="stats stats-horizontal border border-base-300 w-full">
+        <div class="stat py-3">
+          <div class="stat-title text-xs">Rows</div>
+          <div class="stat-value text-2xl">{{ "{:,}".format(draft.row_count) }}</div>
+        </div>
+        <div class="stat py-3">
+          <div class="stat-title text-xs">Columns</div>
+          <div class="stat-value text-2xl">{{ draft.column_count }}</div>
+        </div>
+      </div>
+
+      <div class="mt-4 grid gap-4 xl:grid-cols-2">
+        <details class="collapse collapse-arrow border border-base-300 rounded-box" open>
+          <summary class="collapse-title text-sm font-medium">Data preview (first 10 rows)</summary>
+          <div class="collapse-content">
+            <div class="overflow-x-auto">
+              <table class="table table-zebra table-xs">
+                <thead>
+                  <tr>{% for column in draft.preview_columns %}<th>{{ column }}</th>{% endfor %}</tr>
+                </thead>
+                <tbody>
+                  {% for row in draft.preview_rows %}
+                    <tr>{% for cell in row %}<td class="whitespace-nowrap">{{ cell }}</td>{% endfor %}</tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="collapse collapse-arrow border border-base-300 rounded-box">
+          <summary class="collapse-title text-sm font-medium">Column information</summary>
+          <div class="collapse-content">
+            <div class="overflow-x-auto">
+              <table class="table table-xs">
+                <thead>
+                  <tr><th>Column</th><th>Data type</th><th class="text-right">Non-null</th><th class="text-right">Null</th></tr>
+                </thead>
+                <tbody>
+                  {% for column in draft.columns %}
+                    <tr>
+                      <td class="font-mono">{{ column.name }}</td>
+                      <td>{{ column.dtype }}</td>
+                      <td class="text-right">{{ "{:,}".format(column.non_null) }}</td>
+                      <td class="text-right {% if column.null_count %}text-warning{% endif %}">{{ "{:,}".format(column.null_count) }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="divider">Send to S3</div>
+      {% include "publish/_s3_status.html" with context %}
+    {% endif %}
+  </div>
+</section>
