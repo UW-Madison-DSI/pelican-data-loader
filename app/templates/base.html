@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="uwmadison">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}UW–Madison Dataset Repository{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', path='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+  <script src="{{ url_for('static', path='js/htmx.min.js') }}" defer></script>
+  <script src="{{ url_for('static', path='js/app.js') }}" defer></script>
+</head>
+{# hx-headers puts the CSRF token on every htmx request, so individual forms
+   only need the hidden field when they are also usable without JavaScript. #}
+<body class="min-h-screen flex flex-col bg-base-200"
+      hx-headers='{"X-CSRF-Token": "{{ csrf_token }}"}'>
+
+  <header class="navbar bg-base-100 border-b border-base-300 px-4 lg:px-8 gap-2">
+    <div class="flex-1 min-w-0">
+      <a href="/" class="flex items-center gap-3 group">
+        <span class="grid size-9 shrink-0 place-items-center rounded-md bg-primary text-primary-content font-bold">W</span>
+        <span class="min-w-0">
+          <span class="block truncate font-semibold leading-tight">UW–Madison Dataset Repository</span>
+          <span class="block text-xs text-base-content/60 leading-tight">Data Science Institute &middot; MVP</span>
+        </span>
+      </a>
+    </div>
+    <nav class="flex items-center gap-1">
+      <a href="/" class="btn btn-ghost btn-sm {% if active_nav == 'discover' %}btn-active{% endif %}">Discover</a>
+      <a href="/publish" class="btn btn-ghost btn-sm {% if active_nav == 'publish' %}btn-active{% endif %}">Publish</a>
+      <a href="/about" class="btn btn-ghost btn-sm hidden sm:inline-flex {% if active_nav == 'about' %}btn-active{% endif %}">About</a>
+      <button type="button" class="btn btn-ghost btn-sm btn-square" data-theme-toggle
+              aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span aria-hidden="true" data-theme-icon>&#9788;</span>
+      </button>
+    </nav>
+  </header>
+
+  {% set flash = request.session.pop('flash', None) %}
+  {% if flash %}
+    <div class="mx-auto w-full max-w-7xl px-4 lg:px-8 pt-4">
+      {% include "partials/_alert.html" with context %}
+    </div>
+  {% endif %}
+
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer footer-center border-t border-base-300 bg-base-100 p-6 text-sm text-base-content/60">
+    <aside>
+      <p>&copy; 2026 Data Science Institute, University of Wisconsin–Madison</p>
+    </aside>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{# A new CSV invalidates the generated metadata, so steps 3 and 4 are refreshed. #}
+{% include "publish/_step2.html" with context %}
+{% with oob=true %}
+  {% include "publish/_stepper.html" %}
+  {% include "publish/_step3.html" %}
+  {% include "publish/_step4.html" %}
+{% endwith %}

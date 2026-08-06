@@ -1,0 +1,39 @@
+{# One dataset in the grid. A plain <a> so the card works without JavaScript. #}
+<article class="card card-border bg-base-100 transition-shadow hover:shadow-md">
+  <div class="card-body gap-3 tracking-widest">
+    <div class="flex items-start justify-between gap-2">
+      <h3 class="card-title text-base leading-snug">
+        <a href="/datasets/{{ dataset.id }}" class="link link-hover">{{ dataset.name }}</a>
+      </h3>
+      <span class="badge badge-primary badge-soft badge-sm shrink-0">v{{ dataset.version }}</span>
+    </div>
+
+    <p class="line-clamp-3 text-sm text-base-content/70">
+      {{ dataset.description or "No description provided." }}
+    </p>
+
+    {% if dataset.creators %}
+      <p class="truncate text-xs text-base-content/60">
+        {%- for creator in dataset.creators -%}
+          {{ creator.first_name }} {{ creator.last_name }}{{ ", " if not loop.last }}
+        {%- endfor -%}
+      </p>
+    {% endif %}
+
+    {% if dataset.keywords %}
+      <div class="flex flex-wrap gap-1">
+        {% for keyword in dataset.keywords[:4] %}
+          <span class="badge badge-ghost badge-sm">{{ keyword }}</span>
+        {% endfor %}
+        {% if dataset.keywords | length > 4 %}
+          <span class="badge badge-ghost badge-sm">+{{ dataset.keywords | length - 4 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="mt-1 flex items-center justify-between border-t border-base-300 pt-3 text-xs text-base-content/60">
+      <span title="{{ dataset.license }}">{{ license_label(dataset.license) }}</span>
+      <span>{{ dataset.published_date }}</span>
+    </div>
+  </div>
+</article>

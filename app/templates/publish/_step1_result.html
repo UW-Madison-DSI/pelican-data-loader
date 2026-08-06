@@ -1,0 +1,9 @@
+{# Primary swap: step 1 itself. Then steps 3 and 4 out-of-band, because saving
+   details changes whether they are unlocked. #}
+{% include "publish/_step1.html" with context %}
+{% with oob=true %}
+  {% include "publish/_stepper.html" %}
+  {% include "publish/_step2.html" %}
+  {% include "publish/_step3.html" %}
+  {% include "publish/_step4.html" %}
+{% endwith %}

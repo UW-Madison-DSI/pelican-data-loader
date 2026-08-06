@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import minio
+from minio.helpers import ProgressType
 
 from .config import SYSTEM_CONFIG
 
@@ -16,8 +17,18 @@ def get_default_s3_client() -> minio.Minio:
     )
 
 
-def upload_to_s3(file_path: str | Path, bucket_name: str | None = None, object_name: str | None = None, client: minio.Minio | None = None) -> None:
-    """Upload a file to an S3 bucket."""
+def upload_to_s3(
+    file_path: str | Path,
+    bucket_name: str | None = None,
+    object_name: str | None = None,
+    client: minio.Minio | None = None,
+    progress: ProgressType | None = None,
+) -> None:
+    """Upload a file to an S3 bucket.
+
+    Uploading a large file takes minutes, so `progress` accepts anything with
+    `set_meta(object_name, total_length)` and `update(length)` to report bytes sent.
+    """
     if client is None:
         client = get_default_s3_client()
     file_path = Path(file_path)
@@ -27,7 +38,7 @@ def upload_to_s3(file_path: str | Path, bucket_name: str | None = None, object_n
     if not bucket_name:
         bucket_name = SYSTEM_CONFIG.s3_bucket_name
 
-    client.fput_object(bucket_name, object_name, str(file_path))
+    client.fput_object(bucket_name, object_name, str(file_path), progress=progress)
 
 
 def delete_from_s3(object_name: str, bucket_name: str | None = None, client: minio.Minio | None = None) -> None:

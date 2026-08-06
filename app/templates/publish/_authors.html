@@ -1,0 +1,45 @@
+{# Swapped on its own by add/remove, so the rest of the step-1 form keeps whatever
+   the user has typed but not yet saved. #}
+<div id="authors">
+  {% if draft.authors %}
+    <ul class="mb-4 divide-y divide-base-300 rounded-box border border-base-300">
+      {% for author in draft.authors %}
+        <li class="flex items-center gap-3 px-3 py-2">
+          <span class="flex-1 min-w-0">
+            <span class="block truncate text-sm font-medium">{{ author.name }}</span>
+            <span class="block truncate text-xs text-base-content/60">{{ author.email }}</span>
+          </span>
+          <button type="button" class="btn btn-ghost btn-xs text-error"
+                  hx-delete="/publish/authors/{{ loop.index0 }}"
+                  hx-target="#authors"
+                  hx-swap="outerHTML"
+                  aria-label="Remove {{ author.name }}">Remove</button>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="mb-4 text-sm text-base-content/60">
+      No authors added yet. Croissant records creators with both a name and an email.
+    </p>
+  {% endif %}
+
+  <form class="flex flex-wrap items-end gap-2"
+        hx-post="/publish/authors"
+        hx-target="#authors"
+        hx-swap="outerHTML">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label class="floating-label flex-1 min-w-40">
+      <span>Name</span>
+      <input type="text" name="author_name" placeholder="Bucky Badger" class="input input-bordered w-full input-sm">
+    </label>
+    <label class="floating-label flex-1 min-w-40">
+      <span>Email</span>
+      <input type="email" name="author_email" placeholder="bucky@wisc.edu" class="input input-bordered w-full input-sm">
+    </label>
+    <button type="submit" class="btn btn-outline btn-sm">Add author</button>
+  </form>
+
+  {% if author_error %}
+    <p class="mt-2 text-xs text-error">{{ author_error }}</p>
+  {% endif %}
+</div>

@@ -1,0 +1,65 @@
+{# Polls itself while the upload runs. The terminal render omits hx-trigger
+   entirely, which is how the polling stops -- there is nothing to switch off. #}
+<div id="s3-status"
+     {% if draft.upload_state.value == 'running' %}
+     hx-get="/publish/s3-upload/status"
+     hx-trigger="every 1500ms"
+     hx-target="this"
+     hx-swap="outerHTML"
+     {% endif %}>
+
+  {% if message %}
+    <div role="alert" class="alert alert-warning alert-soft mb-3"><span>{{ message }}</span></div>
+  {% endif %}
+
+  {% if draft.upload_state.value == 'running' %}
+    <div class="flex items-center gap-3">
+      <progress class="progress progress-primary flex-1" value="{{ draft.upload_pct }}" max="100"></progress>
+      <span class="w-12 text-right text-sm tabular-nums">{{ draft.upload_pct }}%</span>
+    </div>
+    <p class="mt-2 text-sm text-base-content/60">
+      Uploading {{ draft.source_file_name }} &mdash; this keeps running if you reload the page.
+    </p>
+
+  {% elif draft.upload_state.value == 'done' %}
+    <div role="alert" class="alert alert-success alert-soft">
+      <span>Uploaded to S3.</span>
+    </div>
+    <dl class="mt-3 space-y-1 text-xs">
+      {% for label, value in [
+          ("Object URL", draft.s3_file_url),
+          ("SHA256", draft.s3_file_sha256),
+          ("Pelican URI", draft.pelican_uri),
+          ("Pelican HTTP URL", draft.pelican_http_url),
+      ] %}
+        <div class="grid grid-cols-[9rem_1fr] gap-2">
+          <dt class="text-base-content/60">{{ label }}</dt>
+          <dd class="break-all font-mono">{{ value or "—" }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+    <button class="btn btn-ghost btn-xs mt-3"
+            hx-post="/publish/s3-upload"
+            hx-target="#s3-status"
+            hx-swap="outerHTML">Re-upload</button>
+
+  {% elif draft.upload_state.value in ('error', 'interrupted') %}
+    <div role="alert" class="alert alert-error alert-soft">
+      <span>{{ draft.upload_error or "The upload did not finish." }}</span>
+    </div>
+    <button class="btn btn-primary btn-sm mt-3"
+            hx-post="/publish/s3-upload"
+            hx-target="#s3-status"
+            hx-swap="outerHTML">Retry upload</button>
+
+  {% else %}
+    <p class="text-sm text-base-content/70">
+      Upload the CSV to S3 so others can download it. Large files take several minutes.
+    </p>
+    <button class="btn btn-primary btn-sm mt-3"
+            hx-post="/publish/s3-upload"
+            hx-target="#s3-status"
+            hx-swap="outerHTML"
+            hx-disabled-elt="this">Upload to S3</button>
+  {% endif %}
+</div>

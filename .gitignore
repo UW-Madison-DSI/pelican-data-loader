@@ -6,3 +6,13 @@ __pycache__/
 .venv/
 # uv.lock is tracked: app/Dockerfile copies it and runs `uv sync --frozen`,
 # so an untracked lock file makes the image unbuildable from a fresh clone.
+
+# Front-end build output. Generated from app/static/src/app.css and the templates
+# on every `bun run build`; committing it would produce a large diff on each
+# template edit. bun.lock is tracked instead, so builds stay reproducible.
+node_modules/
+app/static/css/
+app/static/js/htmx.min.js
+
+# In-progress publish drafts (uploaded CSVs and their metadata).
+var/

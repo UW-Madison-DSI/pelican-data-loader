@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Something went wrong &middot; UW–Madison Dataset Repository{% endblock %}
+{% block content %}
+<div class="py-20 text-center">
+  <p class="text-6xl font-bold text-error">{{ status_code | default(500) }}</p>
+  <h1 class="mt-4 text-2xl font-semibold">Something went wrong</h1>
+  <p class="mt-2 text-base-content/70">{{ detail or "The server could not complete that request." }}</p>
+  <a href="/" class="btn btn-primary mt-6">Back to Discover</a>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<section id="step1" {% if oob %}hx-swap-oob="true"{% endif %} class="card card-border bg-base-100">
+  <div class="card-body">
+    <header class="flex items-center gap-3">
+      <span class="badge badge-primary badge-lg">1</span>
+      <h2 class="card-title text-lg">Describe the dataset</h2>
+      {% if draft.metadata_complete %}
+        <span class="badge badge-success badge-soft badge-sm ml-auto">Saved</span>
+      {% endif %}
+    </header>
+
+    <form class="mt-4"
+          hx-post="/publish/step1"
+          hx-target="#step1"
+          hx-swap="outerHTML"
+          hx-disabled-elt="find button[type='submit']">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="md:col-span-2">
+          <label class="floating-label">
+            <span>Dataset name</span>
+            <input type="text" name="name" value="{{ draft.name }}" required
+                   placeholder="A human-readable name for the dataset"
+                   class="input input-bordered w-full {% if errors and errors.name %}input-error{% endif %}">
+          </label>
+          {% if errors and errors.name %}<p class="mt-1 text-xs text-error">{{ errors.name }}</p>{% endif %}
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="floating-label">
+            <span>Description</span>
+            <textarea name="description" rows="3"
+                      placeholder="A detailed description of the dataset"
+                      class="textarea textarea-bordered w-full">{{ draft.description }}</textarea>
+          </label>
+        </div>
+
+        <div>
+          <label class="floating-label">
+            <span>Version</span>
+            <input type="text" name="version" value="{{ draft.version }}" required
+                   placeholder="e.g. 1.0.0"
+                   class="input input-bordered w-full {% if errors and errors.version %}input-error{% endif %}">
+          </label>
+          {% if errors and errors.version %}<p class="mt-1 text-xs text-error">{{ errors.version }}</p>{% endif %}
+        </div>
+
+        <div>
+          <label class="floating-label">
+            <span>License</span>
+            <select name="license" required
+                    class="select select-bordered w-full {% if errors and errors.license %}select-error{% endif %}">
+              <option value="" {% if not draft.license %}selected{% endif %}>Choose a license&hellip;</option>
+              {% for url, label in licenses.items() %}
+                <option value="{{ url }}" {% if draft.license == url %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          {% if errors and errors.license %}<p class="mt-1 text-xs text-error">{{ errors.license }}</p>{% endif %}
+        </div>
+
+        <div>
+          <label class="floating-label">
+            <span>Citation</span>
+            <input type="text" name="cite_as" value="{{ draft.cite_as }}"
+                   placeholder="How to cite this dataset"
+                   class="input input-bordered w-full">
+          </label>
+          <p class="mt-1 text-xs text-base-content/50">DOI minting is planned; for now enter free text.</p>
+        </div>
+
+        <div>
+          <label class="floating-label">
+            <span>Keywords (comma-separated)</span>
+            <input type="text" name="keywords" value="{{ draft.keywords | join(', ') }}"
+                   placeholder="birds, migration, ecology"
+                   class="input input-bordered w-full">
+          </label>
+        </div>
+      </div>
+
+      <div class="mt-4 flex items-center gap-3">
+        <button type="submit" class="btn btn-primary btn-sm">Save details</button>
+        {% if saved %}<span class="text-sm text-success">Saved.</span>{% endif %}
+      </div>
+    </form>
+
+    <div class="divider">Authors / creators</div>
+    {% include "publish/_authors.html" with context %}
+  </div>
+</section>
