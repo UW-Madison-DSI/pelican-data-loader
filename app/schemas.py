@@ -17,6 +17,10 @@ from pelican_data_loader.croissant import CroissantAuthor, CroissantSpec
 
 T = TypeVar("T")
 
+# Most numbered pagination buttons drawn at once. A module constant rather than
+# a class attribute: a bare int on a BaseModel would become a pydantic field.
+PAGE_WINDOW = 7
+
 
 def _utcnow() -> datetime:
     return datetime.now(timezone.utc)
@@ -89,6 +93,21 @@ class Page(BaseModel, Generic[T]):
     @property
     def last_index(self) -> int:
         return min(self.page * self.page_size, self.total)
+
+    @property
+    def page_numbers(self) -> list[int]:
+        """The numbered buttons to draw, as a contiguous window on the current page.
+
+        Capped at PAGE_WINDOW so a repository with hundreds of pages still
+        renders one tidy row; Previous and Next reach everything outside it.
+        Deliberately contiguous with no ellipsis — every number drawn is a real
+        page, so nothing has to explain itself.
+        """
+        if self.pages <= PAGE_WINDOW:
+            return list(range(1, self.pages + 1))
+        half = PAGE_WINDOW // 2
+        start = min(max(1, self.page - half), self.pages - PAGE_WINDOW + 1)
+        return list(range(start, start + PAGE_WINDOW))
 
 
 class Facet(BaseModel):

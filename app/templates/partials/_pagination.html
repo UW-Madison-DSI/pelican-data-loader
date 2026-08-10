@@ -1,22 +1,30 @@
-{# Pagination for the results grid. Every link is an htmx swap of #results plus a
-   pushed URL, so the back button and a copy-pasted link both work. #}
-{% if page_obj and page_obj.pages > 1 %}
-<nav class="mt-8 flex flex-wrap items-center justify-between gap-3" aria-label="Pagination">
-  <p class="text-sm text-base-content/70">
+{# Pagination for the results grid. Every control is an htmx swap of #results
+   plus a pushed URL, so the back button and a copy-pasted link both work. The
+   current page carries aria-current and no handler, so it is inert. #}
+{% if page_obj and page_obj.total %}
+<nav aria-label="Pagination" class="mt-8 flex flex-wrap items-center justify-between gap-4">
+  <p class="uw-meta m-0">
     Showing {{ page_obj.first_index }}–{{ page_obj.last_index }} of {{ page_obj.total }}
   </p>
-  <div class="join">
-    <button class="join-item btn btn-sm" {% if not page_obj.has_prev %}disabled{% endif %}
+  <div class="flex gap-1.5">
+    <button type="button" class="uw-page" {% if not page_obj.has_prev %}disabled{% endif %}
             hx-get="{{ listing_url(page=page_obj.page - 1) }}"
-            hx-target="#results" hx-swap="innerHTML" hx-push-url="true">&laquo; Prev</button>
-    <button class="join-item btn btn-sm btn-active pointer-events-none">
-      Page {{ page_obj.page }} of {{ page_obj.pages }}
-    </button>
-    <button class="join-item btn btn-sm" {% if not page_obj.has_next %}disabled{% endif %}
+            hx-target="#results" hx-swap="innerHTML" hx-push-url="true">Previous</button>
+
+    {% for number in page_obj.page_numbers %}
+      {% if number == page_obj.page %}
+        <button type="button" class="uw-page" aria-current="page">{{ number }}</button>
+      {% else %}
+        <button type="button" class="uw-page"
+                aria-label="Page {{ number }}"
+                hx-get="{{ listing_url(page=number) }}"
+                hx-target="#results" hx-swap="innerHTML" hx-push-url="true">{{ number }}</button>
+      {% endif %}
+    {% endfor %}
+
+    <button type="button" class="uw-page" {% if not page_obj.has_next %}disabled{% endif %}
             hx-get="{{ listing_url(page=page_obj.page + 1) }}"
-            hx-target="#results" hx-swap="innerHTML" hx-push-url="true">Next &raquo;</button>
+            hx-target="#results" hx-swap="innerHTML" hx-push-url="true">Next</button>
   </div>
 </nav>
-{% elif page_obj and page_obj.total %}
-<p class="mt-6 text-sm text-base-content/70">{{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}</p>
 {% endif %}

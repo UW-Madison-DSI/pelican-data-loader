@@ -2,21 +2,21 @@
 {% block title %}Discover datasets &middot; UW–Madison Dataset Repository{% endblock %}
 
 {% block content %}
-<div class="mb-8">
+<div class="mb-10">
   <h1 class="uw-mini-bar text-3xl font-bold">Discover datasets</h1>
-  <p class="mt-2 max-w-2xl text-base-content/70">
+  <p class="mt-3 max-w-[44rem]">
     Browse datasets published to the UW–Madison Data Repository and copy a ready-made
     snippet to load one straight into your code.
   </p>
 </div>
 
-<div class="lg:grid lg:grid-cols-[16rem_1fr] lg:gap-8">
+<div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start lg:gap-10">
 
   {# ------------------------------------------------------------------ #}
-  {# Filters. `change` on the form re-runs the search; the text input is #}
-  {# pulled in via hx-include so the two controls stay in sync.          #}
+  {# Filter rail. `change` on the form re-runs the search; the text      #}
+  {# input is pulled in via hx-include so the two controls stay in sync. #}
   {# ------------------------------------------------------------------ #}
-  <aside class="mb-6 lg:mb-0">
+  <nav aria-label="Filters" class="mb-8 lg:sticky lg:top-6 lg:mb-0">
     <form id="filters"
           hx-get="/datasets"
           hx-target="#results"
@@ -27,101 +27,87 @@
           hx-indicator="#search-spinner">
       <input type="hidden" name="sort" value="{{ sort }}">
 
-      <div class="flex items-center justify-between lg:mb-3">
-        <h2 class="font-semibold">Filters</h2>
-        {% if selected_licenses or selected_keywords %}
-          <a href="/" class="link link-primary text-xs">Clear all</a>
+      <div class="mb-5 flex items-baseline justify-between gap-4 border-b-2 border-base-content pb-2">
+        <h2 class="text-lg">Filters</h2>
+        {% if selected_licenses or selected_keywords or query %}
+          <a href="/" class="uw-meta">Clear all</a>
         {% endif %}
       </div>
 
-      <details class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box mb-3" open>
-        <summary class="collapse-title text-sm font-medium min-h-0 py-3">License</summary>
-        <div class="collapse-content">
-          {% if facets.licenses %}
-            <ul class="space-y-1 pb-2">
-              {% for facet in facets.licenses %}
-                <li>
-                  <label class="flex cursor-pointer items-center gap-2 text-sm">
-                    <input type="checkbox" name="license" value="{{ facet.value }}"
-                           class="checkbox checkbox-sm checkbox-primary"
-                           {% if facet.value in selected_licenses %}checked{% endif %}>
-                    <span class="flex-1 truncate" title="{{ facet.value }}">{{ facet.display() }}</span>
-                    <span class="badge badge-ghost badge-sm">{{ facet.count }}</span>
-                  </label>
-                </li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            <p class="pb-2 text-sm text-base-content/70">No licenses yet.</p>
-          {% endif %}
-        </div>
-      </details>
+      <h3 class="uw-filter-h mb-2">License</h3>
+      {% if facets.licenses %}
+        <ul class="m-0 mb-7 list-none p-0">
+          {% for facet in facets.licenses %}
+            <li>
+              <label class="uw-check">
+                <input type="checkbox" name="license" value="{{ facet.value }}"
+                       {% if facet.value in selected_licenses %}checked{% endif %}>
+                <span class="flex-1 truncate" title="{{ facet.value }}">{{ facet.display() }}</span>
+                <span class="uw-meta">{{ facet.count }}</span>
+              </label>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="uw-meta mb-7">No licenses yet.</p>
+      {% endif %}
 
-      <details class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box" open>
-        <summary class="collapse-title text-sm font-medium min-h-0 py-3">Keywords</summary>
-        <div class="collapse-content">
-          {% if facets.keywords %}
-            <ul class="space-y-1 pb-2 max-h-80 overflow-y-auto">
-              {% for facet in facets.keywords %}
-                <li>
-                  <label class="flex cursor-pointer items-center gap-2 text-sm">
-                    <input type="checkbox" name="keyword" value="{{ facet.value }}"
-                           class="checkbox checkbox-sm checkbox-primary"
-                           {% if facet.value in selected_keywords %}checked{% endif %}>
-                    <span class="flex-1 truncate">{{ facet.value }}</span>
-                    <span class="badge badge-ghost badge-sm">{{ facet.count }}</span>
-                  </label>
-                </li>
-              {% endfor %}
-            </ul>
-            {% if facets.keywords_truncated %}
-              <p class="text-xs text-base-content/70">
-                + {{ facets.keywords_truncated }} less common keyword{{ '' if facets.keywords_truncated == 1 else 's' }}
-                not shown &mdash; use the search box.
-              </p>
-            {% endif %}
-          {% else %}
-            <p class="pb-2 text-sm text-base-content/70">No keywords yet.</p>
-          {% endif %}
-        </div>
-      </details>
+      <h3 class="uw-filter-h mb-2">Keywords</h3>
+      {% if facets.keywords %}
+        <ul class="m-0 max-h-96 list-none overflow-y-auto p-0">
+          {% for facet in facets.keywords %}
+            <li>
+              <label class="uw-check">
+                <input type="checkbox" name="keyword" value="{{ facet.value }}"
+                       {% if facet.value in selected_keywords %}checked{% endif %}>
+                <span class="flex-1 truncate">{{ facet.value }}</span>
+                <span class="uw-meta">{{ facet.count }}</span>
+              </label>
+            </li>
+          {% endfor %}
+        </ul>
+        {% if facets.keywords_truncated %}
+          <p class="uw-meta mt-2">
+            + {{ facets.keywords_truncated }} less common keyword{{ '' if facets.keywords_truncated == 1 else 's' }}
+            not shown &mdash; use the search box.
+          </p>
+        {% endif %}
+      {% else %}
+        <p class="uw-meta">No keywords yet.</p>
+      {% endif %}
     </form>
-  </aside>
+  </nav>
 
   {# ------------------------------------------------------------------ #}
-  {# Search + results                                                    #}
+  {# Search + sort + results                                            #}
   {# ------------------------------------------------------------------ #}
   <div class="min-w-0">
-    <div class="mb-6 flex flex-wrap items-center gap-3">
-      <label class="input input-bordered flex flex-1 min-w-64 items-center gap-2">
-        {# uw-icon-magnifying-glass-solid, from the official UW icon sprite.
-           The design system forbids emoji and improvised glyphs for chrome. #}
-        <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" focusable="false"
-             class="size-4 shrink-0 text-base-content/70"><path d="M416 208c0 45.9-14.9 88.3-40 122.7l126.6 126.7c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208M208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288"></path></svg>
-        <input type="search" name="q" value="{{ query }}"
-               placeholder="Search names, descriptions and keywords"
-               aria-label="Search datasets"
-               class="grow"
-               hx-get="/datasets"
-               hx-target="#results"
-               hx-swap="innerHTML"
-               hx-trigger="keyup changed delay:300ms, search"
-               hx-include="#filters"
-               hx-push-url="true"
-               hx-indicator="#search-spinner">
-        <span id="search-spinner" class="htmx-indicator loading loading-spinner loading-sm"></span>
-      </label>
+    <div class="mb-6 flex flex-wrap items-center gap-4">
+      <label for="results-search" class="sr-only">Search names, descriptions and keywords</label>
+      <input id="results-search" type="search" name="q" value="{{ query }}"
+             placeholder="Search names, descriptions and keywords"
+             class="input input-bordered min-w-[18rem] flex-1"
+             hx-get="/datasets"
+             hx-target="#results"
+             hx-swap="innerHTML"
+             hx-trigger="keyup changed delay:300ms, search"
+             hx-include="#filters"
+             hx-push-url="true"
+             hx-indicator="#search-spinner">
+      <span id="search-spinner" class="htmx-indicator loading loading-spinner loading-sm"></span>
 
-      <select name="sort" aria-label="Sort order" class="select select-bordered w-auto"
-              hx-get="/datasets"
-              hx-target="#results"
-              hx-swap="innerHTML"
-              hx-include="[name='q'], #filters"
-              hx-push-url="true">
-        {% for value, label in sort_options.items() %}
-          <option value="{{ value }}" {% if value == sort %}selected{% endif %}>{{ label }}</option>
-        {% endfor %}
-      </select>
+      <label class="uw-meta m-0 flex items-center gap-2">Sort
+        <select name="sort" aria-label="Sort order" class="select select-bordered select-sm w-auto text-base"
+                hx-get="/datasets"
+                hx-target="#results"
+                hx-swap="innerHTML"
+                hx-include="[name='q'], #filters"
+                hx-push-url="true">
+          {% for value, label in sort_options.items() %}
+            <option value="{{ value }}" {% if value == sort %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
     </div>
 
     <div id="results">

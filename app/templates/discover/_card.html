@@ -1,49 +1,46 @@
-{# One dataset in the grid. A plain <a> so the card works without JavaScript. #}
-<article class="card card-border uw-content-box bg-base-100 transition-shadow hover:shadow-md">
-  {# No letter-spacing here: the UW type spec sets tracking on the faces
-     themselves, and widened body copy fights Red Hat Text. #}
-  <div class="card-body gap-3">
-    <div class="flex items-start justify-between gap-2">
-      <h3 class="card-title text-base leading-snug">
-        <a href="/datasets/{{ dataset.id }}" class="link link-hover">{{ dataset.name }}</a>
-      </h3>
-      <span class="badge badge-primary badge-soft badge-sm shrink-0">v{{ dataset.version }}</span>
+{# One dataset in the grid. Plain <a>s throughout, so the card and its keyword
+   filters all work without JavaScript. #}
+<article class="uw-card">
+  <h2 class="m-0 text-lg leading-tight">
+    <a class="uw-cardlink" href="/datasets/{{ dataset.id }}">{{ dataset.name }}</a>
+  </h2>
+
+  {# The wrapper is load-bearing. .uw-card is a flex container, and a direct
+     flex child gets its display blockified, turning the -webkit-box that
+     line-clamp needs into flow-root -- so the clamp silently does nothing and
+     a long description shoves the card's footer out of alignment with its
+     neighbours. #}
+  <div>
+    <p class="m-0 line-clamp-3 text-base text-neutral">
+      {{ dataset.description or "No description provided." }}
+    </p>
+  </div>
+
+  {% if dataset.creators %}
+    <p class="uw-meta m-0 truncate">
+      {%- for creator in dataset.creators -%}
+        {{ creator.first_name }} {{ creator.last_name }}{{ ", " if not loop.last }}
+      {%- endfor -%}
+    </p>
+  {% endif %}
+
+  {% if dataset.keywords %}
+    <div class="flex flex-wrap gap-1.5">
+      {% for keyword in dataset.keywords[:4] %}
+        <a class="uw-tag" href="{{ listing_url(keyword=[keyword]) }}">{{ keyword }}</a>
+      {% endfor %}
+      {% if dataset.keywords | length > 4 %}
+        <span class="uw-tag">+{{ dataset.keywords | length - 4 }}</span>
+      {% endif %}
     </div>
+  {% endif %}
 
-    {# The wrapper is load-bearing. .card-body is a flex container, and a
-       direct flex child gets its display blockified, turning the -webkit-box
-       that line-clamp needs into flow-root -- so the clamp silently does
-       nothing and the text spills over the rows below. #}
-    <div>
-      <p class="line-clamp-3 text-sm text-base-content/70">
-        {{ dataset.description or "No description provided." }}
-      </p>
-    </div>
-
-    {% if dataset.creators %}
-      <p class="truncate text-xs text-base-content/70">
-        {%- for creator in dataset.creators -%}
-          {{ creator.first_name }} {{ creator.last_name }}{{ ", " if not loop.last }}
-        {%- endfor -%}
-      </p>
-    {% endif %}
-
-    {% if dataset.keywords %}
-      <div class="flex flex-wrap gap-1">
-        {% for keyword in dataset.keywords[:4] %}
-          <span class="badge badge-ghost badge-sm">{{ keyword }}</span>
-        {% endfor %}
-        {% if dataset.keywords | length > 4 %}
-          <span class="badge badge-ghost badge-sm">+{{ dataset.keywords | length - 4 }}</span>
-        {% endif %}
-      </div>
-    {% endif %}
-
-    <div class="mt-1 flex items-center justify-between gap-2 border-t border-base-300 pt-3 text-xs text-base-content/70">
-      {# license_label falls back to the raw URL for anything it doesn't know,
-         so this has to be able to truncate. #}
-      <span class="truncate" title="{{ dataset.license }}">{{ license_label(dataset.license) }}</span>
-      <span class="shrink-0">{{ dataset.published_date }}</span>
-    </div>
+  <div class="uw-meta mt-auto flex justify-between gap-4 border-t border-[color:var(--uw-border)] pt-3">
+    {# license_label falls back to the raw URL for anything it doesn't know,
+       so this has to be able to truncate. #}
+    <span class="truncate" title="{{ dataset.license }}">
+      {{ license_label(dataset.license) }} · v{{ dataset.version }}
+    </span>
+    <span class="shrink-0">{{ dataset.published_date }}</span>
   </div>
 </article>

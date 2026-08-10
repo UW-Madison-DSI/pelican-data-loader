@@ -17,36 +17,87 @@
 </head>
 {# hx-headers puts the CSRF token on every htmx request, so individual forms
    only need the hidden field when they are also usable without JavaScript. #}
-<body class="min-h-screen flex flex-col bg-base-200"
+<body class="min-h-screen flex flex-col bg-base-100"
       hx-headers='{"X-CSRF-Token": "{{ csrf_token }}"}'>
 
-  {# The red bar that identifies every UW page. Uppercase here is one of the
-     two places the design system allows it. #}
+  {# The UW Theme opens every page with this. Visually hidden until focused. #}
+  <a href="#main"
+     class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50
+            focus:rounded-box focus:bg-base-100 focus:px-4 focus:py-2 focus:font-bold focus:shadow-lg">
+    Skip to main content
+  </a>
+
+  {# The red bar that identifies every UW page. The inner spans collapse below
+     `sm` so the bar reads "UW–Madison" on a phone, which is what
+     .uw-global-name-link does with `span { display: none }`. #}
   <div class="uw-global-bar">
-    <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-2.5 lg:px-8">
-      <span>University of Wisconsin&#8211;Madison</span>
-      <a href="https://www.wisc.edu"
-         class="normal-case tracking-normal text-white/85 no-underline hover:text-white hover:underline">wisc.edu</a>
+    <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-2 lg:px-8">
+      <a href="https://www.wisc.edu" aria-label="University of Wisconsin&#8211;Madison home page"
+         class="no-underline text-white hover:text-white hover:no-underline">U<span
+           class="hidden sm:inline">niversity <span class="normal-case">of</span> </span>W<span
+           class="hidden sm:inline">isconsin</span>&#8211;Madison</a>
+      <a href="https://datascience.wisc.edu/"
+         class="hidden normal-case tracking-normal text-white/85 no-underline hover:text-white hover:underline sm:inline">Data Science Institute</a>
     </div>
   </div>
 
-  <header class="navbar bg-base-100 border-b border-base-300 px-4 lg:px-8 gap-2">
-    <div class="flex-1 min-w-0">
-      <a href="/" class="flex items-center gap-3 no-underline">
-        <img src="{{ url_for('static', path='img/favicon-w.svg') }}" alt=""
-             class="size-9 shrink-0 rounded-md" width="36" height="36">
-        <span class="min-w-0">
-          <span class="block truncate font-display font-bold leading-tight text-base-content">UW&#8211;Madison Dataset Repository</span>
-          <span class="block text-sm text-base-content/70 leading-tight">Data Science Institute &middot; MVP</span>
-        </span>
-      </a>
+  {# Crest + site title + a search that lands on the Discover listing. The
+     title is Badger Red and the tagline charcoal, per .uw-site-title /
+     .uw-site-tagline in uw-style.css. #}
+  <header id="branding" class="bg-base-100">
+    <div class="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-4 px-4 py-5 lg:px-8">
+      <div class="flex items-center gap-4">
+        <a href="https://www.wisc.edu" class="shrink-0 no-underline"
+           aria-label="Link to University of Wisconsin&#8211;Madison home page">
+          <img src="{{ url_for('static', path='img/uw-crest-color.svg') }}" alt=""
+               class="w-10" width="40" height="63">
+        </a>
+        <div class="min-w-0">
+          <div class="font-display text-2xl font-bold leading-none">
+            <a href="/" rel="home" class="text-primary no-underline hover:no-underline">Dataset Repository</a>
+          </div>
+          <div class="mt-0.5 font-display text-[0.9375rem] font-medium leading-snug text-base-content">
+            Data Science Institute
+          </div>
+        </div>
+      </div>
+
+      {# A plain GET form, so the header search works with JavaScript off.
+         /datasets renders the full Discover page for a non-htmx request. #}
+      <form role="search" method="get" action="/datasets" class="flex items-center gap-2">
+        <label for="site-search" class="sr-only">Search datasets</label>
+        <input type="search" id="site-search" name="q" placeholder="Search datasets &hellip;"
+               class="input input-bordered input-sm w-full min-w-0 sm:w-64">
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+      </form>
     </div>
-    <nav class="flex items-center gap-1" aria-label="Main">
-      <a href="/" class="btn btn-ghost btn-sm {% if active_nav == 'discover' %}btn-active{% endif %}">Discover</a>
-      <a href="/publish" class="btn btn-ghost btn-sm {% if active_nav == 'publish' %}btn-active{% endif %}">Publish</a>
-      <a href="/about" class="btn btn-ghost btn-sm hidden sm:inline-flex {% if active_nav == 'about' %}btn-active{% endif %}">About</a>
-    </nav>
   </header>
+
+  {# The reverse (white) variant of the UW main nav: hairline top and bottom,
+     charcoal display-font links, and a 0.2rem Badger Red underline on the
+     current item and on hover. #}
+  {% set nav = active_nav or ('publish' if request.url.path.startswith('/publish')
+                              else 'about' if request.url.path.startswith('/about')
+                              else 'discover') %}
+  <div class="border-y border-base-200 bg-base-100">
+    <nav aria-label="Main Menu" class="mx-auto w-full max-w-7xl px-4 lg:px-8">
+      <ul class="flex list-none items-center gap-6">
+        {% for slug, href, label in [('discover', '/', 'Discover'),
+                                     ('publish', '/publish', 'Publish'),
+                                     ('about', '/about', 'About')] %}
+          <li>
+            <a href="{{ href }}"
+               {% if nav == slug %}aria-current="page"{% endif %}
+               class="inline-block border-b-[0.2rem] py-2 my-3 font-display text-base font-bold
+                      text-[#282728] no-underline hover:no-underline
+                      {% if nav == slug %}border-primary{% else %}border-transparent hover:border-primary{% endif %}">
+              {{ label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
 
   {% set flash = request.session.pop('flash', None) %}
   {% if flash %}
@@ -55,7 +106,7 @@
     </div>
   {% endif %}
 
-  <main class="flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-8">
+  <main id="main" tabindex="-1" class="flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-10">
     {% block content %}{% endblock %}
   </main>
 

@@ -8,25 +8,51 @@
     </div>
   </div>
 {% elif not page_obj.items %}
-  <div class="rounded-box border border-dashed border-base-300 bg-base-100 py-16 text-center">
+  <div class="border border-dashed border-[color:var(--uw-border)] bg-base-100 py-16 text-center">
     {% if query or selected_licenses or selected_keywords %}
       <p class="font-medium">No datasets match these filters.</p>
-      <p class="mt-1 text-sm text-base-content/70">Try a broader search or clear a filter.</p>
-      <a href="/" class="btn btn-sm btn-primary btn-outline mt-4">Clear filters</a>
+      <p class="uw-meta mt-1">Try a broader search or clear a filter.</p>
+      <p class="mt-4"><a href="/" class="btn btn-primary btn-outline btn-sm">Clear filters</a></p>
     {% else %}
       <p class="font-medium">No datasets have been published yet.</p>
-      <p class="mt-1 text-sm text-base-content/70">Publish the first one to see it here.</p>
-      <a href="/publish" class="btn btn-sm btn-primary mt-4">Publish a dataset</a>
+      <p class="uw-meta mt-1">Publish the first one to see it here.</p>
+      <p class="mt-4"><a href="/publish" class="btn btn-primary btn-sm">Publish a dataset</a></p>
     {% endif %}
   </div>
 {% else %}
-  <p class="mb-4 text-sm text-base-content/70">
-    {{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}{% if query %} matching &ldquo;{{ query }}&rdquo;{% endif %}
-  </p>
-  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+  {# The active-filter summary. Licenses get their readable label, so the row
+     reads "filtered by MIT" rather than a choosealicense.com URL. #}
+  {% set active = [] %}
+  {% if query %}{% set _ = active.append('“' ~ query ~ '”') %}{% endif %}
+  {% for value in selected_licenses %}{% set _ = active.append(license_label(value)) %}{% endfor %}
+  {% for value in selected_keywords %}{% set _ = active.append(value) %}{% endfor %}
+
+  <div class="mb-6 flex items-baseline justify-between gap-4 border-b border-[color:var(--uw-border)] pb-2.5">
+    <p class="uw-meta m-0">
+      {{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}
+      {%- if active %} · filtered by
+        {%- for label in active %}
+          <strong class="text-base-content">{{ label }}</strong>{{ "," if not loop.last }}
+        {%- endfor %}
+      {%- endif %}
+    </p>
+    <p class="uw-meta m-0 shrink-0">Page {{ page_obj.page }} of {{ page_obj.pages }}</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 min-[75em]:grid-cols-3">
     {% for dataset in page_obj.items %}
       {% include "discover/_card.html" with context %}
     {% endfor %}
+
+    {# The invitation to publish, as the last cell of the final page. Repeating
+       it on every page would just push results around. #}
+    {% if not page_obj.has_next %}
+      <article class="flex flex-col justify-center gap-3 border border-dashed border-[color:var(--uw-border)] p-6 text-center">
+        <p class="uw-meta m-0">Datasets you publish appear here alongside the rest of the repository.</p>
+        <p class="m-0"><a href="/publish" class="btn btn-primary btn-sm">Publish a dataset</a></p>
+      </article>
+    {% endif %}
   </div>
+
   {% include "partials/_pagination.html" with context %}
 {% endif %}
