@@ -17,7 +17,7 @@ app/static/js/htmx.min.js
 # In-progress publish drafts (uploaded CSVs and their metadata).
 var/
 
-# The local SQLite database the "demo: dev" VS Code task runs against.
+# The local SQLite database used when running with APP_DATABASE_URL=sqlite:///./dev.db.
 dev.db
 
 # Postgres' data directory, bind-mounted by docker-compose. The container owns
