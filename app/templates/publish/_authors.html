@@ -7,7 +7,7 @@
         <li class="flex items-center gap-3 px-3 py-2">
           <span class="flex-1 min-w-0">
             <span class="block truncate text-sm font-medium">{{ author.name }}</span>
-            <span class="block truncate text-xs text-base-content/60">{{ author.email }}</span>
+            <span class="block truncate text-xs text-base-content/70">{{ author.email }}</span>
           </span>
           <button type="button" class="btn btn-ghost btn-xs text-error"
                   hx-delete="/publish/authors/{{ loop.index0 }}"
@@ -18,7 +18,7 @@
       {% endfor %}
     </ul>
   {% else %}
-    <p class="mb-4 text-sm text-base-content/60">
+    <p class="mb-4 text-sm text-base-content/70">
       No authors added yet. Croissant records creators with both a name and an email.
     </p>
   {% endif %}

@@ -17,7 +17,7 @@
       <progress class="progress progress-primary flex-1" value="{{ draft.upload_pct }}" max="100"></progress>
       <span class="w-12 text-right text-sm tabular-nums">{{ draft.upload_pct }}%</span>
     </div>
-    <p class="mt-2 text-sm text-base-content/60">
+    <p class="mt-2 text-sm text-base-content/70">
       Uploading {{ draft.source_file_name }} &mdash; this keeps running if you reload the page.
     </p>
 
@@ -33,7 +33,7 @@
           ("Pelican HTTP URL", draft.pelican_http_url),
       ] %}
         <div class="grid grid-cols-[9rem_1fr] gap-2">
-          <dt class="text-base-content/60">{{ label }}</dt>
+          <dt class="text-base-content/70">{{ label }}</dt>
           <dd class="break-all font-mono">{{ value or "—" }}</dd>
         </div>
       {% endfor %}

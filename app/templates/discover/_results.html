@@ -11,16 +11,16 @@
   <div class="rounded-box border border-dashed border-base-300 bg-base-100 py-16 text-center">
     {% if query or selected_licenses or selected_keywords %}
       <p class="font-medium">No datasets match these filters.</p>
-      <p class="mt-1 text-sm text-base-content/60">Try a broader search or clear a filter.</p>
+      <p class="mt-1 text-sm text-base-content/70">Try a broader search or clear a filter.</p>
       <a href="/" class="btn btn-sm btn-primary btn-outline mt-4">Clear filters</a>
     {% else %}
       <p class="font-medium">No datasets have been published yet.</p>
-      <p class="mt-1 text-sm text-base-content/60">Publish the first one to see it here.</p>
+      <p class="mt-1 text-sm text-base-content/70">Publish the first one to see it here.</p>
       <a href="/publish" class="btn btn-sm btn-primary mt-4">Publish a dataset</a>
     {% endif %}
   </div>
 {% else %}
-  <p class="mb-4 text-sm text-base-content/60">
+  <p class="mb-4 text-sm text-base-content/70">
     {{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}{% if query %} matching &ldquo;{{ query }}&rdquo;{% endif %}
   </p>
   <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

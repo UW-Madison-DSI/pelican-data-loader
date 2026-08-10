@@ -1,7 +1,7 @@
 {
   "name": "uwdf-app",
   "private": true,
-  "description": "Front-end assets for the UW-Madison Dataset Repository demo",
+  "description": "Front-end assets for the UW–Madison Dataset Repository demo",
   "devDependencies": {
     "@tailwindcss/cli": "4.3.3",
     "daisyui": "5.7.16",

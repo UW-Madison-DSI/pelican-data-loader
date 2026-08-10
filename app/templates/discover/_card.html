@@ -1,6 +1,8 @@
 {# One dataset in the grid. A plain <a> so the card works without JavaScript. #}
-<article class="card card-border bg-base-100 transition-shadow hover:shadow-md">
-  <div class="card-body gap-3 tracking-widest">
+<article class="card card-border uw-content-box bg-base-100 transition-shadow hover:shadow-md">
+  {# No letter-spacing here: the UW type spec sets tracking on the faces
+     themselves, and widened body copy fights Red Hat Text. #}
+  <div class="card-body gap-3">
     <div class="flex items-start justify-between gap-2">
       <h3 class="card-title text-base leading-snug">
         <a href="/datasets/{{ dataset.id }}" class="link link-hover">{{ dataset.name }}</a>
@@ -8,12 +10,18 @@
       <span class="badge badge-primary badge-soft badge-sm shrink-0">v{{ dataset.version }}</span>
     </div>
 
-    <p class="line-clamp-3 text-sm text-base-content/70">
-      {{ dataset.description or "No description provided." }}
-    </p>
+    {# The wrapper is load-bearing. .card-body is a flex container, and a
+       direct flex child gets its display blockified, turning the -webkit-box
+       that line-clamp needs into flow-root -- so the clamp silently does
+       nothing and the text spills over the rows below. #}
+    <div>
+      <p class="line-clamp-3 text-sm text-base-content/70">
+        {{ dataset.description or "No description provided." }}
+      </p>
+    </div>
 
     {% if dataset.creators %}
-      <p class="truncate text-xs text-base-content/60">
+      <p class="truncate text-xs text-base-content/70">
         {%- for creator in dataset.creators -%}
           {{ creator.first_name }} {{ creator.last_name }}{{ ", " if not loop.last }}
         {%- endfor -%}
@@ -31,9 +39,11 @@
       </div>
     {% endif %}
 
-    <div class="mt-1 flex items-center justify-between border-t border-base-300 pt-3 text-xs text-base-content/60">
-      <span title="{{ dataset.license }}">{{ license_label(dataset.license) }}</span>
-      <span>{{ dataset.published_date }}</span>
+    <div class="mt-1 flex items-center justify-between gap-2 border-t border-base-300 pt-3 text-xs text-base-content/70">
+      {# license_label falls back to the raw URL for anything it doesn't know,
+         so this has to be able to truncate. #}
+      <span class="truncate" title="{{ dataset.license }}">{{ license_label(dataset.license) }}</span>
+      <span class="shrink-0">{{ dataset.published_date }}</span>
     </div>
   </div>
 </article>

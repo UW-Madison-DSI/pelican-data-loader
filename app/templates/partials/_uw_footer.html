@@ -1,0 +1,80 @@
+{# The canonical UW Theme footer.
+
+   The UW Theme ships exactly one footer pattern -- charcoal #282728, #adadad
+   body text, four columns, copyright row -- and the design system is explicit
+   that you don't fork it: if a page needs the footer to feel lighter or
+   darker, you change the page above it instead.
+
+   Rebuilt here with Tailwind/daisyUI utilities rather than uw-style.css
+   selectors, since this app doesn't load the official stylesheet. Structure
+   and content follow ui_kits/web/footer.html from the design system. The
+   Quick Links block is the set UW expects on university pages -- leave it
+   intact.
+
+   Colours are literal rather than themed: this footer is charcoal on every
+   UW page regardless of the surrounding palette. #}
+<footer id="colophon" class="mt-auto bg-neutral text-[#adadad]">
+  <div class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+
+    <div>
+      <a href="https://www.wisc.edu" class="inline-block no-underline hover:text-[#f3f3f3]"
+         aria-label="University of Wisconsin&#8211;Madison home">
+        {% with crest_class = 'h-20 w-auto' %}{% include "partials/_uw_crest.html" %}{% endwith %}
+      </a>
+      <a href="https://www.wisconsin.edu/"
+         class="mt-4 block max-w-[14rem] font-display text-base font-bold text-[#f3f3f3] no-underline hover:underline">
+        Part of the <span class="whitespace-nowrap">Universities of Wisconsin</span>
+      </a>
+    </div>
+
+    <nav aria-labelledby="footer-partners">
+      <h2 id="footer-partners" class="mb-3 font-display text-base font-bold text-[#f3f3f3]">Partners</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://students.wisc.edu/">Division of Student Life</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://provost.wisc.edu/climate.htm">Division of Diversity, Equity &amp; Educational Achievement</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://chancellor.wisc.edu/">Office of the Chancellor</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://universityrelations.wisc.edu/">University Relations</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-quick-links">
+      <h2 id="footer-quick-links" class="mb-3 font-display text-base font-bold text-[#f3f3f3]">Quick Links</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://www.wisc.edu/accessibility/">Accessibility</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://diversity.wisc.edu/">Diversity</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://www.wisc.edu/governance/">Governance</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://www.wisc.edu/policies/">Policies</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://uwpd.wisc.edu/">Safety</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://oed.wisc.edu/title-ix.htm">Title IX</a></li>
+      </ul>
+    </nav>
+
+    {# The official template puts an email, phone and social handles here.
+       This demo has none of those, and inventing contact details on a
+       university page is worse than leaving them out. #}
+    <nav aria-labelledby="footer-contact">
+      <h2 id="footer-contact" class="mb-3 font-display text-base font-bold text-[#f3f3f3]">About this site</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://datascience.wisc.edu/">Data Science Institute</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="https://github.com/UW-Madison-DSI/pelican-data-loader">Source on GitHub</a></li>
+        <li><a class="no-underline hover:text-[#f3f3f3] hover:underline" href="/about">About this demo</a></li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="mx-auto w-full max-w-7xl space-y-1 px-4 py-6 text-sm lg:px-8">
+      <p>
+        Feedback, questions or accessibility issues:
+        <a class="underline hover:text-[#f3f3f3]" href="mailto:web@umark.wisc.edu">web@umark.wisc.edu</a>.
+        Learn more about
+        <a class="underline hover:text-[#f3f3f3]" href="https://accessible.wisc.edu/">accessibility at UW&#8211;Madison</a>.
+      </p>
+      <p>
+        &copy; 2026 Board of Regents of the
+        <a class="underline hover:text-[#f3f3f3]" href="https://www.wisconsin.edu">University of Wisconsin System</a>.
+      </p>
+    </div>
+  </div>
+</footer>

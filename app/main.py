@@ -1,4 +1,4 @@
-"""UW-Madison Dataset Repository demo.
+"""UW–Madison Dataset Repository demo.
 
 FastAPI + Jinja2 + htmx, styled with Tailwind 4 / daisyUI 5. Replaces the earlier
 Streamlit app; the library it drives (`pelican_data_loader`) is unchanged.
@@ -65,7 +65,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
             await sweeper
 
 
-app = FastAPI(title="UW-Madison Dataset Repository", lifespan=lifespan, docs_url=None, redoc_url=None)
+app = FastAPI(title="UW–Madison Dataset Repository", lifespan=lifespan, docs_url=None, redoc_url=None)
 
 # Holds only the draft id, the CSRF token, and one-shot flash messages.
 app.add_middleware(

@@ -25,7 +25,7 @@ For more detailed example, see this [notebook](https://colab.research.google.com
 - Uses `Croissant` to store / validate metadata
 - Uses `pelicanfs` to locate/cache dataset
 - Uses `datasets` to convert to different ML data format (e.g., pytorch, tensorflow, jax, polars, pyarrow...)
-- Provided dataset storage via UW-Madison's S3
+- Provided dataset storage via UW–Madison's S3
 
 ### Future features (Pending)
 
@@ -57,6 +57,13 @@ built with [Bun](https://bun.com/).
   page per dataset with copy-able load snippets.
 - **Publish** — four steps: describe, upload the CSV to S3, generate and validate
   Croissant metadata, record the dataset.
+
+The look follows the official [UW–Madison Design System](https://brand.wisc.edu/): the
+red global bar and charcoal footer are the university's standard page chrome, the
+palette is the exact brand hex (Badger Red `#c5050c`), and Red Hat Display/Text are
+self-hosted from `app/static/fonts/` rather than the wisc.edu CDN so the container has
+no external asset dependency. The theme is light only — the design system reserves red
+for light backgrounds, since Badger Red on charcoal fails contrast.
 
 ### Running it locally
 
