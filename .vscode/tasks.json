@@ -2,11 +2,31 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "demo",
+			"label": "demo: dev",
+			"detail": "Everything needed to work on the demo locally: SQLite, stubbed S3, live CSS.",
+			"dependsOn": [
+				"demo: watch CSS",
+				"demo: serve (local SQLite)"
+			],
+			"dependsOrder": "parallel",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "demo: install",
+			"detail": "Python deps, front-end deps, and a first CSS/htmx build. Run once after cloning.",
 			"type": "shell",
-			"command": "uv run uvicorn app.main:app --reload --port 8000",
-			"group": "build",
-			"isBackground": true,
+			"command": "uv sync --group demo && bun install && bun run build",
+			"problemMatcher": []
+		},
+		{
+			"label": "demo: build assets",
+			"detail": "One-shot build of app/static/css/app.css and app/static/js/htmx.min.js.",
+			"type": "shell",
+			"command": "bun run build",
 			"problemMatcher": []
 		},
 		{
@@ -18,10 +38,47 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "demo: init local database",
+			"detail": "Creates the tables in dev.db. Idempotent, so it is safe to re-run.",
+			"type": "shell",
+			"command": "uv run python -c \"from pelican_data_loader import initialize_database; initialize_database('sqlite:///${workspaceFolder}/dev.db')\"",
+			"problemMatcher": []
+		},
+		{
+			"label": "demo: serve (local SQLite)",
+			"detail": "Serves on :8000 against dev.db with S3 stubbed out, so no credentials are needed.",
+			"type": "shell",
+			"command": "uv run uvicorn app.main:app --reload --port 8000",
+			"options": {
+				"env": {
+					// METADATA_DB_ENGINE_URL in .env is ignored by the app; this is the knob.
+					"APP_DATABASE_URL": "sqlite:///${workspaceFolder}/dev.db",
+					// Skips the real upload and emits synthetic progress.
+					"APP_FAKE_S3": "1"
+				}
+			},
+			"dependsOn": "demo: init local database",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "demo",
+			"detail": "Serves on :8000 against the Postgres configured in .env. Needs POSTGRES_HOST reachable.",
+			"type": "shell",
+			"command": "uv run uvicorn app.main:app --reload --port 8000",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
 			"label": "demo: smoke test",
+			"detail": "The check that gates the image build.",
 			"type": "shell",
 			"command": "uv run python app/smoke_test.py",
-			"group": "test",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
 			"problemMatcher": []
 		}
 	]

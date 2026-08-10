@@ -16,3 +16,6 @@ app/static/js/htmx.min.js
 
 # In-progress publish drafts (uploaded CSVs and their metadata).
 var/
+
+# The local SQLite database the "demo: dev" VS Code task runs against.
+dev.db
