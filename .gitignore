@@ -19,3 +19,7 @@ var/
 
 # The local SQLite database the "demo: dev" VS Code task runs against.
 dev.db
+
+# Postgres' data directory, bind-mounted by docker-compose. The container owns
+# it as uid 999 with mode 0700, so nothing outside the container can read it.
+pg_data/

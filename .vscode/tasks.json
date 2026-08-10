@@ -48,7 +48,9 @@
 			"label": "demo: serve (local SQLite)",
 			"detail": "Serves on :8000 against dev.db with S3 stubbed out, so no credentials are needed.",
 			"type": "shell",
-			"command": "uv run uvicorn app.main:app --reload --port 8000",
+			// --reload-dir keeps the watcher off pg_data, which Postgres owns as 0700
+			// and which makes watchfiles abort the server with EACCES.
+			"command": "uv run uvicorn app.main:app --reload --reload-dir app --reload-dir pelican_data_loader --port 8000",
 			"options": {
 				"env": {
 					// METADATA_DB_ENGINE_URL in .env is ignored by the app; this is the knob.
@@ -65,7 +67,7 @@
 			"label": "demo",
 			"detail": "Serves on :8000 against the Postgres configured in .env. Needs POSTGRES_HOST reachable.",
 			"type": "shell",
-			"command": "uv run uvicorn app.main:app --reload --port 8000",
+			"command": "uv run uvicorn app.main:app --reload --reload-dir app --reload-dir pelican_data_loader --port 8000",
 			"group": "build",
 			"isBackground": true,
 			"problemMatcher": []
