@@ -82,6 +82,10 @@ APP_FAKE_S3=1 uv run uvicorn app.main:app --reload --port 8000
 `APP_FAKE_S3=1` skips every S3 call, so the publish flow and its progress bar work
 with no credentials.
 
+Every command above is also a VS Code task (`Ctrl+Shift+P` → *Run Task*). Run
+**demo: install** once after cloning, then **demo: dev** — the default build task,
+which starts the SQLite server and the CSS watcher together.
+
 `uv run python app/smoke_test.py` renders every route and compiles every template;
 it needs neither a database nor credentials, and the Docker build runs it so a
 broken app fails the build rather than the deployment.
