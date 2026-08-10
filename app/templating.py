@@ -27,16 +27,8 @@ def pretty_json(value: Any) -> str:
     return json.dumps(value, indent=2, default=str)
 
 
-def keyword_list(value: str | None) -> list[str]:
-    """Split the comma-separated `Dataset.keywords` column into trimmed values."""
-    if not value:
-        return []
-    return [part.strip() for part in value.split(",") if part.strip()]
-
-
 templates.env.filters["short_sha"] = short_sha
 templates.env.filters["pretty_json"] = pretty_json
-templates.env.filters["keyword_list"] = keyword_list
 templates.env.globals["settings"] = settings
 
 

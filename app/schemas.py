@@ -32,11 +32,6 @@ class CreatorOut(BaseModel):
     last_name: str
     email: str
 
-    @property
-    def label(self) -> str:
-        """Matches the Streamlit rendering: "First Last (email)"."""
-        return f"{self.first_name} {self.last_name} ({self.email})"
-
 
 class DatasetSummary(BaseModel):
     id: int
@@ -208,19 +203,6 @@ class PublishDraft(BaseModel):
     @property
     def can_publish(self) -> bool:
         return self.has_metadata and not self.validation_errors
-
-    @property
-    def current_step(self) -> int:
-        """Furthest step the draft has reached, used to resume and to draw the stepper."""
-        if self.published_dataset_id:
-            return 4
-        if self.has_metadata:
-            return 4
-        if self.data_uploaded:
-            return 3
-        if self.metadata_complete:
-            return 2
-        return 1
 
     @property
     def metadata_filename(self) -> str:
