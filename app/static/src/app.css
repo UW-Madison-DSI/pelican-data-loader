@@ -7,68 +7,263 @@
 @source "../../templates";
 @source "../js";
 
-@plugin "daisyui" {
-  themes: uwmadison --default, uwmadison-dark --prefersdark;
+/* ===========================================================================
+   UW-Madison Design System
+   ---------------------------------------------------------------------------
+   Tokens below come from the official UW Theme (v5.3.0) by way of the
+   UW-Madison Design System's colors_and_type.css. Badger Red, the Red Hat
+   faces and the type scale are the brand -- do not "improve" them.
+
+   The system ships light only. Red on a dark surface fails contrast, so
+   there is deliberately no dark theme and no theme toggle.
+   =========================================================================== */
+
+/* ---- Red Hat, self-hosted ------------------------------------------------
+   The official theme pulls these from cdn.wisc.cloud. This app is
+   containerised and otherwise has no external asset dependencies, so the
+   WOFF2 files are vendored instead. Declarations are verbatim from the
+   design system's colors_and_type.css with the paths rewritten: the built
+   stylesheet lands at app/static/css/app.css, so ../fonts/ resolves to
+   /static/fonts/. Both faces are variable -- keep the weight ranges.
+   ------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Red Hat Display";
+  src: url("../fonts/redhat-display-latin.woff2") format("woff2");
+  font-weight: 300 900; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Red Hat Display";
+  src: url("../fonts/redhat-display-latin-ext.woff2") format("woff2");
+  font-weight: 300 900; font-style: normal; font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Red Hat Display";
+  src: url("../fonts/redhat-display-italic-latin.woff2") format("woff2");
+  font-weight: 300 900; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Red Hat Display";
+  src: url("../fonts/redhat-display-italic-latin-ext.woff2") format("woff2");
+  font-weight: 300 900; font-style: italic; font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Red Hat Text";
+  src: url("../fonts/redhat-text-latin.woff2") format("woff2");
+  font-weight: 300 625; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Red Hat Text";
+  src: url("../fonts/redhat-text-latin-ext.woff2") format("woff2");
+  font-weight: 300 625; font-style: normal; font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Red Hat Text";
+  src: url("../fonts/redhat-text-italic-latin.woff2") format("woff2");
+  font-weight: 300 625; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Red Hat Text";
+  src: url("../fonts/redhat-text-italic-latin-ext.woff2") format("woff2");
+  font-weight: 300 625; font-style: italic; font-display: swap;
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* UW-Madison Badger red (#C5050C) expressed in oklch, which is what daisyUI 5
-   derives its hover/focus/content shades from. */
+@plugin "daisyui" {
+  themes: uwmadison --default;
+}
+
+/* daisyUI 5 dumps these tokens straight into CSS and derives every
+   hover/focus/content shade with color-mix(in oklab, ...), which accepts any
+   colour notation. So these are the exact UW brand hex values rather than the
+   oklch approximations they replace.
+
+   --depth and --noise are load-bearing. daisyUI only auto-supplies them for
+   its own built-in theme names, so omitting them (as this theme previously
+   did) leaves calc(var(--depth) * 5%) invalid, which silently kills every
+   button's border colour and shadow. At 0 the derived --btn-border collapses
+   to exactly the fill colour -- which is the UW button spec, for free, in
+   every variant and state. */
 @plugin "daisyui/theme" {
   name: "uwmadison";
   default: true;
   color-scheme: light;
 
-  --color-primary: oklch(51.9% 0.21 28.3);
-  --color-primary-content: oklch(98% 0 0);
-  --color-secondary: oklch(38% 0.17 27);
-  --color-secondary-content: oklch(98% 0 0);
-  --color-accent: oklch(72% 0.15 75);
-  --color-accent-content: oklch(20% 0.04 75);
-  --color-neutral: oklch(28% 0.01 260);
-  --color-neutral-content: oklch(97% 0 0);
+  --color-primary: #c5050c;          /* Badger Red -- Pantone 200 C */
+  --color-primary-content: #ffffff;
+  --color-secondary: #9b0000;        /* uwRedDark */
+  --color-secondary-content: #ffffff;
+  --color-accent: #036796;           /* uw-link */
+  --color-accent-content: #ffffff;
+  --color-neutral: #282728;          /* uwGrayDark */
+  --color-neutral-content: #f3f3f3;
 
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(97% 0.002 260);
-  --color-base-300: oklch(92% 0.004 260);
-  --color-base-content: oklch(21% 0.01 260);
+  --color-base-100: #ffffff;
+  --color-base-200: #f3f3f3;         /* uwGrayLightest */
+  --color-base-300: #e1e5e7;         /* uwGrayLight */
+  --color-base-content: #121212;     /* uwBlack -- deliberately not #000 */
 
-  --color-info: oklch(70% 0.14 233);
-  --color-success: oklch(62% 0.15 150);
-  --color-warning: oklch(78% 0.16 76);
-  --color-error: oklch(58% 0.22 25);
+  --color-info: #036796;
+  --color-info-content: #ffffff;
+  /* The brand palette has no green. This is a documented deviation, chosen to
+     clear 4.5:1 against white; don't add further off-brand colours. */
+  --color-success: #2e7d32;
+  --color-success-content: #ffffff;
+  --color-warning: #ffb500;          /* uw-yellow */
+  --color-warning-content: #121212;
+  --color-error: #9b0000;            /* uwRedDark, so errors stay distinct from primary */
+  --color-error-content: #ffffff;
 
+  /* 0.5rem is the canonical button radius in uw-style.css. */
   --radius-selector: 0.5rem;
-  --radius-field: 0.375rem;
+  --radius-field: 0.5rem;
   --radius-box: 0.5rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
   --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
-@plugin "daisyui/theme" {
-  name: "uwmadison-dark";
-  color-scheme: dark;
+/* Setting --font-sans also re-points --default-font-family, which is what
+   both Tailwind preflight and daisyUI's reset read for <html>, so body copy
+   follows without an extra rule.
 
-  /* Badger red lightened; the print colour fails contrast on a dark surface. */
-  --color-primary: oklch(64% 0.19 28.3);
-  --color-primary-content: oklch(14% 0.03 28);
-  --color-secondary: oklch(52% 0.16 27);
-  --color-secondary-content: oklch(98% 0 0);
-  --color-accent: oklch(76% 0.14 75);
-  --color-accent-content: oklch(18% 0.04 75);
-  --color-neutral: oklch(32% 0.01 260);
-  --color-neutral-content: oklch(96% 0 0);
+   The --text-* values are the UW clamp scale verbatim. Every override has to
+   restate its --text-*--line-height companion, because Tailwind otherwise
+   keeps the stock ratio, which is meaningless next to a clamp(). Templates
+   already carry text-3xl/2xl/xl on their headings, so retheming here needs no
+   markup changes. */
+@theme {
+  --font-sans: "Red Hat Text", Arial, sans-serif;
+  --font-display: "Red Hat Display", Arial, sans-serif;
 
-  --color-base-100: oklch(21% 0.008 260);
-  --color-base-200: oklch(17% 0.008 260);
-  --color-base-300: oklch(14% 0.008 260);
-  --color-base-content: oklch(92% 0.003 260);
+  --text-sm: 1rem;                   /* uwFontSizeSmall */
+  --text-sm--line-height: 1.5;
+  --text-base: 1.125rem;             /* uwFontSizeBase */
+  --text-base--line-height: 1.5;
+  --text-lg: 1.25rem;                /* uwFontSizeMedium */
+  --text-lg--line-height: 1.5;
+  --text-xl: clamp(1.375rem, 1.375rem + (1vw - 0.388rem) * 0.345, 1.5rem);   /* uwFontSizeXL */
+  --text-xl--line-height: 1.3;
+  --text-2xl: clamp(1.5rem, 1.5rem + (1vw - 0.388rem) * 1.379, 2rem);        /* uwFontSize2XL */
+  --text-2xl--line-height: 1.3;
+  --text-3xl: clamp(1.75rem, 1.75rem + (1vw - 0.388rem) * 2.069, 2.5rem);    /* uwFontSize3XL */
+  --text-3xl--line-height: 1.3;
+}
 
-  --color-info: oklch(72% 0.13 233);
-  --color-success: oklch(68% 0.15 150);
-  --color-warning: oklch(80% 0.15 76);
-  --color-error: oklch(66% 0.19 25);
+/* Emitted after Tailwind preflight and daisyUI's reset -- both unlayered in
+   `base`, so these win. */
+@layer base {
+  body {
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+}
 
-  --radius-selector: 0.5rem;
-  --radius-field: 0.375rem;
-  --radius-box: 0.5rem;
-  --border: 1px;
+/* daisyUI emits everything into @layer utilities, nested one to four
+   sublayers deep (daisyui.l1 ... daisyui.l1.l2.l3.l4). Unlayered declarations
+   inside a layer outrank that layer's sublayers regardless of specificity, so
+   a raw @layer utilities block wins. @layer components would LOSE -- daisyUI
+   never emits into it. */
+@layer utilities {
+  /* The 2px border already matches the fill via --depth: 0 above, including
+     on hover, where daisyUI recomputes it from the hovered --btn-bg. */
+  .btn {
+    border-width: 2px;
+    box-shadow: 2px 2px 6px 0 rgb(0 0 0 / 0.25);
+  }
+  /* daisyUI hardcodes font-size: var(--fontsize, .875rem) on .btn. Set the
+     variable rather than font-size, and skip the size modifiers, or btn-sm
+     stops scaling. */
+  .btn:not(.btn-xs, .btn-sm, .btn-lg, .btn-xl) {
+    --fontsize: 1rem;
+  }
+  /* Chrome buttons are not brand buttons: no lift, no shadow. */
+  .btn-ghost,
+  .btn-link {
+    box-shadow: none;
+  }
+
+  /* UW yellow is a fill colour -- it expects dark text on top of it, which is
+     why --color-warning-content is #121212. daisyUI's soft variants invert
+     that and paint the token as TEXT on a pale tint, giving #ffb500 on
+     #fffaf0: 1.7:1, far under the 4.5:1 floor. Darkened here for legibility;
+     the fill itself stays exactly --uw-yellow. */
+  .alert-warning.alert-soft,
+  .badge-warning.badge-soft,
+  .btn-warning.btn-soft {
+    color: #6b4a00;
+  }
+
+  /* "Links must be distinguishable by more than colour" -- an explicit
+     accessibility rule of the design system. This has to live in utilities,
+     not base: daisyUI's .link-hover sets text-decoration-line: none from
+     inside daisyui.l1.l2 and would beat a base rule. */
+  a:not(.btn, .tab, .badge, .no-underline) {
+    color: var(--uw-link);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+  a:not(.btn, .tab, .badge, .no-underline):hover {
+    color: var(--uw-link-hover);
+  }
+  /* --uw-link is a light-background colour; on the charcoal footer it drops to
+     2.4:1. The footer owns its own link colours, so opt it out entirely. */
+  #colophon a {
+    color: inherit;
+  }
+  #colophon a:hover {
+    color: var(--uw-footer-hover);
+  }
+}
+
+/* Documented UW extensions -- kebab-case, so they can't collide with the
+   official camelCase tokens. */
+:root {
+  --uw-link: #036796;
+  --uw-link-hover: #023d54;
+  --uw-footer-bg: #282728;
+  --uw-footer-fg: #adadad;
+  --uw-footer-hover: #f3f3f3;
+}
+
+/* @utility also lands unlayered in `utilities`, so these outrank .card and
+   .card-border, and they are tree-shaken when unused. */
+
+/* The 1.5em x 0.2em red bar above a heading. Verbatim from uw-style.css. */
+@utility uw-mini-bar {
+  &::before {
+    content: "";
+    display: block;
+    width: 1.5em;
+    height: 0.2em;
+    margin-bottom: 0.375rem;
+    background-color: var(--color-primary);
+  }
+}
+
+/* The 4px red bottom border of .uw-content-box. */
+@utility uw-content-box {
+  border-bottom: 4px solid var(--color-primary);
+}
+
+/* The red bar that sits above the site header on every UW page. */
+@utility uw-global-bar {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }

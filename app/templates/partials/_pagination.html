@@ -2,7 +2,7 @@
    pushed URL, so the back button and a copy-pasted link both work. #}
 {% if page_obj and page_obj.pages > 1 %}
 <nav class="mt-8 flex flex-wrap items-center justify-between gap-3" aria-label="Pagination">
-  <p class="text-sm text-base-content/60">
+  <p class="text-sm text-base-content/70">
     Showing {{ page_obj.first_index }}–{{ page_obj.last_index }} of {{ page_obj.total }}
   </p>
   <div class="join">
@@ -18,5 +18,5 @@
   </div>
 </nav>
 {% elif page_obj and page_obj.total %}
-<p class="mt-6 text-sm text-base-content/60">{{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}</p>
+<p class="mt-6 text-sm text-base-content/70">{{ page_obj.total }} dataset{{ '' if page_obj.total == 1 else 's' }}</p>
 {% endif %}
