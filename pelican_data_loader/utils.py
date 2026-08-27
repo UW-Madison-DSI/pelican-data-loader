@@ -65,6 +65,7 @@ def parse_col(col: pd.Series, parent_id: str) -> mlc.Field:
         "float32": mlc.DataType.FLOAT32,
         "float64": mlc.DataType.FLOAT64,
         "string": mlc.DataType.TEXT,
+        "str": mlc.DataType.TEXT,  # pandas 3 default for text columns
         "datetime64[ns]": mlc.DataType.DATE,
         "category": mlc.DataType.TEXT,
         "object": mlc.DataType.TEXT,  # TODO: May need better type for missing values
@@ -73,6 +74,11 @@ def parse_col(col: pd.Series, parent_id: str) -> mlc.Field:
     # Normalize pandas dtype string and map with safe fallback
     dtype_str = str(col.dtype).lower()
     mlc_dtype = PD_DTYPE_TO_MLC_DTYPE.get(dtype_str)
+    if mlc_dtype is None and dtype_str.startswith("datetime64["):
+        # Match every resolution and any timezone suffix: pandas 3 reads CSV dates as
+        # datetime64[us] where pandas 2 gave datetime64[ns], and an unmatched dtype
+        # would quietly downgrade a date column to TEXT.
+        mlc_dtype = mlc.DataType.DATE
     if mlc_dtype is None:
         logging.warning(
             "Unrecognized pandas dtype '%s' for column '%s'; defaulting to TEXT",

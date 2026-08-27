@@ -4,7 +4,7 @@
   "description": "Front-end assets for the UW–Madison Dataset Repository demo",
   "devDependencies": {
     "@tailwindcss/cli": "4.3.3",
-    "daisyui": "5.7.16",
+    "daisyui": "5.7.22",
     "htmx.org": "2.0.10"
   },
   "scripts": {

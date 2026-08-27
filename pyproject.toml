@@ -19,7 +19,7 @@ dependencies = [
     "pydantic-settings>=2.10.1",
     "psycopg2-binary>=2.9.10",
     "s3fs>=2025.3.0",
-    "pelicanfs>=1.2.3",
+    "pelicanfs>=1.4",
 ]
 
 [dependency-groups]
